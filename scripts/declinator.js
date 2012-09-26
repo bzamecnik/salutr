@@ -868,87 +868,87 @@ function isPattern(pattern, text) {
 // + "ch" -> "#"
 //
 function Xdetene(txt2) {
-	var XdeteneRV = "";
+	var result = "";
 	for ( var XdeteneI = 0; XdeteneI < txt2.length - 1; XdeteneI++) {
 		if (txt2.charAt(XdeteneI) == "ď"
 				&& (txt2.charAt(XdeteneI + 1) == "e"
 						|| txt2.charAt(XdeteneI + 1) == "i" || txt2
 						.charAt(XdeteneI + 1) == "í")) {
-			XdeteneRV += "d";
+			result += "d";
 			if (txt2.charAt(XdeteneI + 1) == "e") {
-				XdeteneRV += "ě";
+				result += "ě";
 				XdeteneI++;
 			}
 		} else if (txt2.charAt(XdeteneI) == "ť"
 				&& (txt2.charAt(XdeteneI + 1) == "e"
 						|| txt2.charAt(XdeteneI + 1) == "i" || txt2
 						.charAt(XdeteneI + 1) == "í")) {
-			XdeteneRV += "t";
+			result += "t";
 			if (txt2.charAt(XdeteneI + 1) == "e") {
-				XdeteneRV += "ě";
+				result += "ě";
 				XdeteneI++;
 			}
 		} else if (txt2.charAt(XdeteneI) == "ň"
 				&& (txt2.charAt(XdeteneI + 1) == "e"
 						|| txt2.charAt(XdeteneI + 1) == "i" || txt2
 						.charAt(XdeteneI + 1) == "í")) {
-			XdeteneRV += "n";
+			result += "n";
 			if (txt2.charAt(XdeteneI + 1) == "e") {
-				XdeteneRV += "ě";
+				result += "ě";
 				XdeteneI++;
 			}
 		} else {
-			XdeteneRV += txt2.charAt(XdeteneI)
+			result += txt2.charAt(XdeteneI)
 		}
 	}
 
 	if (XdeteneI == txt2.length - 1)
-		XdeteneRV += txt2.charAt(XdeteneI)
+		result += txt2.charAt(XdeteneI)
 
-	return XdeteneRV;
+	return result;
 }
 
 //
 // Transformation of other special cases: di,ti,ni,dě,tě,ně ...
 // ďi,ťi,ňi,ďe,ťe,ňe
 //
-function Xedeten(txt2) {
-	var XdeteneRV = "";
-	for ( var XdeteneI = 0; XdeteneI < txt2.length - 1; XdeteneI++) {
-		if (txt2.charAt(XdeteneI) == "d"
-				&& (txt2.charAt(XdeteneI + 1) == "ě" || txt2
-						.charAt(XdeteneI + 1) == "i")) {
-			XdeteneRV += "ď";
-			if (txt2.charAt(XdeteneI + 1) == "ě") {
-				XdeteneRV += "e";
-				XdeteneI++;
+function Xedeten(text) {
+	var result = "";
+	for ( var i = 0; i < text.length - 1; i++) {
+		if (text.charAt(i) == "d"
+				&& (text.charAt(i + 1) == "ě" || text
+						.charAt(i + 1) == "i")) {
+			result += "ď";
+			if (text.charAt(i + 1) == "ě") {
+				result += "e";
+				i++;
 			}
-		} else if (txt2.charAt(XdeteneI) == "t"
-				&& (txt2.charAt(XdeteneI + 1) == "ě" || txt2
-						.charAt(XdeteneI + 1) == "i")) {
-			XdeteneRV += "ť";
-			if (txt2.charAt(XdeteneI + 1) == "ě") {
-				XdeteneRV += "e";
-				XdeteneI++;
+		} else if (text.charAt(i) == "t"
+				&& (text.charAt(i + 1) == "ě" || text
+						.charAt(i + 1) == "i")) {
+			result += "ť";
+			if (text.charAt(i + 1) == "ě") {
+				result += "e";
+				i++;
 			}
-		} else if (txt2.charAt(XdeteneI) == "n"
-				&& (txt2.charAt(XdeteneI + 1) == "ě" || txt2
-						.charAt(XdeteneI + 1) == "i")) {
-			XdeteneRV += "ň";
-			if (txt2.charAt(XdeteneI + 1) == "ě") {
-				XdeteneRV += "e";
-				XdeteneI++;
+		} else if (text.charAt(i) == "n"
+				&& (text.charAt(i + 1) == "ě" || text
+						.charAt(i + 1) == "i")) {
+			result += "ň";
+			if (text.charAt(i + 1) == "ě") {
+				result += "e";
+				i++;
 			}
 		} else {
-			XdeteneRV += txt2.charAt(XdeteneI);
+			result += text.charAt(i);
 		}
 	}
 
-	if (XdeteneI == txt2.length - 1) {
-		XdeteneRV += txt2.charAt(XdeteneI);
+	if (i == text.length - 1) {
+		result += text.charAt(i);
 	}
 
-	return XdeteneRV;
+	return result;
 }
 
 /**
@@ -984,7 +984,7 @@ function replacePlaceholders(text) {
  * 
  * @param caseNumberIndex index within the pattern (gender, number/case)
  */
-function Sklon(caseNumberIndex, patternIndex, word) {
+function DeclineSingleCase(caseNumberIndex, patternIndex, word) {
 	if (patternIndex >= pattern.length || patternIndex < 0) {
 		return "???";
 	}
@@ -1075,39 +1075,11 @@ function RightStr(n, text) {
 	return rv
 }
 
-// Rozdeleni textu na slova
-function TxtSplit(text) {
-	var skp = 1;
-	var rv = new Array();
-
-	var rvx = 0;
-	var acc = "";
-
-	for (i = 0; i < text.length; i++) {
-		if (text.charAt(i) == ' ') {
-			if (skp) {
-				continue;
-			}
-			skp = 1;
-			rv[rvx++] = acc;
-			acc = "";
-			continue;
-		}
-		skp = 0;
-		acc += text.charAt(i);
-	}
-	if (!skp) {
-		rv[rvx++] = acc;
-	}
-
-	return rv;
-}
-
 //
 // Funkce uzivatelskeho rozhrani
 //
 function onDecline() {
-	var aTxt = TxtSplit(document.ui.vstup.value);
+	var aTxt = document.ui.vstup.value.trim().replace(/\s+/, " ").split(" ");
 	document.ui.rod.value = "";
 	document.ui.p1j.value = "";
 	document.ui.p2j.value = "";
@@ -1127,7 +1099,7 @@ function onDecline() {
 	PrefRod = "0";
 	for ( var i = aTxt.length - 1; i >= 0; i--) {
 		// vysklonovani
-		skl2(aTxt[i]);
+		DeclineWord(aTxt[i]);
 
 		// vynuceni rodu podle posledniho slova
 		if (i == aTxt.length - 1) {
@@ -1210,8 +1182,8 @@ function vysklonuj(slovo) {
 	wr0("<table>");
 	for (jj = 1; jj < 8; jj++) {
 		wr0("<tr><td>&nbsp;&nbsp;</td><td>" + padQst[jj - 1] + "</td><td>"
-				+ Sklon(jj, ii, slovo) + "</td>");
-		wr0("    <td>" + Sklon(jj + 7, ii, slovo) + "</td></tr>");
+				+ DeclineSingleCase(jj, ii, slovo) + "</td>");
+		wr0("    <td>" + DeclineSingleCase(jj + 7, ii, slovo) + "</td></tr>");
 	}
 	wr0("</table>");
 }
@@ -1232,7 +1204,7 @@ function SklFmt(astrTvar) {
  * @param word
  * @param patternIndex index of a declination pattern in the 'patterns' array
  */
-function SklStd(word, patternIndex) {
+function DeclineByPattern(word, patternIndex) {
 	if (patternIndex < 0 || patternIndex > pattern.length) {
 		astrTvar[0] = "!!!???";
 	}
@@ -1252,7 +1224,7 @@ function SklStd(word, patternIndex) {
 
 	// vlastni sklonovani
 	for ( var i = 1; i < 15; i++) {
-		astrTvar[i] = Sklon(i, patternIndex, word);
+		astrTvar[i] = DeclineSingleCase(i, patternIndex, word);
 	}
 
 	// - seznam nepresneho sklonovani
@@ -1326,7 +1298,7 @@ function StdNdx(word) {
 
 // Sklonovani podle seznamu vyjimek typu V1
 function SklV1(slovo, ii) {
-	SklStd(v1[ii][1], StdNdx(v1[ii][1]));
+	DeclineByPattern(v1[ii][1], StdNdx(v1[ii][1]));
 	astrTvar[1] = slovo; // 1.p nechame jak je
 	astrTvar[4] = v1[ii][2];
 }
@@ -1341,7 +1313,7 @@ function SklV1(slovo, ii) {
  * @param word
  * @returns {Number} error code: 0 = OK, -1 = error
  */
-function skl2(word) {
+function DeclineWord(word) {
 	astrTvar[0] = "???";
 	for ( var i = 1; i < 15; i++) {
 		astrTvar[i] = "";
@@ -1382,7 +1354,7 @@ function skl2(word) {
 	}
 
 	// Vlastni sklonovani
-	SklStd(word, patternIndex);
+	DeclineByPattern(word, patternIndex);
 
 	// exceptions for the fourth case
 	if (flgV1 >= 0) {
