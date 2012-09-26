@@ -1,6 +1,31 @@
-var pattern = new Array()
+var pattern = new Array();
 var nvz = 0;
 var isDbgMode = 0;
+
+var astrTvar = new Array("", "", "", "", "", "", "", "", "", "", "", "", "",
+		"", "");
+
+//Register for values to be replaced for placeholders defined in patterns.
+//eg. "-[tp]y" -> "-0y" for matched character 't' results in placeholders[0] == "t"
+var placeholders = new Array()
+var placeholderIndex = 0;
+placeholders[0] = "";
+placeholders[1] = "";
+placeholders[2] = "";
+placeholders[3] = "";
+placeholders[4] = "";
+placeholders[5] = "";
+placeholders[6] = "";
+placeholders[7] = "";
+placeholders[8] = "";
+placeholders[9] = "";
+
+
+// Ve zvl. pripadech je mozne pomoci teto promenne "pretypovat" rod jmena
+var PrefRod = "0" // smi byt "0", "m", "ž", "s"
+
+var padQst = new Array("Kdo/Co?   ", "Bez koho/čeho?", "Komu/čemu?    ",
+		"Koho/Co?     ", "Oslovení:   ", "O kom/čem?    ", "S kým/čím?      ")
 
 //
 // Přídavná jména a zájmena
@@ -492,26 +517,19 @@ pattern[nvz++] = new Array("?", "-[tp]y", "?", "?", "?", "?", "?", "?", "-0y",
 pattern[nvz++] = new Array("?", "-[k]y", "?", "?", "?", "?", "?", "?", "-0y",
 		"e0", "0ám", "0y", "0y", "0ách", "0ami")
 
-var aCmpReg = new Array()
-var nCmpReg = 0
-aCmpReg[0] = "";
-aCmpReg[1] = "";
-aCmpReg[2] = "";
-aCmpReg[3] = "";
-aCmpReg[4] = "";
-aCmpReg[5] = "";
-aCmpReg[6] = "";
-aCmpReg[7] = "";
-aCmpReg[8] = "";
-aCmpReg[9] = "";
-
 // Výjimky:
 // v1 - přehlásky
 // : důl ... dol, stůl ... stol, nůž ... nož, hůl ... hole, půl ... půle
 var nv1 = 0;
 var v1 = new Array();
 // 1.p náhrada 4.p.
-//
+
+// TODO: use a hashmap instead:
+// var umlautExceptions = {
+// "osel": {prefix: "osl", declined: "osla"},
+// // ...
+// }
+
 v1[nv1++] = new Array("osel", "osl", "osla");
 v1[nv1++] = new Array("karel", "karl", "karla");
 v1[nv1++] = new Array("Karel", "Karl", "Karla");
@@ -787,56 +805,60 @@ v3[nv3++] = "Zoja"
 v3[nv3++] = "Zoe"
 v3[nv3++] = "zoe"
 
-// Ve zvl. pripadech je mozne pomoci teto promenne "pretypovat" rod jmena
-var PrefRod = "0" // smi byt "0", "m", "ž", "s"
-
 //
 // Fce isPattern vraci index pri shode koncovky (napr. isPattern("-lo","kolo"),
 // isPattern("ko-lo","motovidlo"))
 // nebo pri rovnosti slov (napr. isPattern("molo","molo").
 // Jinak je navratova hodnota -1.
 //
-function isPattern(vz, txt) {
-	txt = txt.toLowerCase()
-	vz = vz.toLowerCase()
-	var i = vz.length
-	var j = txt.length
+// Global variables: placeholderIndex, placeholders
+function isPattern(pattern, text) {
+	text = text.toLowerCase()
+	pattern = pattern.toLowerCase()
+	var i = pattern.length
+	var j = text.length
 
-	if (i == 0 || j == 0)
+	if (i == 0 || j == 0) {
 		return -1;
+	}
 	i--;
 	j--;
 
-	var nCmpReg = 0;
+	var placeholderIndex = 0;
 
 	while (i >= 0 && j >= 0) {
-		if (vz.charAt(i) == "]") {
+		if (pattern.charAt(i) == "]") {
 			i--;
 			quit = 1;
-			while (i >= 0 && vz.charAt(i) != "[") {
-				if (vz.charAt(i) == txt.charAt(j)) {
+			while (i >= 0 && pattern.charAt(i) != "[") {
+				if (pattern.charAt(i) == text.charAt(j)) {
 					quit = 0;
-					aCmpReg[nCmpReg] = vz.charAt(i);
-					nCmpReg++;
+					placeholders[placeholderIndex] = pattern.charAt(i);
+					placeholderIndex++;
 				}
 				i--;
 			}
 
-			if (quit == 1)
+			if (quit == 1) {
 				return -1;
+			}
 		} else {
-			if (vz.charAt(i) == '-')
+			if (pattern.charAt(i) == '-') {
 				return j + 1;
-			if (vz.charAt(i) != txt.charAt(j))
+			}
+			if (pattern.charAt(i) != text.charAt(j)) {
 				return -1;
+			}
 		}
 		i--;
 		j--;
 	}
-	if (i < 0 && j < 0)
+	if (i < 0 && j < 0) {
 		return 0;
-	if (vz.charAt(i) == '-')
+	}
+	if (pattern.charAt(i) == '-') {
 		return 0;
+	}
 
 	return -1
 }
@@ -847,7 +869,7 @@ function isPattern(vz, txt) {
 //
 function Xdetene(txt2) {
 	var XdeteneRV = "";
-	for (var XdeteneI = 0; XdeteneI < txt2.length - 1; XdeteneI++) {
+	for ( var XdeteneI = 0; XdeteneI < txt2.length - 1; XdeteneI++) {
 		if (txt2.charAt(XdeteneI) == "ď"
 				&& (txt2.charAt(XdeteneI + 1) == "e"
 						|| txt2.charAt(XdeteneI + 1) == "i" || txt2
@@ -875,8 +897,9 @@ function Xdetene(txt2) {
 				XdeteneRV += "ě";
 				XdeteneI++;
 			}
-		} else
+		} else {
 			XdeteneRV += txt2.charAt(XdeteneI)
+		}
 	}
 
 	if (XdeteneI == txt2.length - 1)
@@ -891,7 +914,7 @@ function Xdetene(txt2) {
 //
 function Xedeten(txt2) {
 	var XdeteneRV = "";
-	for (var XdeteneI = 0; XdeteneI < txt2.length - 1; XdeteneI++) {
+	for ( var XdeteneI = 0; XdeteneI < txt2.length - 1; XdeteneI++) {
 		if (txt2.charAt(XdeteneI) == "d"
 				&& (txt2.charAt(XdeteneI + 1) == "ě" || txt2
 						.charAt(XdeteneI + 1) == "i")) {
@@ -916,90 +939,116 @@ function Xedeten(txt2) {
 				XdeteneRV += "e";
 				XdeteneI++;
 			}
-		} else
-			XdeteneRV += txt2.charAt(XdeteneI)
+		} else {
+			XdeteneRV += txt2.charAt(XdeteneI);
+		}
 	}
 
-	if (XdeteneI == txt2.length - 1)
-		XdeteneRV += txt2.charAt(XdeteneI)
+	if (XdeteneI == txt2.length - 1) {
+		XdeteneRV += txt2.charAt(XdeteneI);
+	}
 
 	return XdeteneRV;
 }
 
-//
-// Funkce pro sklonovani
-//
+/**
+ * Replace numeric placeholder for its value from a register.
+ * 
+ * Global variables: placeholders
+ * 
+ * @param text
+ * @returns {String}
+ */
+function replacePlaceholders(text) {
+	var result = "";
+	for ( var i = 0; i < text.length; i++) {
+		var char = text.charAt(i);
+		if (char == "0") {
+			result += placeholders[0];
+		} else if (char == "1") {
+			result += placeholders[1];
+		} else if (char == "2") {
+			result += placeholders[2];
+		} else {
+			result += char;
+		}
+	}
 
-function CmpFrm(txt) {
-	var CmpFrmRV = "";
-	for (var CmpFrmI = 0; CmpFrmI < txt.length; CmpFrmI++)
-		if (txt.charAt(CmpFrmI) == "0")
-			CmpFrmRV += aCmpReg[0];
-		else if (txt.charAt(CmpFrmI) == "1")
-			CmpFrmRV += aCmpReg[1];
-		else if (txt.charAt(CmpFrmI) == "2")
-			CmpFrmRV += aCmpReg[2];
-		else
-			CmpFrmRV += txt.charAt(CmpFrmI);
-
-	return CmpFrmRV;
+	return result;
 }
 
 // Funkce pro sklonovani slova do daneho podle
 // daneho patternu
-function Sklon(nPad, vzndx, txt) {
-	if (vzndx >= pattern.length || vzndx < 0)
+/**
+ * Declines a word using a declination pattern into specified case and number.
+ * 
+ * @param caseNumberIndex index within the pattern (gender, number/case)
+ */
+function Sklon(caseNumberIndex, patternIndex, word) {
+	if (patternIndex >= pattern.length || patternIndex < 0) {
 		return "???";
+	}
 
-	var txt3 = Xedeten(txt);
-	var kndx = isPattern(pattern[vzndx][1], txt3)
-	if (kndx < 0 || nPad < 1 || nPad > 14) // 8-14 je pro plural
+	var word3 = Xedeten(word);
+	var kndx = isPattern(pattern[patternIndex][1], word3)
+	if (kndx < 0 || caseNumberIndex < 1 || caseNumberIndex > 14) {
+		// 8-14 je pro plural
 		return "???";
+	}
 
-	if (pattern[vzndx][nPad] == "?")
+	if (pattern[patternIndex][caseNumberIndex] == "?") {
 		return "?";
+	}
 
-	var rv = (!isDbgMode & nPad == 1) ? /* 1. pad nemenime */
-		Xdetene(txt3) :
-		LeftStr(kndx, txt3) + '-' + CmpFrm(pattern[vzndx][nPad]);
+	var rv = (!isDbgMode && caseNumberIndex == 1) ? /* 1. pad nemenime */
+	Xdetene(word3) : LeftStr(kndx, word3) + '-' + replacePlaceholders(pattern[patternIndex][caseNumberIndex]);
 
-	if (isDbgMode) // preskoceni filtrovani
-		return rv
+	if (isDbgMode) {
+		// preskoceni filtrovani
+		return rv;
+	}
 
-		// Formatovani zivotneho sklonovani
-		// - nalezeni pomlcky
-	for (var nnn = 0; nnn < rv.length; nnn++)
-		if (rv.charAt(nnn) == "-")
+	// Formatovani zivotneho sklonovani
+	// - nalezeni pomlcky
+	for ( var nnn = 0; nnn < rv.length; nnn++) {
+		if (rv.charAt(nnn) == "-") {
 			break;
+		}
+	}
 
 	var ndx1 = nnn;
 
 	// - nalezeni lomitka
-	for (nnn = 0; nnn < rv.length; nnn++)
-		if (rv.charAt(nnn) == "/")
+	for (nnn = 0; nnn < rv.length; nnn++) {
+		if (rv.charAt(nnn) == "/") {
 			break;
+		}
+	}
 
 	var ndx2 = nnn;
 
 	if (ndx1 != rv.length && ndx2 != rv.length) {
-		if (document.ui.chkZivotne.checked)
+		if (document.ui.chkZivotne.checked) {
 			// "text-xxx/yyy" -> "textyyy"
 			rv = LeftStr(ndx1, rv) + RightStr(ndx2 + 1, rv);
-		else
+		} else {
 			// "text-xxx/yyy" -> "text-xxx"
 			rv = LeftStr(ndx2, rv);
+		}
 	}
 
 	// vypusteni pomocnych znaku
-	txt3 = ""
-	for (nnn = 0; nnn < rv.length; nnn++)
-		if (!(rv.charAt(nnn) == '-' || rv.charAt(nnn) == '/'))
-			txt3 += rv.charAt(nnn);
+	word3 = ""
+	for (nnn = 0; nnn < rv.length; nnn++) {
+		if (!(rv.charAt(nnn) == '-' || rv.charAt(nnn) == '/')) {
+			word3 += rv.charAt(nnn);
+		}
+	}
 
-	rv = Xdetene(txt3);
+	rv = Xdetene(word3);
 
 	return rv;
-	// return LeftStr( kndx, txt ) + pattern[vzndx][nPad];
+	// return LeftStr( kndx, word ) + pattern[patternIndex][caseNumberIndex];
 }
 
 //
@@ -1007,45 +1056,49 @@ function Sklon(nPad, vzndx, txt) {
 //
 
 // - levy retezec do indexu n (bez tohoto indexu)
-function LeftStr(n, txt) {
+function LeftStr(n, text) {
 	var rv = "";
-	for (i = 0; i < n && i < txt.length; i++) 
-		rv += txt.charAt(i)
+	for (i = 0; i < n && i < text.length; i++) {
+		rv += text.charAt(i);
+	}
 
 	return rv
 }
 
 // - pravy retezec od indexu n (vcetne)
-function RightStr(n, txt) {
+function RightStr(n, text) {
 	var rv = ""
-	for (i = n; i < txt.length; i++)
-		rv += txt.charAt(i)
+	for (i = n; i < text.length; i++) {
+		rv += text.charAt(i);
+	}
 
 	return rv
 }
 
 // Rozdeleni textu na slova
-function TxtSplit(txt) {
+function TxtSplit(text) {
 	var skp = 1;
 	var rv = new Array();
 
 	var rvx = 0;
 	var acc = "";
 
-	for (i = 0; i < txt.length; i++) {
-		if (txt.charAt(i) == ' ') {
-			if (skp)
+	for (i = 0; i < text.length; i++) {
+		if (text.charAt(i) == ' ') {
+			if (skp) {
 				continue;
+			}
 			skp = 1;
 			rv[rvx++] = acc;
 			acc = "";
 			continue;
 		}
 		skp = 0;
-		acc += txt.charAt(i);
+		acc += text.charAt(i);
 	}
-	if (!skp)
+	if (!skp) {
 		rv[rvx++] = acc;
+	}
 
 	return rv;
 }
@@ -1072,23 +1125,26 @@ function onDecline() {
 	document.ui.p7m.value = "";
 
 	PrefRod = "0";
-	for (var i = aTxt.length - 1; i >= 0; i--) {
+	for ( var i = aTxt.length - 1; i >= 0; i--) {
 		// vysklonovani
 		skl2(aTxt[i]);
 
 		// vynuceni rodu podle posledniho slova
-		if (i == aTxt.length - 1)
+		if (i == aTxt.length - 1) {
 			PrefRod = astrTvar[0];
+		}
 
 		// pokud nenajdeme pattern tak nesklonujeme
 		if (i < aTxt.length - 1 && astrTvar[0].charAt(0) == '?'
 				&& PrefRod.charAt(0) != '?') {
-			for (var j = 1; j < 15; j++)
+			for ( var j = 1; j < 15; j++) {
 				astrTvar[j] = aTxt[i];
+			}
 		}
 
-		if (astrTvar[0].charAt(0) == '?')
+		if (astrTvar[0].charAt(0) == '?') {
 			astrTvar[0] = '?';
+		}
 
 		document.ui.rod.value = astrTvar[0] + document.ui.rod.value;
 		document.ui.p1j.value = astrTvar[1] + ' ' + document.ui.p1j.value;
@@ -1125,26 +1181,25 @@ function onDecline() {
 }
 
 //
-// Aux foramating functions
+// Aux formating functions
 //
-function wr0(txt) {
-	document.write(txt)
+function wr0(text) {
+	document.write(text)
 }
-function wr(txt) {
-	document.write("<br>" + txt)
+function wr(text) {
+	document.write("<br>" + text)
 }
-function bwr(txt) {
-	document.write("<b><br>" + txt + "</b>")
+function bwr(text) {
+	document.write("<b><br>" + text + "</b>")
 }
-
-padQst = new Array("Kdo/Co?   ", "Bez koho/čeho?", "Komu/čemu?    ",
-		"Koho/Co?     ", "Oslovení:   ", "O kom/čem?    ", "S kým/čím?      ")
 
 function vysklonuj(slovo) {
 	bwr(slovo)
-	for (var ii = 0; ii < pattern.length; ii++)
-		if (isPattern(pattern[ii][1], slovo) >= 0)
+	for ( var ii = 0; ii < pattern.length; ii++) {
+		if (isPattern(pattern[ii][1], slovo) >= 0) {
 			break;
+		}
+	}
 
 	if (ii >= pattern.length) {
 		wr("&nbsp;&nbsp;Sorry, nenasel jsem pattern.");
@@ -1161,7 +1216,6 @@ function vysklonuj(slovo) {
 	wr0("</table>");
 }
 
-var astrTvar = new Array("", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
 function SklFmt(astrTvar) {
 	var v2rv = "\nRod:" + astrTvar[0];
 	for (jj = 1; jj < 8; jj++) {
@@ -1171,33 +1225,43 @@ function SklFmt(astrTvar) {
 	return v2rv
 }
 
-// Sklonovani podle standardniho seznamu pripon
-function SklStd(slovo, ii) {
-	if (ii < 0 || ii > pattern.length)
+
+/**
+ * Declines the word using a standard suffix patern.
+ * 
+ * @param word
+ * @param patternIndex index of a declination pattern in the 'patterns' array
+ */
+function SklStd(word, patternIndex) {
+	if (patternIndex < 0 || patternIndex > pattern.length) {
 		astrTvar[0] = "!!!???";
+	}
 
 	// - seznam nedoresenych slov
-	for (var jj = 0; jj < v0.length; jj++)
-		if (isPattern(v0[jj], slovo) >= 0) {
-			str = "Seznam výjimek [" + jj + "]. "
+	for ( var i = 0; i < v0.length; i++) {
+		if (isPattern(v0[i], word) >= 0) {
+			str = "Seznam výjimek [" + i + "]. "
 
 			alert(str + "Lituji, toto slovo zatím neumím správně vyskloňovat.");
 			return;
 		}
+	}
 
 	// nastaveni rodu
-	astrTvar[0] = pattern[ii][0];
+	astrTvar[0] = pattern[patternIndex][0];
 
 	// vlastni sklonovani
-	for (var jj = 1; jj < 15; jj++)
-		astrTvar[jj] = Sklon(jj, ii, slovo);
+	for ( var i = 1; i < 15; i++) {
+		astrTvar[i] = Sklon(i, patternIndex, word);
+	}
 
 	// - seznam nepresneho sklonovani
-	for (var jj = 0; jj < v3.length; jj++)
-		if (isPattern(v3[jj], slovo) >= 0) {
+	for ( var i = 0; i < v3.length; i++) {
+		if (isPattern(v3[i], word) >= 0) {
 			alert("Pozor, v některých pádech nemusí být skloňování tohoto slova přesné.");
 			return;
 		}
+	}
 
 	// return SklFmt( astrTvar );
 }
@@ -1205,37 +1269,59 @@ function SklStd(slovo, ii) {
 // Pokud je index>=0, je slovo výjimka ze seznamu "vx"(v10,...), definovaného
 // výše.
 function NdxInVx(vx, slovo) {
-	for (var vxi = 0; vxi < vx.length; vxi++)
-		if (slovo == vx[vxi])
+	for ( var vxi = 0; vxi < vx.length; vxi++) {
+		if (slovo == vx[vxi]) {
 			return vxi;
-
-	return -1;
-}
-
-// Pokud je index>=0, je slovo výjimka ze seznamu "vx", definovaného výše.
-function ndxV1(slovo) {
-	for (var v1i = 0; v1i < v1.length; v1i++)
-		if (slovo == v1[v1i][0])
-			return v1i;
-
-	return -1;
-}
-
-function StdNdx(slovo) {
-	for (var iii = 0; iii < pattern.length; iii++) {
-		// filtrace rodu
-		if (PrefRod.charAt(0) != "0"
-				&& PrefRod.charAt(0) != pattern[iii][0].charAt(0))
-			continue;
-
-		if (isPattern(pattern[iii][1], slovo) >= 0)
-			break;
+		}
 	}
 
-	if (iii >= pattern.length)
-		return -1;
+	return -1;
+}
 
-	return iii;
+/**
+ * Finds the word in the list of exceptions v1.
+ * 
+ * TODO: use a hasmap
+ * 
+ * Pokud je index>=0, je slovo výjimka ze seznamu "vx", definovaného výše.
+ */
+function ndxV1(slovo) {
+	for ( var v1i = 0; v1i < v1.length; v1i++) {
+		if (slovo == v1[v1i][0]) {
+			return v1i;
+		}
+	}
+
+	return -1;
+}
+
+/**
+ * Finds the first matching standard declination pattern.
+ * 
+ * In case the preferred gender is set (PrefRod), only patterns of that gender
+ * are considered.
+ * 
+ * @param word
+ * @returns {Number} index of the first matching pattern
+ */
+function StdNdx(word) {
+	for ( var i = 0; i < pattern.length; i++) {
+		// filtrace rodu
+		if (PrefRod.charAt(0) != "0"
+				&& PrefRod.charAt(0) != pattern[i][0].charAt(0)) {
+			continue;
+		}
+
+		if (isPattern(pattern[i][1], word) >= 0) {
+			break;
+		}
+	}
+
+	if (i >= pattern.length) {
+		return -1;
+	}
+
+	return i;
 }
 
 // Sklonovani podle seznamu vyjimek typu V1
@@ -1245,48 +1331,64 @@ function SklV1(slovo, ii) {
 	astrTvar[4] = v1[ii][2];
 }
 
-function skl2(slovo) {
+/**
+ * Declines a single word and returns the results in the astrTvar variable.
+ * 
+ * This is the main declination API function.
+ * 
+ * It writes global variables: astrTvar, PrefRod
+ * 
+ * @param word
+ * @returns {Number} error code: 0 = OK, -1 = error
+ */
+function skl2(word) {
 	astrTvar[0] = "???";
-	for (var ii = 1; ii < 15; ii++)
-		astrTvar[ii] = "";
-
-	flgV1 = ndxV1(slovo);
-	if (flgV1 >= 0) {
-		slovoV1 = slovo;
-		slovo = v1[flgV1][1];
+	for ( var i = 1; i < 15; i++) {
+		astrTvar[i] = "";
 	}
-	// if( ii>=0 )
+
+	// if the word is in v1 exceptions get its prefix
+	// (exceptions for the forth case)
+	var flgV1 = ndxV1(word);
+	var slovoV1;
+	if (flgV1 >= 0) {
+		slovoV1 = word;
+		word = v1[flgV1][1];
+	}
+	// if( i>=0 )
 	// {
-	// astrTvar[1] = "v1: " + ii;
-	// SklV1( slovo, ii );
+	// astrTvar[1] = "v1: " + i;
+	// SklV1( word, ii );
 	// return SklFmt( astrTvar );
 	// return 0;
 	// }
 
-	slovo = Xedeten(slovo);
+	word = Xedeten(word);
 
 	// Pretypovani rodu?
-	if (NdxInVx(v10, slovo) >= 0)
+	if (NdxInVx(v10, word) >= 0) {
 		PrefRod = "m";
-	else if (NdxInVx(v11, slovo) >= 0)
+	} else if (NdxInVx(v11, word) >= 0) {
 		PrefRod = "ž";
-	else if (NdxInVx(v12, slovo) >= 0)
+	} else if (NdxInVx(v12, word) >= 0) {
 		PrefRod = "s";
+	}
 
 	// Nalezeni patternu
-	ii = StdNdx(slovo);
-	if (ii < 0) {
-		alert("Chyba: proto toto slovo nebyl nalezen pattern.");
-		return -1; // return "\n Sorry, nenasel jsem pattern.";
+	var patternIndex = StdNdx(word);
+	if (patternIndex < 0) {
+		alert("Chyba: proto toto word nebyl nalezen pattern.");
+		return -1;
 	}
 
 	// Vlastni sklonovani
-	SklStd(slovo, ii);
+	SklStd(word, patternIndex);
 
+	// exceptions for the fourth case
 	if (flgV1 >= 0) {
 		astrTvar[1] = slovoV1; // 1.p nechame jak je
 		astrTvar[4] = v1[flgV1][2];
 	}
 	return 0; // return SklFmt( astrTvar ); // return "pattern:
-				// "+pattern[ii][1];
+	// "+pattern[ii][1];
 }
