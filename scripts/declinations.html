@@ -18,18 +18,18 @@
 
 					<INPUT TYPE="text" name="inputText" VALUE="bohumír" size=40>
 
-					Mužský rod: <SELECT NAME="masculineSubgender" onClick="onDecline()">
+					Mužský rod: <SELECT NAME="masculineSubgender">
 						<OPTION VALUE="animate">Životný</OPTION>
 						<OPTION VALUE="inanimate">Neživotný</OPTION>
-					</SELECT> <BR> <INPUT TYPE="submit" name="sklonuj" VALUE="Skloňuj!"
-						onClick="onDecline(); return false;">
+					</SELECT> <BR> <INPUT TYPE="button" VALUE="Skloňuj!"
+					onClick="onDecline(); return false;">
 					<HR>
 
 					<H3>Výstup</H3>
 					<table>
 						<tr>
 							<td>Rod:</td>
-							<td><INPUT type="text" name="rod" disabled="disabled"></td>
+							<td><INPUT type="text" name="gender" disabled="disabled"></td>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>

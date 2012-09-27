@@ -1,7 +1,5 @@
 var debugModeEnabled = 0;
 
-var declinationResults = [ "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ];
-
 // Register for values to be replaced for placeholders defined in patterns.
 // eg. "-[tp]y" -> "-0y" for matched character 't' results in placeholders[0] ==
 // "t"
@@ -745,6 +743,8 @@ function declineByPattern(word, patternIndex) {
 	if (patternIndex < 0 || patternIndex > pattern.length) {
 		declinationResults[0] = "!!!???";
 	}
+	
+	var declinationResults = [ "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ];
 
 	// - seznam nedoresenych slov
 	for ( var i = 0; i < v0.length; i++) {
@@ -752,7 +752,7 @@ function declineByPattern(word, patternIndex) {
 			str = "Seznam výjimek [" + i + "]. "
 
 			showMessage(str + "Lituji, toto slovo zatím neumím správně vyskloňovat.");
-			return;
+			return null;
 		}
 	}
 
@@ -768,9 +768,11 @@ function declineByPattern(word, patternIndex) {
 	for ( var i = 0; i < v3.length; i++) {
 		if (isPattern(v3[i], word) >= 0) {
 			showMessage("Pozor, v některých pádech nemusí být skloňování tohoto slova přesné.");
-			return;
+			return null;
 		}
 	}
+	
+	return declinationResults;
 }
 
 /**
@@ -818,37 +820,24 @@ function findStandardPattern(word) {
 	return i;
 }
 
-// Sklonovani podle seznamu vyjimek typu V1
-function declineByV1Exceptions(word, exceptionIndex) {
-	declineByPattern(v1[exceptionIndex][1], findStandardPattern(v1[exceptionIndex][1]));
-	declinationResults[1] = word; // 1.p nechame jak je
-	declinationResults[4] = v1[exceptionIndex][2];
-}
-
 /**
- * Declines a single word and returns the results in the declinationResults
- * variable.
+ * Declines a single word and returns the results.
  * 
  * This is the main declination API function.
  * 
- * It writes global variables: declinationResults, preferredGender
+ * It writes global variables: preferredGender
  * 
  * @param word
  * @returns {Number} error code: 0 = OK, -1 = error
  */
 function declineWord(word) {
-	declinationResults[0] = "???";
-	for ( var i = 1; i < 15; i++) {
-		declinationResults[i] = "";
-	}
-
 	// if the word is in v1 exceptions get its prefix
 	// (exceptions for the forth case)
-	var flgV1 = findInV1(word);
-	var slovoV1;
-	if (flgV1 >= 0) {
-		slovoV1 = word;
-		word = v1[flgV1][1];
+	var v1index = findInV1(word);
+	var wordV1 = "";
+	if (v1index >= 0) {
+		wordV1 = word;
+		word = v1[v1index][1];
 	}
 
 	word = Xedeten(word);
@@ -866,18 +855,18 @@ function declineWord(word) {
 	var patternIndex = findStandardPattern(word);
 	if (patternIndex < 0) {
 		showMessage("Chyba: pro toto slovo nebyl nalezen skloňovací vzor.");
-		return -1;
+		return null;
 	}
 
 	// Vlastni sklonovani
-	declineByPattern(word, patternIndex);
+	var declinationResults = declineByPattern(word, patternIndex);
 
 	// exceptions for the fourth case
-	if (flgV1 >= 0) {
-		declinationResults[1] = slovoV1; // 1.p nechame jak je
-		declinationResults[4] = v1[flgV1][2];
+	if (v1index >= 0) {
+		declinationResulv1index = wordV1; // 1.p nechame jak je
+		declinationResults[4] = v1[v1index][2];
 	}
-	return 0;
+	return declinationResults;
 }
 
 //
@@ -885,18 +874,24 @@ function declineWord(word) {
 //
 function onDecline() {
 	var inputWords = document.ui.inputText.value.trim().replace(/\s+/, " ").split(" ");
-	document.ui.rod.value = "";
-	for ( var i = 1; i <= 7; i++) {
-		document.ui["p" + i + "j"].value = "";
-		document.ui["p" + i + "m"].value = "";
-	}
 
 	preferredGender = "0";
+	
+	var totalResults = {
+		gender: [],
+		plural: [],
+		singular: []
+	};
+	for (var i = 1; i <= 7; i++) {
+		totalResults.singular.push([]);
+		totalResults.plural.push([]);
+	}
+	
 	for ( var i = inputWords.length - 1; i >= 0; i--) {
 		var inputWord = inputWords[i];
 		
 		// vysklonovani
-		declineWord(inputWord);
+		var declinationResults = declineWord(inputWord);
 
 		var gender = declinationResults[0];
 		
@@ -911,28 +906,21 @@ function onDecline() {
 			}
 		}
 
-		gender.replace(/\?+/, "?");
+		if (gender) {
+			gender.replace(/\?+/, "?");
+		}
+		
+		totalResults.gender.push(gender);
+		for (var caseIndex = 1; caseIndex <= 7; caseIndex++) {
+			totalResults.singular[caseIndex - 1].push(declinationResults[caseIndex]);
+			totalResults.plural[caseIndex - 1].push(declinationResults[caseIndex + 7]);
+		}
+	}
+	
 
-		document.ui.rod.value = gender + ' ' + document.ui.rod.value;
-		// for (var i = 1; i <= 7; i++) {
-		// document.ui["p" + i + "j"].value = declinationResults[i] + " " +
-		// document.ui["p" + i + "j"].value;
-		// document.ui["p" + i + "m"].value = declinationResults[i + 7] + " " +
-		// document.ui["p" + i + "m"].value;
-		// }
-		document.ui.p1j.value = declinationResults[1] + ' ' + document.ui.p1j.value;
-		document.ui.p2j.value = declinationResults[2] + ' ' + document.ui.p2j.value;
-		document.ui.p3j.value = declinationResults[3] + ' ' + document.ui.p3j.value;
-		document.ui.p4j.value = declinationResults[4] + ' ' + document.ui.p4j.value;
-		document.ui.p5j.value = declinationResults[5] + ' ' + document.ui.p5j.value;
-		document.ui.p6j.value = declinationResults[6] + ' ' + document.ui.p6j.value;
-		document.ui.p7j.value = declinationResults[7] + ' ' + document.ui.p7j.value;
-		document.ui.p1m.value = declinationResults[8] + ' ' + document.ui.p1m.value;
-		document.ui.p2m.value = declinationResults[9] + ' ' + document.ui.p2m.value;
-		document.ui.p3m.value = declinationResults[10] + ' ' + document.ui.p3m.value;
-		document.ui.p4m.value = declinationResults[11] + ' ' + document.ui.p4m.value;
-		document.ui.p5m.value = declinationResults[12] + ' ' + document.ui.p5m.value;
-		document.ui.p6m.value = declinationResults[13] + ' ' + document.ui.p6m.value;
-		document.ui.p7m.value = declinationResults[14] + ' ' + document.ui.p7m.value;
+		document.ui.gender.value = totalResults.gender.join(' ');
+	for (var i = 1; i <= 7; i++) {
+	 	document.ui["p" + i + "j"].value = totalResults.singular[i - 1].join(' ');
+	 	document.ui["p" + i + "m"].value = totalResults.plural[i - 1].join(' ');
 	}
 }
