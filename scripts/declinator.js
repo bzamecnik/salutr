@@ -8,7 +8,7 @@ var declinationResults = [ "", "", "", "", "", "", "", "", "", "", "", "", "", "
 var placeholders = [];
 
 // Ve zvl. pripadech je mozne pomoci teto promenne "pretypovat" rod jmena
-var PrefRod = "0" // smi byt "0", "m", "ž", "s"
+var preferredGender = "0" // smi byt "0", "m", "ž", "s"
 
 var pattern = [];
 //
@@ -664,7 +664,7 @@ function replacePlaceholders(text) {
  * @param caseNumberIndex
  *            index within the pattern (gender, number/case)
  */
-function DeclineSingleCase(caseNumberIndex, patternIndex, word) {
+function declineSingleCase(caseNumberIndex, patternIndex, word) {
 	if (patternIndex >= pattern.length || patternIndex < 0) {
 		return "???";
 	}
@@ -681,7 +681,7 @@ function DeclineSingleCase(caseNumberIndex, patternIndex, word) {
 	}
 
 	var rv = (!isDbgMode && caseNumberIndex == 1) ? /* 1. pad nemenime */
-	Xdetene(word3) : LeftStr(kndx, word3) + '-' + replacePlaceholders(pattern[patternIndex][caseNumberIndex]);
+	Xdetene(word3) : leftStr(kndx, word3) + '-' + replacePlaceholders(pattern[patternIndex][caseNumberIndex]);
 
 	if (isDbgMode) {
 		// preskoceni filtrovani
@@ -710,10 +710,10 @@ function DeclineSingleCase(caseNumberIndex, patternIndex, word) {
 	if (ndx1 != rv.length && ndx2 != rv.length) {
 		if (document.ui.chkZivotne.checked) {
 			// "text-xxx/yyy" -> "textyyy"
-			rv = LeftStr(ndx1, rv) + RightStr(ndx2 + 1, rv);
+			rv = leftStr(ndx1, rv) + rightStr(ndx2 + 1, rv);
 		} else {
 			// "text-xxx/yyy" -> "text-xxx"
-			rv = LeftStr(ndx2, rv);
+			rv = leftStr(ndx2, rv);
 		}
 	}
 
@@ -735,12 +735,12 @@ function DeclineSingleCase(caseNumberIndex, patternIndex, word) {
 //
 
 // - levy retezec do indexu n (bez tohoto indexu)
-function LeftStr(n, text) {
+function leftStr(n, text) {
 	return text.substr(0, n);
 }
 
 // - pravy retezec od indexu n (vcetne)
-function RightStr(n, text) {
+function rightStr(n, text) {
 	return text.substr(n);
 }
 
@@ -751,7 +751,7 @@ function RightStr(n, text) {
  * @param patternIndex
  *            index of a declination pattern in the 'patterns' array
  */
-function DeclineByPattern(word, patternIndex) {
+function declineByPattern(word, patternIndex) {
 	if (patternIndex < 0 || patternIndex > pattern.length) {
 		declinationResults[0] = "!!!???";
 	}
@@ -771,7 +771,7 @@ function DeclineByPattern(word, patternIndex) {
 
 	// vlastni sklonovani
 	for ( var i = 1; i < 15; i++) {
-		declinationResults[i] = DeclineSingleCase(i, patternIndex, word);
+		declinationResults[i] = declineSingleCase(i, patternIndex, word);
 	}
 
 	// - seznam nepresneho sklonovani
@@ -783,28 +783,16 @@ function DeclineByPattern(word, patternIndex) {
 	}
 }
 
-// Pokud je index>=0, je slovo výjimka ze seznamu "vx"(v10,...), definovaného
-// výše.
-function NdxInVx(vx, slovo) {
-	for ( var vxi = 0; vxi < vx.length; vxi++) {
-		if (slovo == vx[vxi]) {
-			return vxi;
-		}
-	}
-
-	return -1;
-}
-
 /**
  * Finds the word in the list of exceptions v1.
  * 
  * TODO: use a hashmap
  * 
- * Pokud je index>=0, je slovo výjimka ze seznamu "vx", definovaného výše.
+ * Pokud je index>=0, je slovo výjimka ze seznamu "v1", definovaného výše.
  */
-function ndxV1(slovo) {
+function findInV1(word) {
 	for ( var v1i = 0; v1i < v1.length; v1i++) {
-		if (slovo == v1[v1i][0]) {
+		if (word == v1[v1i][0]) {
 			return v1i;
 		}
 	}
@@ -815,16 +803,16 @@ function ndxV1(slovo) {
 /**
  * Finds the first matching standard declination pattern.
  * 
- * In case the preferred gender is set (PrefRod), only patterns of that gender
+ * In case the preferred gender is set (preferredGender), only patterns of that gender
  * are considered.
  * 
  * @param word
  * @returns {Number} index of the first matching pattern
  */
-function StdNdx(word) {
+function findStandardPattern(word) {
 	for ( var i = 0; i < pattern.length; i++) {
 		// filtrace rodu
-		if (PrefRod.charAt(0) != "0" && PrefRod.charAt(0) != pattern[i][0].charAt(0)) {
+		if (preferredGender.charAt(0) != "0" && preferredGender.charAt(0) != pattern[i][0].charAt(0)) {
 			continue;
 		}
 
@@ -841,10 +829,10 @@ function StdNdx(word) {
 }
 
 // Sklonovani podle seznamu vyjimek typu V1
-function SklV1(slovo, ii) {
-	DeclineByPattern(v1[ii][1], StdNdx(v1[ii][1]));
-	declinationResults[1] = slovo; // 1.p nechame jak je
-	declinationResults[4] = v1[ii][2];
+function declineByV1Exceptions(word, exceptionIndex) {
+	declineByPattern(v1[exceptionIndex][1], findStandardPattern(v1[exceptionIndex][1]));
+	declinationResults[1] = word; // 1.p nechame jak je
+	declinationResults[4] = v1[exceptionIndex][2];
 }
 
 /**
@@ -853,12 +841,12 @@ function SklV1(slovo, ii) {
  * 
  * This is the main declination API function.
  * 
- * It writes global variables: declinationResults, PrefRod
+ * It writes global variables: declinationResults, preferredGender
  * 
  * @param word
  * @returns {Number} error code: 0 = OK, -1 = error
  */
-function DeclineWord(word) {
+function declineWord(word) {
 	declinationResults[0] = "???";
 	for ( var i = 1; i < 15; i++) {
 		declinationResults[i] = "";
@@ -866,7 +854,7 @@ function DeclineWord(word) {
 
 	// if the word is in v1 exceptions get its prefix
 	// (exceptions for the forth case)
-	var flgV1 = ndxV1(word);
+	var flgV1 = findInV1(word);
 	var slovoV1;
 	if (flgV1 >= 0) {
 		slovoV1 = word;
@@ -876,23 +864,23 @@ function DeclineWord(word) {
 	word = Xedeten(word);
 
 	// Pretypovani rodu?
-	if (NdxInVx(v10, word) >= 0) {
-		PrefRod = "m";
-	} else if (NdxInVx(v11, word) >= 0) {
-		PrefRod = "ž";
-	} else if (NdxInVx(v12, word) >= 0) {
-		PrefRod = "s";
+	if (v10.indexOf(word) >= 0) {
+		preferredGender = "m";
+	} else if (v11.indexOf(word) >= 0) {
+		preferredGender = "ž";
+	} else if (v12.indexOf(word) >= 0) {
+		preferredGender = "s";
 	}
 
 	// Nalezeni patternu
-	var patternIndex = StdNdx(word);
+	var patternIndex = findStandardPattern(word);
 	if (patternIndex < 0) {
 		alert("Chyba: proto toto word nebyl nalezen pattern.");
 		return -1;
 	}
 
 	// Vlastni sklonovani
-	DeclineByPattern(word, patternIndex);
+	declineByPattern(word, patternIndex);
 
 	// exceptions for the fourth case
 	if (flgV1 >= 0) {
@@ -913,18 +901,18 @@ function onDecline() {
 		document.ui["p" + i + "m"].value = "";
 	}
 
-	PrefRod = "0";
+	preferredGender = "0";
 	for ( var i = inputWords.length - 1; i >= 0; i--) {
 		// vysklonovani
-		DeclineWord(inputWords[i]);
+		declineWord(inputWords[i]);
 
 		// vynuceni rodu podle posledniho slova
 		if (i == inputWords.length - 1) {
-			PrefRod = declinationResults[0];
+			preferredGender = declinationResults[0];
 		}
 
 		// pokud nenajdeme pattern tak nesklonujeme
-		if (i < inputWords.length - 1 && declinationResults[0].charAt(0) == '?' && PrefRod.charAt(0) != '?') {
+		if (i < inputWords.length - 1 && declinationResults[0].charAt(0) == '?' && preferredGender.charAt(0) != '?') {
 			for ( var j = 1; j < 15; j++) {
 				declinationResults[j] = inputWords[i];
 			}
