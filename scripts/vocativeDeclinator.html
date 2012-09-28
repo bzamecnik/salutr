@@ -1,0 +1,46 @@
+
+<html>
+<head>
+<title>Declination demo</title>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+</head>
+
+<BODY onload="document.ui.inputText.focus()">
+	<TABLE BORDER="0" CELLPADDING="30" CELLSPACING="0" ALIGN=CENTER>
+		<TR>
+			<TD WIDTH=800><script language=JavaScript src="vocativeDeclinator.js"></script>
+
+
+				<H2>České skloňování</H2>
+
+				<FORM name="ui">
+					<H3>Vstup</H3>
+
+					<INPUT TYPE="text" name="inputText" VALUE="bohumír" size=40>
+
+					</SELECT> <BR> <INPUT TYPE="button" VALUE="Skloňuj!"
+					onClick="onDecline(); return false;">
+					<HR>
+
+					<H3>Výstup</H3>
+					<table>
+						<tr>
+							<td>Rod:</td>
+							<td><INPUT type="text" name="gender" disabled="disabled"></td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr BGCOLOR="lightblue">
+							<td>5.&nbsp;pád (vokativ)</td>
+							<td><INPUT type="text" name="vocative" size=40
+								disabled="disabled"></td>
+						</tr>
+					</table>
+
+					<P id="message" style="color: maroon"></P>
+
+				</FORM></TD>
+		</TR>
+	</TABLE>
+
+</BODY>
+</html>
