@@ -276,56 +276,57 @@ pattern.push([ "?", "-[k]y", "?", "?", "?", "?", "?", "?", "-0y", "e0", "0ám", 
 // "osel": {prefix: "osl", declined: "osla"},
 // // ...
 // }
-var v1 = [];
-v1.push([ "osel", "osl", "osla" ])
-v1.push([ "karel", "karl", "karla" ])
-v1.push([ "Karel", "Karl", "Karla" ])
-v1.push([ "pavel", "pavl", "pavla" ])
-v1.push([ "Pavel", "Pavl", "Pavla" ])
-v1.push([ "Havel", "Havl", "Havla" ])
-v1.push([ "havel", "havl", "havla" ])
-v1.push([ "Bořek", "Bořk", "Bořka" ])
-v1.push([ "bořek", "bořk", "bořka" ])
-v1.push([ "Luděk", "Luďk", "Luďka" ])
-v1.push([ "luděk", "luďk", "luďka" ])
-v1.push([ "pes", "ps", "psa" ])
-v1.push([ "pytel", "pytl", "pytel" ])
-v1.push([ "ocet", "oct", "octa" ])
-v1.push([ "chléb", "chleb", "chleba" ])
-v1.push([ "chleba", "chleb", "chleba" ])
-v1.push([ "pavel", "pavl", "pavla" ])
-v1.push([ "kel", "kl", "kel" ])
-v1.push([ "sopel", "sopl", "sopel" ])
-v1.push([ "posel", "posl", "posla" ])
-v1.push([ "důl", "dol", "důl" ])
-v1.push([ "sůl", "sole", "sůl" ])
-v1.push([ "vůl", "vol", "vola" ])
-v1.push([ "půl", "půle", "půli" ])
-v1.push([ "hůl", "hole", "hůl" ])
-v1.push([ "stůl", "stol", "stůl" ])
-v1.push([ "líh", "lih", "líh" ])
-v1.push([ "sníh", "sněh", "sníh" ])
-v1.push([ "zář", "záře", "zář" ])
-v1.push([ "svatozář", "svatozáře", "svatozář" ])
-v1.push([ "kůň", "koň", "koně" ])
-v1.push([ "tůň", "tůňe", "tůň" ])
+var umlautExceptions = {
+	"osel": { prefix: "osl", case4: "osla" },
+	"karel": { prefix: "karl", case4: "karla" },
+	"Karel": { prefix: "Karl", case4: "Karla" },
+	"pavel": { prefix: "pavl", case4: "pavla" },
+	"Pavel": { prefix: "Pavl", case4: "Pavla" },
+	"Havel": { prefix: "Havl", case4: "Havla" },
+	"havel": { prefix: "havl", case4: "havla" },
+	"Bořek": { prefix: "Bořk", case4: "Bořka" },
+	"bořek": { prefix: "bořk", case4: "bořka" },
+	"Luděk": { prefix: "Luďk", case4: "Luďka" },
+	"luděk": { prefix: "luďk", case4: "luďka" },
+	"pes": { prefix: "ps", case4: "psa" },
+	"pytel": { prefix: "pytl", case4: "pytel" },
+	"ocet": { prefix: "oct", case4: "octa" },
+	"chléb": { prefix: "chleb", case4: "chleba" },
+	"chleba": { prefix: "chleb", case4: "chleba" },
+	"pavel": { prefix: "pavl", case4: "pavla" },
+	"kel": { prefix: "kl", case4: "kel" },
+	"sopel": { prefix: "sopl", case4: "sopel" },
+	"posel": { prefix: "posl", case4: "posla" },
+	"důl": { prefix: "dol", case4: "důl" },
+	"sůl": { prefix: "sole", case4: "sůl" },
+	"vůl": { prefix: "vol", case4: "vola" },
+	"půl": { prefix: "půle", case4: "půli" },
+	"hůl": { prefix: "hole", case4: "hůl" },
+	"stůl": { prefix: "stol", case4: "stůl" },
+	"líh": { prefix: "lih", case4: "líh" },
+	"sníh": { prefix: "sněh", case4: "sníh" },
+	"zář": { prefix: "záře", case4: "zář" },
+	"svatozář": { prefix: "svatozáře", case4: "svatozář" },
+	"kůň": { prefix: "koň", case4: "koně" },
+	"tůň": { prefix: "tůňe", case4: "tůň" },
 // --- !
-v1.push([ "prsten", "prstýnek", "prstýnku" ])
-v1.push([ "smrt", "smrť", "smrt" ])
-v1.push([ "vítr", "větr", "vítr" ])
-v1.push([ "stupeň", "stupň", "stupeň" ])
-v1.push([ "peň", "pň", "peň" ])
-v1.push([ "cyklus", "cykl", "cyklus" ])
-v1.push([ "dvůr", "dvor", "dvůr" ])
-v1.push([ "zeď", "zď", "zeď" ])
-v1.push([ "účet", "účt", "účet" ])
-v1.push([ "mráz", "mraz", "mráz" ])
-v1.push([ "hnůj", "hnoj", "hnůj" ])
-v1.push([ "skrýš", "skrýše", "skrýš" ])
-v1.push([ "nehet", "neht", "nehet" ])
-v1.push([ "veš", "vš", "veš" ])
-v1.push([ "déšť", "dešť", "déšť" ])
-v1.push([ "myš", "myše", "myš" ])
+	"prsten": { prefix: "prstýnek", case4: "prstýnku" },
+	"smrt": { prefix: "smrť", case4: "smrt" },
+	"vítr": { prefix: "větr", case4: "vítr" },
+	"stupeň": { prefix: "stupň", case4: "stupeň" },
+	"peň": { prefix: "pň", case4: "peň" },
+	"cyklus": { prefix: "cykl", case4: "cyklus" },
+	"dvůr": { prefix: "dvor", case4: "dvůr" },
+	"zeď": { prefix: "zď", case4: "zeď" },
+	"účet": { prefix: "účt", case4: "účet" },
+	"mráz": { prefix: "mraz", case4: "mráz" },
+	"hnůj": { prefix: "hnoj", case4: "hnůj" },
+	"skrýš": { prefix: "skrýše", case4: "skrýš" },
+	"nehet": { prefix: "neht", case4: "nehet" },
+	"veš": { prefix: "vš", case4: "veš" },
+	"déšť": { prefix: "dešť", case4: "déšť" },
+	"myš": { prefix: "myše", case4: "myš" }
+ };
 
 // v10 - zmena rodu na muzsky
 var v10 = [];
@@ -681,12 +682,13 @@ function declineSingleCase(caseNumberIndex, patternIndex, word) {
 		return "???";
 	}
 
-	if (pattern[patternIndex][caseNumberIndex] == "?") {
+	var patternForCase = pattern[patternIndex][caseNumberIndex];
+	if (patternForCase == "?") {
 		return "?";
 	}
 
 	var rv = (!debugModeEnabled && caseNumberIndex == 1) ? /* 1. pad nemenime */
-	Xdetene(word3) : leftStr(suffixIndex, word3) + '-' + replacePlaceholders(pattern[patternIndex][caseNumberIndex], placeholders);
+	Xdetene(word3) : leftStr(suffixIndex, word3) + '-' + replacePlaceholders(patternForCase, placeholders);
 
 	if (debugModeEnabled) {
 		// preskoceni filtrovani
@@ -763,28 +765,11 @@ function declineByPattern(word, patternIndex) {
 	for ( var i = 0; i < v3.length; i++) {
 		if (isPattern(v3[i], word) >= 0) {
 			showMessage("Pozor, v některých pádech nemusí být skloňování tohoto slova přesné.");
-			return null;
+			break;
 		}
 	}
 
 	return declinationResults;
-}
-
-/**
- * Finds the word in the list of exceptions v1.
- * 
- * TODO: use a hashmap
- * 
- * Pokud je index>=0, je slovo výjimka ze seznamu "v1", definovaného výše.
- */
-function findInV1(word) {
-	for ( var v1i = 0; v1i < v1.length; v1i++) {
-		if (word == v1[v1i][0]) {
-			return v1i;
-		}
-	}
-
-	return -1;
 }
 
 /**
@@ -821,28 +806,28 @@ function findStandardPattern(word) {
  * @returns {Number} error code: 0 = OK, -1 = error
  */
 function declineWord(word) {
+	var wordForDeclining = word;
+	
 	// if the word is in v1 exceptions get its prefix
 	// (exceptions for the forth case)
-	var v1index = findInV1(word);
-	var wordV1 = "";
-	if (v1index >= 0) {
-		wordV1 = word;
-		word = v1[v1index][1];
+	var umlautException = umlautExceptions[word];
+	if (umlautException) {
+		wordForDeclining = umlautException.prefix;
 	}
 
-	word = Xedeten(word);
+	wordForDeclining = Xedeten(wordForDeclining);
 
 	// Pretypovani rodu?
-	if (v10.indexOf(word) >= 0) {
+	if (v10.indexOf(wordForDeclining) >= 0) {
 		preferredGender = "m";
-	} else if (v11.indexOf(word) >= 0) {
+	} else if (v11.indexOf(wordForDeclining) >= 0) {
 		preferredGender = "ž";
-	} else if (v12.indexOf(word) >= 0) {
+	} else if (v12.indexOf(wordForDeclining) >= 0) {
 		preferredGender = "s";
 	}
 
 	// Nalezeni patternu
-	var patternIndex = findStandardPattern(word);
+	var patternIndex = findStandardPattern(wordForDeclining);
 	if (patternIndex < 0) {
 		showMessage("Chyba: pro toto slovo nebyl nalezen skloňovací vzor.");
 		return null;
@@ -851,10 +836,12 @@ function declineWord(word) {
 	// Vlastni sklonovani
 	var declinationResults = declineByPattern(word, patternIndex);
 
+	showMessage(pattern[patternIndex]);
+	
 	// exceptions for the fourth case
-	if (v1index >= 0) {
-		declinationResulv1index = wordV1; // 1.p nechame jak je
-		declinationResults[4] = v1[v1index][2];
+	if (umlautException) {
+		declinationResults[0] = word; // 1.p nechame jak je
+		declinationResults[4] = umlautException.case4;
 	}
 	return declinationResults;
 }
