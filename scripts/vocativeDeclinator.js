@@ -1,204 +1,187 @@
-var debugModeEnabled = 0;
-
-// Ve zvl. pripadech je mozne pomoci teto promenne "pretypovat" rod jmena
-var preferredGender = "0" // smi byt "0", "m", "ž", "s"
+function isDebugModeEnabled() {
+	return false;
+}
 
 var patterns = [];
 //
 // Přídavná jména a zájmena
 //
-patterns.push([ "m", "-ký", "kého", "kému", "ký/kého", "ký", "kém", "kým", "-ké/-cí", "kých", "kým", "ké", "-ké/-cí", "kých", "kými" ])
-patterns.push([ "m", "-rý", "rého", "rému", "rý/rého", "rý", "rém", "rým", "-ré/-ří", "rých", "rým", "ré", "-ré/-ří", "rých", "rými" ])
-patterns.push([ "m", "-chý", "chého", "chému", "chý/chého", "chý", "chém", "chým", "-ché/-ší", "chých", "chým", "ché", "-ché/-ší", "chých", "chými" ])
-patterns.push([ "m", "-hý", "hého", "hému", "hý/hého", "hý", "hém", "hým", "-hé/-zí", "hých", "hým", "hé", "-hé/-zí", "hých", "hými" ])
-patterns.push([ "m", "-ý", "ého", "ému", "ý/ého", "ý", "ém", "ým", "-é/-í", "ých", "ým", "é", "-é/-í", "ých", "ými" ])
-patterns.push([ "m", "-[aeěií]cí", "0cího", "0címu", "0cí/0cího", "0cí", "0cím", "0cím", "0cí", "0cích", "0cím", "0cí", "0cí", "0cích", "0cími" ])
-patterns.push([ "ž", "-[aeěií]cí", "0cí", "0cí", "0cí", "0cí", "0cí", "0cí", "0cí", "0cích", "0cím", "0cí", "0cí", "0cích", "0cími" ])
-patterns.push([ "s", "-[aeěií]cí", "0cího", "0címu", "0cí/0cího", "0cí", "0cím", "0cím", "0cí", "0cích", "0cím", "0cí", "0cí", "0cích", "0cími" ])
-patterns.push([ "m", "-[bcčdhklmnprsštvzž]ní", "0ního", "0nímu", "0ní/0ního", "0ní", "0ním", "0ním", "0ní", "0ních", "0ním", "0ní", "0ní", "0ních", "0ními" ])
-patterns.push([ "ž", "-[bcčdhklmnprsštvzž]ní", "0ní", "0ní", "0ní", "0ní", "0ní", "0ní", "0ní", "0ních", "0ním", "0ní", "0ní", "0ních", "0ními" ])
-patterns.push([ "s", "-[bcčdhklmnprsštvzž]ní", "0ního", "0nímu", "0ní/0ního", "0ní", "0ním", "0ním", "0ní", "0ních", "0ním", "0ní", "0ní", "0ních", "0ními" ])
+patterns.push([ "m", "-ký", "ký"])
+patterns.push([ "m", "-rý", "rý"])
+patterns.push([ "m", "-chý", "chý"])
+patterns.push([ "m", "-hý", "hý"])
+patterns.push([ "m", "-ý", "ý"])
+patterns.push([ "m", "-[aeěií]cí", "0cí"])
+patterns.push([ "ž", "-[aeěií]cí", "0cí"])
+patterns.push([ "s", "-[aeěií]cí", "0cí"])
+patterns.push([ "m", "-[bcčdhklmnprsštvzž]ní", "0ní"])
+patterns.push([ "ž", "-[bcčdhklmnprsštvzž]ní", "0ní"])
+patterns.push([ "s", "-[bcčdhklmnprsštvzž]ní", "0ní"])
 
-patterns.push([ "m", "-[i]tel", "0tele", "0teli", "0tele", "0tel", "0teli", "0telem", "0telé", "0telů", "0telům", "0tele", "0telé", "0telích", "0teli" ])
-patterns.push([ "m", "-[í]tel", "0tele", "0teli", "0tele", "0tel", "0teli", "0telem", "átelé", "áteli", "átelům", "átele", "átelé", "átelích", "áteli" ])
+patterns.push([ "m", "-[i]tel", "0tel"])
+patterns.push([ "m", "-[í]tel", "0tel"])
 
-patterns.push([ "s", "-é", "ého", "ému", "é", "é", "ém", "ým", "-á", "ých", "ým", "á", "á", "ých", "ými" ])
-patterns.push([ "ž", "-á", "é", "é", "ou", "á", "é", "ou", "-é", "ých", "ým", "é", "é", "ých", "ými" ])
-patterns.push([ "-", "já", "mne", "mně", "mne/mě", "já", "mně", "mnou", "my", "nás", "nám", "nás", "my", "nás", "námi" ])
-patterns.push([ "-", "ty", "tebe", "tobě", "tě/tebe", "ty", "tobě", "tebou", "vy", "vás", "vám", "vás", "vy", "vás", "vámi" ])
-patterns.push([ "-", "my", "", "", "", "", "", "", "my", "nás", "nám", "nás", "my", "nás", "námi" ])
-patterns.push([ "-", "vy", "", "", "", "", "", "", "vy", "vás", "vám", "vás", "vy", "vás", "vámi" ])
-patterns.push([ "m", "on", "něho", "mu/jemu/němu", "ho/jej", "on", "něm", "ním", "oni", "nich", "nim", "je", "oni", "nich", "jimi/nimi" ])
-patterns.push([ "m", "oni", "", "", "", "", "", "", "oni", "nich", "nim", "je", "oni", "nich", "jimi/nimi" ])
-patterns.push([ "ž", "ony", "", "", "", "", "", "", "ony", "nich", "nim", "je", "ony", "nich", "jimi/nimi" ])
-patterns.push([ "s", "ono", "něho", "mu/jemu/němu", "ho/jej", "ono", "něm", "ním", "ona", "nich", "nim", "je", "ony", "nich", "jimi/nimi" ])
-patterns.push([ "ž", "ona", "ní", "ní", "ji", "ona", "ní", "ní", "ony", "nich", "nim", "je", "ony", "nich", "jimi/nimi" ])
-patterns.push([ "m", "ten", "toho", "tomu", "toho", "ten", "tom", "tím", "ti", "těch", "těm", "ty", "ti", "těch", "těmi" ])
-patterns.push([ "ž", "ta", "té", "té", "tu", "ta", "té", "tou", "ty", "těch", "těm", "ty", "ty", "těch", "těmi" ])
-patterns.push([ "s", "to", "toho", "tomu", "toho", "to", "tom", "tím", "ta", "těch", "těm", "ta", "ta", "těch", "těmi" ])
+patterns.push([ "s", "-é", "é"])
+patterns.push([ "ž", "-á", "á"])
+
+patterns.push([ "m", "-ů", "ů"])
+patterns.push([ "ž", "-ů", "ů"])
 
 // výjimky (zvl. běžná slova])
-patterns.push([ "m", "-bůh", "boha", "bohu", "boha", "bože", "bohovi", "bohem", "bozi/bohové", "bohů", "bohům", "bohy", "bozi/bohové", "bozích", "bohy" ])
-patterns.push([ "m", "-pan", "pana", "panu", "pana", "pane", "panu", "panem", "páni/pánové", "pánů", "pánům", "pány", "páni/bohové", "pánech", "pány" ])
-patterns.push([ "-", "-dveře", "", "", "", "", "", "", "dveře", "dveří", "dveřím", "dveře", "dveře", "dveřích", "dveřmi" ])
-patterns.push([ "m", "-vztek", "vzteku", "vzteku", "vztek", "vzteku", "vzteku", "vztekem", "vzteky", "vzteků", "vztekům", "vzteky", "vzteky", "vztecích", "vzteky" ])
-patterns.push([ "m", "-dotek", "doteku", "doteku", "dotek", "doteku", "doteku", "dotekem", "doteky", "doteků", "dotekům", "doteky", "doteky", "dotecích", "doteky" ])
-patterns.push([ "ž", "-hra", "hry", "hře", "hru", "hro", "hře", "hrou", "hry", "her", "hrám", "hry", "hry", "hrách", "hrami" ])
+patterns.push([ "m", "-bůh", "bože"])
+patterns.push([ "m", "-pan", "pane"])
+patterns.push([ "m", "-vztek", "vzteku"])
+patterns.push([ "m", "-dotek", "doteku"])
+patterns.push([ "ž", "-hra", "hro"])
 
 //
 // Spec. přídady skloňování(+předseda, srdce jako úplná výjimka)
 //
-patterns.push([ "m", "-[i]sta", "0sty", "0stovi", "0stu", "0sto", "0stovi", "0stou", "-0sté", "0stů", "0stům", "0sty", "0sté", "0stech", "0sty" ])
-patterns.push([ "m", "-[o]sta", "0sty", "0stovi", "0stu", "0sto", "0stovi", "0stou", "-0stové", "0stů", "0stům", "0sty", "0sté", "0stech", "0sty" ])
-patterns.push([ "m", "-předseda", "předsedy", "předsedovi", "předsedu", "předsedo", "předsedovi", "předsedou", "předsedové", "předsedů", "předsedům", "předsedy", "předsedové", "předsedech", "předsedy" ])
-patterns.push([ "m", "-srdce", "srdce", "srdi", "sdrce", "srdce", "srdci", "srdcem", "srdce", "srdcí", "srdcím", "srdce", "srdce", "srdcích", "srdcemi" ])
-patterns.push([ "m", "-[db]ce", "0ce", "0ci", "0ce", "0če", "0ci", "0cem", "0ci/0cové", "0ců", "0cům", "0ce", "0ci/0cové", "0cích", "0ci" ])
-patterns.push([ "m", "-[jň]ev", "0evu", "0evu", "0ev", "0eve", "0evu", "0evem", "-0evy", "0evů", "0evům", "0evy", "0evy", "0evech", "0evy" ])
-patterns.push([ "m", "-[lř]ev", "0evu/0va", "0evu/0vovi", "0ev/0va", "0eve/0ve", "0evu/0vovi", "0evem/0vem", "-0evy/0vové", "0evů/0vů", "0evům/0vům", "0evy/0vy", "0evy/0vové", "0evech/0vech", "0evy/0vy" ])
+patterns.push([ "m", "-[i]sta", "0sto"])
+patterns.push([ "m", "-[o]sta", "0sto"])
+patterns.push([ "m", "-předseda", "předsedo"])
+patterns.push([ "m", "-srdce", "srdce"])
+patterns.push([ "m", "-[db]ce", "0če"])
+patterns.push([ "m", "-[jň]ev", "0eve"])
+patterns.push([ "m", "-[lř]ev", "0eve/0ve"])
 
-patterns.push([ "m", "-ů[lz]", "o0u/o0a", "o0u/o0ovi", "ů0/o0a", "o0e", "o0u", "o0em", "o-0y/o-0ové", "o0ů", "o0ům", "o0y", "o0y/o0ové", "o0ech", "o0y" ])
+patterns.push([ "m", "-ů[lz]", "o0e"])
 
 // výj. nůž (vzor muž)
-patterns.push([ "m", "nůž", "nože", "noži", "nůž", "noži", "noži", "nožem", "nože", "nožů", "nožům", "nože", "nože", "nožích", "noži" ])
+patterns.push([ "m", "nůž", "noži"])
 
 //
 // vzor kolo
 //
-patterns.push([ "s", "-[bcčdghksštvzž]lo", "0la", "0lu", "0lo", "0lo", "0lu", "0lem", "-0la", "0el", "0lům", "0la", "0la", "0lech", "0ly" ])
-patterns.push([ "s", "-[bcčdnsštvzž]ko", "0ka", "0ku", "0ko", "0ko", "0ku", "0kem", "-0ka", "0ek", "0kům", "0ka", "0ka", "0cích/0kách", "0ky" ])
-patterns.push([ "s", "-[bcčdksštvzž]no", "0na", "0nu", "0no", "0no", "0nu", "0nem", "-0na", "0en", "0nům", "0na", "0na", "0nech/0nách", "0ny" ])
-patterns.push([ "s", "-o", "a", "u", "o", "o", "u", "em", "-a", "", "ům", "a", "a", "ech", "y" ])
+patterns.push([ "s", "-[bcčdghksštvzž]lo", "0lo"])
+patterns.push([ "s", "-[bcčdnsštvzž]ko", "0ko"])
+patterns.push([ "s", "-[bcčdksštvzž]no", "0no"])
+patterns.push([ "s", "-o", "o"])
 
 //
 // vzor stavení
 //
-patterns.push([ "s", "-í", "í", "í", "í", "í", "í", "ím", "-í", "í", "ím", "í", "í", "ích", "ími" ])
+patterns.push([ "s", "-í", "í"])
 //
 // vzor děvče (če,dě,tě,ně,pě) výj.-také sele
 //
-patterns.push([ "s", "-[čďť][e]", "10te", "10ti", "10", "10", "10ti", "10tem", "1-ata", "1at", "1atům", "1ata", "1ata", "1atech", "1aty" ])
-patterns.push([ "s", "-[pb][ě]", "10te", "10ti", "10", "10", "10ti", "10tem", "1-ata", "1at", "1atům", "1ata", "1ata", "1atech", "1aty" ])
+patterns.push([ "s", "-[čďť][e]", "10"])
+patterns.push([ "s", "-[pb][ě]", "10"])
 
 //
 // vzor žena
 //
-patterns.push([ "ž", "-[aeiouyáéíóúý]ka", "0ky", "0ce", "0ku", "0ko", "0ce", "0kou", "-0ky", "0k", "0kám", "0ky", "0ky", "0kách", "0kami" ])
-patterns.push([ "ž", "-ka", "ky", "ce", "ku", "ko", "ce", "kou", "-ky", "ek", "kám", "ky", "ky", "kách", "kami" ])
-patterns.push([ "ž", "-[bdghkmnptvz]ra", "0ry", "0ře", "0ru", "0ro", "0ře", "0rou", "-0ry", "0er", "0rám", "0ry", "0ry", "0rách", "0rami" ])
-patterns.push([ "ž", "-ra", "ry", "ře", "ru", "ro", "ře", "rou", "-ry", "r", "rám", "ry", "ry", "rách", "rami" ])
-patterns.push([ "ž", "-[tdbnvmp]a", "0y", "0ě", "0u", "0o", "0ě", "0ou", "-0y", "0", "0ám", "0y", "0y", "0ách", "0ami" ])
-patterns.push([ "ž", "-cha", "chy", "še", "chu", "cho", "še", "chou", "-chy", "ch", "chám", "chy", "chy", "chách", "chami" ])
-patterns.push([ "ž", "-[gh]a", "0y", "ze", "0u", "0o", "ze", "0ou", "-0y", "0", "0ám", "0y", "0y", "0ách", "0ami" ])
-patterns.push([ "ž", "-ňa", "ni", "ně", "ňou", "ňo", "ni", "ňou", "-ně/ničky", "ň", "ňám", "ně/ničky", "ně/ničky", "ňách", "ňami" ])
-patterns.push([ "ž", "-[šč]a", "0i", "0e", "0u", "0o", "0e", "0ou", "-0e/0i", "0", "0ám", "0e/0i", "0e/0i", "0ách", "0ami" ])
-patterns.push([ "ž", "-a", "y", "e", "u", "o", "e", "ou", "-y", "", "ám", "y", "y", "ách", "ami" ])
+patterns.push([ "ž", "-[aeiouyáéíóúý]ka", "0ko"])
+patterns.push([ "ž", "-ka", "ko"])
+patterns.push([ "ž", "-[bdghkmnptvz]ra", "0ro"])
+patterns.push([ "ž", "-ra", "ro"])
+patterns.push([ "ž", "-[tdbnvmp]a", "0o"])
+patterns.push([ "ž", "-cha", "cho"])
+patterns.push([ "ž", "-[gh]a", "0o"])
+patterns.push([ "ž", "-ňa", "ňo"])
+patterns.push([ "ž", "-[šč]a", "0o"])
+patterns.push([ "ž", "-a", "o"])
 
 // vz. píseň
-patterns.push([ "ž", "-eň", "ně", "ni", "eň", "ni", "ni", "ní", "-ně", "ní", "ním", "ně", "ně", "ních", "němi" ])
-patterns.push([ "ž", "-oň", "oně", "oni", "oň", "oni", "oni", "oní", "-oně", "oní", "oním", "oně", "oně", "oních", "oněmi" ])
-patterns.push([ "ž", "-[ě]j", "0je", "0ji", "0j", "0ji", "0ji", "0jí", "-0je", "0jí", "0jím", "0je", "0je", "0jích", "0jemi" ])
+patterns.push([ "ž", "-eň", "ni"])
+patterns.push([ "ž", "-oň", "oni"])
+patterns.push([ "ž", "-[ě]j", "0ji"])
 
 //
 // vzor růže
 //
-patterns.push([ "ž", "-ev", "ve", "vi", "ev", "vi", "vi", "ví", "-ve", "ví", "vím", "ve", "ve", "vích", "vemi" ])
-patterns.push([ "ž", "-ice", "ice", "ici", "ici", "ice", "ici", "icí", "-ice", "ic", "icím", "ice", "ice", "icích", "icemi" ])
-patterns.push([ "ž", "-e", "e", "i", "i", "e", "i", "í", "-e", "í", "ím", "e", "e", "ích", "emi" ])
+patterns.push([ "ž", "-ev", "vi"])
+patterns.push([ "ž", "-ice", "ice"])
+patterns.push([ "ž", "-e", "e"])
 
 //
 // vzor píseň
 //
-patterns.push([ "ž", "-[eaá][jžň]", "10e/10i", "10i", "10", "10i", "10i", "10í", "-10e/10i", "10í", "10ím", "10e", "10e", "10ích", "10emi" ])
-patterns.push([ "ž", "-[eayo][š]", "10e/10i", "10i", "10", "10i", "10i", "10í", "10e/10i", "10í", "10ím", "10e", "10e", "10ích", "10emi" ])
-patterns.push([ "ž", "-[íy]ň", "0ně", "0ni", "0ň", "0ni", "0ni", "0ní", "-0ně", "0ní", "0ním", "0ně", "0ně", "0ních", "0němi" ])
-patterns.push([ "ž", "-[íyý]ňe", "0ně", "0ni", "0ň", "0ni", "0ni", "0ní", "-0ně", "0ní", "0ním", "0ně", "0ně", "0ních", "0němi" ])
-patterns.push([ "ž", "-[ťďž]", "0e", "0i", "0", "0i", "0i", "0í", "-0e", "0í", "0ím", "0e", "0e", "0ích", "0emi" ])
-patterns.push([ "ž", "-toř", "toře", "toři", "toř", "toři", "toři", "toří", "-toře", "toří", "tořím", "toře", "toře", "tořích", "tořemi" ])
+patterns.push([ "ž", "-[eaá][jžň]", "10i"])
+patterns.push([ "ž", "-[eayo][š]", "10i"])
+patterns.push([ "ž", "-[íy]ň", "0ni"])
+patterns.push([ "ž", "-[íyý]ňe", "0ni"])
+patterns.push([ "ž", "-[ťďž]", "0i"])
+patterns.push([ "ž", "-toř", "toři"])
 
 //
 // vzor kost
 //
-patterns.push([ "ž", "-st", "sti", "sti", "st", "sti", "sti", "stí", "-sti", "stí", "stem", "sti", "sti", "stech", "stmi" ])
-patterns.push([ "ž", "ves", "vsi", "vsi", "ves", "vsi", "vsi", "vsí", "vsi", "vsí", "vsem", "vsi", "vsi", "vsech", "vsemi" ])
+patterns.push([ "ž", "-st", "sti"])
+patterns.push([ "ž", "ves", "vsi"])
 
 //
 //
 // vzor Amadeus, Celsius, Kumulus, rektikulum, praktikum
 //
-patterns.push([ "m", "-[e]us", "0a", "0u/0ovi", "0a", "0e", "0u/0ovi", "0em", "0ové", "0ů", "0ům", "0y", "0ové", "0ích", "0y" ])
-patterns.push([ "m", "-[i]us", "0a", "0u/0ovi", "0a", "0e", "0u/0ovi", "0em", "0ové", "0ů", "0ům", "0usy", "0ové", "0ích", "0usy" ])
-patterns.push([ "m", "-[i]s", "0se", "0su/0sovi", "0se", "0se/0si", "0su/0sovi", "0sem", "0sy/0sové", "0sů", "0sům", "0sy", "0sy/0ové", "0ech", "0sy" ])
-patterns.push([ "m", "výtrus", "výtrusu", "výtrusu", "výtrus", "výtruse", "výtrusu", "výtrusem", "výtrusy", "výtrusů", "výtrusům", "výtrusy", "výtrusy", "výtrusech", "výtrusy" ])
-patterns.push([ "m", "trus", "trusu", "trusu", "trus", "truse", "trusu", "trusem", "trusy", "trusů", "trusům", "trusy", "trusy", "trusech", "trusy" ])
-patterns.push([ "m", "-[aeioumpts][lnmrktp]us", "10u/10a", "10u/10ovi", "10us/10a", "10e", "10u/10ovi", "10em", "10y/10ové", "10ů", "10ům", "10y", "10y/10ové", "10ech", "10y" ])
-patterns.push([ "s", "-[l]um", "0a", "0u", "0um", "0um", "0u", "0em", "0a", "0", "0ům", "0a", "0a", "0ech", "0y" ])
-patterns.push([ "s", "-[k]um", "0a", "0u", "0um", "0um", "0u", "0em", "0a", "0", "0ům", "0a", "0a", "0cích", "0y" ])
-patterns.push([ "s", "-[i]um", "0a", "0u", "0um", "0um", "0u", "0em", "0a", "0í", "0ům", "0a", "0a", "0iích", "0y" ])
-patterns.push([ "s", "-[i]um", "0a", "0u", "0um", "0um", "0u", "0em", "0a", "0ejí", "0ům", "0a", "0a", "0ejích", "0y" ])
-patterns.push([ "s", "-io", "0a", "0u", "0", "0", "0u", "0em", "0a", "0í", "0ům", "0a", "0a", "0iích", "0y" ])
+patterns.push([ "m", "-[e]us", "0e"])
+patterns.push([ "m", "-[i]us", "0e"])
+patterns.push([ "m", "-[i]s", "0se/0si"])
+patterns.push([ "m", "výtrus", "výtruse"])
+patterns.push([ "m", "trus", "truse"])
+patterns.push([ "m", "-[aeioumpts][lnmrktp]us", "10e"])
+patterns.push([ "s", "-[l]um", "0um"])
+patterns.push([ "s", "-[k]um", "0um"])
+patterns.push([ "s", "-[i]um", "0um"])
+patterns.push([ "s", "-[i]um", "0um"])
+patterns.push([ "s", "-io", "0"])
 
 //
 // vzor sedlák
 //
 
-patterns.push([ "m", "-[aeiouyáéíóúý]r", "0ru/0ra", "0ru/0rovi", "0r/0ra", "0re", "0ru/0rovi", "0rem", "-0ry/-0rové", "0rů", "0rům", "0ry", "0ry/0rové", "0rech", "0ry" ])
-// patterns.push([
-// "m","-[aeiouyáéíóúý]r","0ru/0ra","0ru/0rovi","0r/0ra","0re","0ru/0rovi","0rem",
-// "-0ry/-0ři","0rů","0rům","0ry","0ry/0ři", "0rech","0ry" ])
-patterns.push([ "m", "-r", "ru/ra", "ru/rovi", "r/ra", "ře", "ru/rovi", "rem", "-ry/-rové", "rů", "rům", "ry", "ry/rové", "rech", "ry" ])
-// patterns.push([ "m","-r", "ru/ra", "ru/rovi", "r/ra", "ře",
-// "ru/rovi", "rem", "-ry/-ři", "rů","rům","ry", "ry/ři", "rech", "ry" ])
-patterns.push([ "m", "-[bcčdnmprstvz]en", "0nu/0na", "0nu/0novi", "0en/0na", "0ne", "0nu/0novi", "0nem", "-0ny/0nové", "0nů", "0nům", "0ny", "0ny/0nové", "0nech", "0ny" ])
-patterns.push([ "m", "-[dglmnpbtvzs]", "0u/0a", "0u/0ovi", "0/0a", "0e", "0u/0ovi", "0em", "-0y/0ové", "0ů", "0ům", "0y", "0y/0ové", "0ech", "0y" ])
-patterns.push([ "m", "-[x]", "0u/0e", "0u/0ovi", "0/0e", "0i", "0u/0ovi", "0em", "-0y/0ové", "0ů", "0ům", "0y", "0y/0ové", "0ech", "0y" ])
-patterns.push([ "m", "sek", "seku/seka", "seku/sekovi", "sek/seka", "seku", "seku/sekovi", "sekem", "seky/sekové", "seků", "sekům", "seky", "seky/sekové", "secích", "seky" ])
-patterns.push([ "m", "výsek", "výseku/výseka", "výseku/výsekovi", "výsek/výseka", "výseku", "výseku/výsekovi", "výsekem", "výseky/výsekové", "výseků", "výsekům", "výseky", "výseky/výsekové", "výsecích", "výseky" ])
-patterns.push([ "m", "zásek", "záseku/záseka", "záseku/zásekovi", "zásek/záseka", "záseku", "záseku/zásekovi", "zásekem", "záseky/zásekové", "záseků", "zásekům", "záseky", "záseky/zásekové", "zásecích", "záseky" ])
-patterns.push([ "m", "průsek", "průseku/průseka", "průseku/průsekovi", "průsek/průseka", "průseku", "průseku/průsekovi", "průsekem", "průseky/průsekové", "průseků", "výsekům", "průseky", "průseky/průsekové", "průsecích", "průseky" ])
-patterns.push([ "m", "-[cčšždnňmpbrstvz]ek", "0ku/0ka", "0ku/0kovi", "0ek/0ka", "0ku", "0ku/0kovi", "0kem", "-0ky/0kové", "0ků", "0kům", "0ky", "0ky/0kové", "0cích", "0ky" ])
-patterns.push([ "m", "-[k]", "0u/0a", "0u/0ovi", "0/0a", "0u", "0u/0ovi", "0em", "-0y/0ové", "0ů", "0ům", "0y", "0y/0ové", "cích", "0y" ])
-patterns.push([ "m", "-ch", "chu/cha", "chu/chovi", "ch/cha", "chu/cha", "chu/chovi", "chem", "-chy/chové", "chů", "chům", "chy", "chy/chové", "ších", "chy" ])
-patterns.push([ "m", "-[h]", "0u/0a", "0u/0ovi", "0/0a", "0u/0a", "0u/0ovi", "0em", "-0y/0ové", "0ů", "0ům", "0y", "0y/0ové", "zích", "0y" ])
-patterns.push([ "m", "-e[mnz]", "0u/0a", "0u/0ovi", "e0/e0a", "0e", "0u/0ovi", "0em", "-0y/0ové", "0ů", "0ům", "0y", "0y/0ové", "0ech", "0y" ])
+patterns.push([ "m", "-[aeiouyáéíóúý]r", "0re"])
+patterns.push([ "m", "-r", "ře"])
+patterns.push([ "m", "-[bcčdnmprstvz]en", "0ne"])
+patterns.push([ "m", "-[dglmnpbtvzs]", "0e"])
+patterns.push([ "m", "-[x]", "0i"])
+patterns.push([ "m", "sek", "seku"])
+patterns.push([ "m", "výsek", "výseku"])
+patterns.push([ "m", "zásek", "záseku"])
+patterns.push([ "m", "průsek", "průseku"])
+patterns.push([ "m", "-[cčšždnňmpbrstvz]ek", "0ku"])
+patterns.push([ "m", "-[k]", "0u"])
+patterns.push([ "m", "-ch", "chu/cha"])
+patterns.push([ "m", "-[h]", "0u/0a"])
+patterns.push([ "m", "-e[mnz]", "0e"])
 
 //
 //
 // vzor muž
 //
-patterns.push([ "m", "-ec", "ce", "ci/covi", "ec/ce", "če", "ci/covi", "cem", "-ce/cové", "ců", "cům", "ce", "ce/cové", "cích", "ci" ])
-patterns.push([ "m", "-[cčďšňřťž]", "0e", "0i/0ovi", "0e", "0i", "0i/0ovi", "0em", "-0e/0ové", "0ů", "0ům", "0e", "0e/0ové", "0ích", "0i" ])
-patterns.push([ "m", "-oj", "oje", "oji/ojovi", "oj/oje", "oji", "oji/ojovi", "ojem", "-oje/ojové", "ojů", "ojům", "oje", "oje/ojové", "ojích", "oji" ])
+patterns.push([ "m", "-ec", "če"])
+patterns.push([ "m", "-[cčďšňřťž]", "0i"])
+patterns.push([ "m", "-oj", "oji"])
 
 // patterny pro přetypování rodu
-patterns.push([ "m", "-[gh]a", "0y", "0ovi", "0u", "0o", "0ovi", "0ou", "0ové", "0ů", "0ům", "0y", "0ové", "zích", "0y" ])
-patterns.push([ "m", "-[k]a", "0y", "0ovi", "0u", "0o", "0ovi", "0ou", "0ové", "0ů", "0ům", "0y", "0ové", "cích", "0y" ])
-patterns.push([ "m", "-a", "y", "ovi", "u", "o", "ovi", "ou", "ové", "ů", "ům", "y", "ové", "ech", "y" ])
+patterns.push([ "m", "-[gh]a", "0o"])
+patterns.push([ "m", "-[k]a", "0o"])
+patterns.push([ "m", "-a", "o"])
 
-patterns.push([ "ž", "-l", "le", "li", "l", "li", "li", "lí", "le", "lí", "lím", "le", "le", "lích", "lemi" ])
-patterns.push([ "ž", "-í", "í", "í", "í", "í", "í", "í", "í", "ích", "ím", "í", "í", "ích", "ími" ])
-patterns.push([ "ž", "-[jř]", "0e", "0i", "0", "0i", "0i", "0í", "0e", "0í", "0ím", "0e", "0e", "0ích", "0emi" ])
-patterns.push([ "ž", "-[č]", "0i", "0i", "0", "0i", "0i", "0í", "0i", "0í", "0ím", "0i", "0i", "0ích", "0mi" ])
-patterns.push([ "ž", "-[š]", "0i", "0i", "0", "0i", "0i", "0í", "0i", "0í", "0ím", "0i", "0i", "0ích", "0emi" ])
+patterns.push([ "ž", "-l", "li"])
+patterns.push([ "ž", "-í", "í"])
+patterns.push([ "ž", "-[jř]", "0i"])
+patterns.push([ "ž", "-[č]", "0i"])
+patterns.push([ "ž", "-[š]", "0i"])
 
-patterns.push([ "s", "-[sljřň]e", "0ete", "0eti", "0e", "0e", "0eti", "0etem", "0ata", "0at", "0atům", "0ata", "0ata", "0atech", "0aty" ])
-// patterns.push([ "ž","-cí", "cí", "cí", "cí", "cí", "cí", "cí", "cí", "cích",
-// "cím", "cí", "cí", "cích", "cími" ])
+patterns.push([ "s", "-[sljřň]e", "0e"])
+// patterns.push([ "ž","-cí", "cí"])
 // čaj, prodej, Ondřej, žokej
-patterns.push([ "m", "-j", "je", "ji", "j", "ji", "ji", "jem", "je/jové", "jů", "jům", "je", "je/jové", "jích", "ji" ])
+patterns.push([ "m", "-j", "ji"])
 // Josef, Detlef, ... ?
-patterns.push([ "m", "-f", "fa", "fu/fovi", "f/fa", "fe", "fu/fovi", "fem", "fy/fové", "fů", "fům", "fy", "fy/fové", "fech", "fy" ])
+patterns.push([ "m", "-f", "fe"])
 // zbroj, výzbroj, výstroj, trofej, neteř
 // jiří, podkoní, ... ?
-patterns.push([ "m", "-í", "ího", "ímu", "ího", "í", "ímu", "ím", "í", "ích", "ím", "í", "í", "ích", "ími" ])
+patterns.push([ "m", "-í", "í"])
 // Hugo
-patterns.push([ "m", "-go", "a", "govi", "ga", "ga", "govi", "gem", "gové", "gů", "gům", "gy", "gové", "zích", "gy" ])
+patterns.push([ "m", "-go", "ga"])
 // Kvido
-patterns.push([ "m", "-o", "a", "ovi", "a", "a", "ovi", "em", "ové", "ů", "ům", "y", "ové", "ech", "y" ])
+patterns.push([ "m", "-o", "a"])
 
 // doplňky
 // některá pomnožná jména
-patterns.push([ "?", "-[tp]y", "?", "?", "?", "?", "?", "?", "-0y", "0", "0ům", "0y", "0y", "0ech", "0ami" ])
-patterns.push([ "?", "-[k]y", "?", "?", "?", "?", "?", "?", "-0y", "e0", "0ám", "0y", "0y", "0ách", "0ami" ])
+patterns.push([ "?", "-[tp]y", "?"])
+patterns.push([ "?", "-[k]y", "?"])
 
 // Výjimky:
 // v1 - přehlásky
@@ -487,6 +470,8 @@ function showMessage(text) {
 	document.getElementById("message").innerHTML = text;
 }
 
+// TODO: use regular expressions
+
 //
 // Fce isPattern vraci index pri shode koncovky (napr. isPattern("-lo","kolo"),
 // isPattern("ko-lo","motovidlo"))
@@ -602,11 +587,9 @@ function isMasculineGenderAnimate() {
  * 
  * Global variables: patterns
  * 
- * @param caseNumberIndex
- *            index within the pattern (gender, number/case)
  */
-function declineSingleCase(caseNumberIndex, patternIndex, word) {
-	if (patternIndex < 0 || patternIndex >= patterns.length || caseNumberIndex < 1 || caseNumberIndex > 14) {
+function declineToVocative(patternIndex, word) {
+	if (patternIndex < 0 || patternIndex >= patterns.length) {
 		return "???";
 	}
 
@@ -617,15 +600,14 @@ function declineSingleCase(caseNumberIndex, patternIndex, word) {
 		return "???";
 	}
 
-	var patternForCase = patterns[patternIndex][caseNumberIndex];
+	var patternForCase = patterns[patternIndex][2];
 	if (patternForCase == "?") {
 		return "?";
 	}
 
-	var rv = (!debugModeEnabled && caseNumberIndex == 1) ? /* 1. pad nemenime */
-	Xdetene(word3) : leftStr(suffixIndex, word3) + '-' + replacePlaceholders(patternForCase, placeholders);
+	var rv = leftStr(suffixIndex, word3) + '-' + replacePlaceholders(patternForCase, placeholders);
 
-	if (debugModeEnabled) {
+	if (isDebugModeEnabled()) {
 		// preskoceni filtrovani
 		return rv;
 	}
@@ -693,7 +675,7 @@ function declineByPattern(word, patternIndex) {
 	declinationResults.gender = patterns[patternIndex][0];
 
 	// vlastni sklonovani
-	declinationResults.vocative = declineSingleCase(5, patternIndex, word);
+	declinationResults.vocative = declineToVocative(patternIndex, word);
 
 	// - seznam nepresneho sklonovani
 	for ( var i = 0; i < v3.length; i++) {
@@ -715,7 +697,7 @@ function declineByPattern(word, patternIndex) {
  * @param word
  * @returns {Number} index of the first matching pattern
  */
-function findStandardPattern(word) {
+function findStandardPattern(word, preferredGender) {
 	for ( var i = 0; i < patterns.length; i++) {
 		if ((preferredGender == "0" || preferredGender == patterns[i][0]) && isPattern(patterns[i][1], word) >= 0) {
 			break;
@@ -734,12 +716,10 @@ function findStandardPattern(word) {
  * 
  * This is the main declination API function.
  * 
- * It writes global variables: preferredGender
- * 
  * @param word
  * @returns declination results {gender: "", vocative: ""}
  */
-function declineWord(word) {
+function declineWord(word, preferredGender) {
 	var wordForDeclining = word;
 	
 	// if the word is in v1 exceptions get its prefix
@@ -751,45 +731,48 @@ function declineWord(word) {
 
 	wordForDeclining = Xedeten(wordForDeclining);
 
+	var gender = preferredGender;
+	
 	// Pretypovani rodu?
 	if (v10.indexOf(wordForDeclining) >= 0) {
-		preferredGender = "m";
+		gender = "m";
 	} else if (v11.indexOf(wordForDeclining) >= 0) {
-		preferredGender = "ž";
+		gender = "ž";
 	} else if (v12.indexOf(wordForDeclining) >= 0) {
-		preferredGender = "s";
+		gender = "s";
 	}
 
 	// Nalezeni patternu
-	var patternIndex = findStandardPattern(wordForDeclining);
-	if (patternIndex < 0) {
-		showMessage("Chyba: pro toto slovo nebyl nalezen skloňovací vzor.");
-		return {vocative: wordForDeclining};
-	}
+	var patternIndex = findStandardPattern(wordForDeclining, gender);
 
-	showMessage(patterns[patternIndex]);
+	showMessage(patternIndex >= 0 ? patterns[patternIndex] : "Nemáme skloňovací vzor pro toto slovo.");
 	
 	// Vlastni sklonovani
-	return declineByPattern(wordForDeclining, patternIndex);
+	var result;
+	if (patternIndex >= 0) {
+		result = declineByPattern(wordForDeclining, patternIndex); 
+	} else {
+		result = {
+			vocative: wordForDeclining,
+			gender: gender,
+		}
+	}
+	return result;
 }
 
-//
-// Funkce uzivatelskeho rozhrani
-//
-function onDecline() {
-	var inputWords = document.ui.inputText.value.trim().replace(/\s+/, " ").split(" ");
-	showMessage("");
-
-	preferredGender = "0";
-
-	var wordsGender = [];
-	var wordsVocative = [];
+function declineMultipleWords(inputWords, preferredGender) {
+	var result = {
+		wordsGender: [],
+		wordsVocative: []
+	};
 
 	for ( var i = inputWords.length - 1; i >= 0; i--) {
 		var inputWord = inputWords[i];
 
+		preferredGender = "0";
+		
 		// vysklonovani
-		var declinationResults = declineWord(inputWord);
+		var declinationResults = declineWord(inputWord, preferredGender);
 
 		var gender = declinationResults.gender;
 
@@ -806,10 +789,26 @@ function onDecline() {
 			gender.replace(/\?+/, "?");
 		}
 
-		wordsGender.push(gender);
-		wordsVocative.push(declinationResults.vocative);
+		result.wordsGender.push(gender);
+		result.wordsVocative.push(declinationResults.vocative);
 	}
+	return result;
+}
 
-	document.ui.gender.value = wordsGender.join(' ');
-	document.ui.vocative.value = wordsVocative.join(' ');
+// Je mozne "pretypovat" rod jmena, hodnota smi byt "0", "m", "ž", "s".
+function getPreferredGender() {
+	return "0";
+}
+
+//
+// Funkce uzivatelskeho rozhrani
+//
+function onDecline() {
+	var inputWords = document.ui.inputText.value.trim().replace(/\s+/, " ").split(" ");
+	showMessage("");
+
+	var result = declineMultipleWords(inputWords, getPreferredGender());
+
+	document.ui.gender.value = result.wordsGender.join(' ');
+	document.ui.vocative.value = result.wordsVocative.join(' ');
 }
