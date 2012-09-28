@@ -1,10 +1,5 @@
 var debugModeEnabled = 0;
 
-// Register for values to be replaced for placeholders defined in patterns.
-// eg. "-[tp]y" -> "-0y" for matched character 't' results in placeholders[0] ==
-// "t"
-var placeholders = [];
-
 // Ve zvl. pripadech je mozne pomoci teto promenne "pretypovat" rod jmena
 var preferredGender = "0" // smi byt "0", "m", "ž", "s"
 
@@ -251,7 +246,8 @@ pattern.push([ "ž", "-[č]", "0i", "0i", "0", "0i", "0i", "0í", "0i", "0í", "
 pattern.push([ "ž", "-[š]", "0i", "0i", "0", "0i", "0i", "0í", "0i", "0í", "0ím", "0i", "0i", "0ích", "0emi" ])
 
 pattern.push([ "s", "-[sljřň]e", "0ete", "0eti", "0e", "0e", "0eti", "0etem", "0ata", "0at", "0atům", "0ata", "0ata", "0atech", "0aty" ])
-// pattern.push([ "ž","-cí", "cí", "cí", "cí", "cí", "cí", "cí", "cí", "cích", "cím", "cí", "cí", "cích", "cími" ])
+// pattern.push([ "ž","-cí", "cí", "cí", "cí", "cí", "cí", "cí", "cí", "cích",
+// "cím", "cí", "cí", "cích", "cími" ])
 // čaj, prodej, Ondřej, žokej
 pattern.push([ "m", "-j", "je", "ji", "j", "ji", "ji", "jem", "je/jové", "jů", "jům", "je", "je/jové", "jích", "ji" ])
 // Josef, Detlef, ... ?
@@ -561,8 +557,12 @@ function showMessage(text) {
 // nebo pri rovnosti slov (napr. isPattern("molo","molo").
 // Jinak je navratova hodnota -1.
 //
-// Global variables: placeholders
-function isPattern(pattern, text) {
+// @param placeholders Register for values to be replaced for placeholders
+// defined in patterns.
+// eg. "-[tp]y" -> "-0y" for matched character 't' results in placeholders[0] ==
+// "t"
+// Expected input value is an empty array.
+function isPattern(pattern, text, placeholders) {
 	text = text.toLowerCase()
 	pattern = pattern.toLowerCase()
 	var i = pattern.length
@@ -574,8 +574,6 @@ function isPattern(pattern, text) {
 	i--;
 	j--;
 
-	placeholders = [];
-
 	while (i >= 0 && j >= 0) {
 		if (pattern.charAt(i) == "]") {
 			i--;
@@ -583,7 +581,9 @@ function isPattern(pattern, text) {
 			while (i >= 0 && pattern.charAt(i) != "[") {
 				if (pattern.charAt(i) == text.charAt(j)) {
 					quit = 0;
-					placeholders.push(pattern.charAt(i));
+					if (placeholders) {
+						placeholders.push(pattern.charAt(i));
+					}
 				}
 				i--;
 			}
@@ -633,14 +633,13 @@ function Xedeten(text) {
 }
 
 /**
- * Replace numeric placeholder for its value from a register.
- * 
- * Global variables: placeholders
+ * Replace numeric placeholders with their values from a register.
  * 
  * @param text
+ * @param placeholders
  * @returns {String}
  */
-function replacePlaceholders(text) {
+function replacePlaceholders(text, placeholders) {
 	var result = "";
 	for ( var i = 0; i < text.length; i++) {
 		var char = text.charAt(i);
@@ -662,8 +661,6 @@ function isMasculineGenderAnimate() {
 	return document.ui.masculineSubgender.value == 'animate';
 }
 
-// Funkce pro sklonovani slova do daneho podle
-// daneho patternu
 /**
  * Declines a word using a declination pattern into specified case and number.
  * 
@@ -673,13 +670,13 @@ function isMasculineGenderAnimate() {
  *            index within the pattern (gender, number/case)
  */
 function declineSingleCase(caseNumberIndex, patternIndex, word) {
-	if (patternIndex < 0 || patternIndex >= pattern.length || 
-		caseNumberIndex < 1 || caseNumberIndex > 14) {
+	if (patternIndex < 0 || patternIndex >= pattern.length || caseNumberIndex < 1 || caseNumberIndex > 14) {
 		return "???";
 	}
 
 	var word3 = Xedeten(word);
-	var suffixIndex = isPattern(pattern[patternIndex][1], word3)
+	var placeholders = [];
+	var suffixIndex = isPattern(pattern[patternIndex][1], word3, placeholders)
 	if (suffixIndex < 0) {
 		return "???";
 	}
@@ -689,7 +686,7 @@ function declineSingleCase(caseNumberIndex, patternIndex, word) {
 	}
 
 	var rv = (!debugModeEnabled && caseNumberIndex == 1) ? /* 1. pad nemenime */
-	Xdetene(word3) : leftStr(suffixIndex, word3) + '-' + replacePlaceholders(pattern[patternIndex][caseNumberIndex]);
+	Xdetene(word3) : leftStr(suffixIndex, word3) + '-' + replacePlaceholders(pattern[patternIndex][caseNumberIndex], placeholders);
 
 	if (debugModeEnabled) {
 		// preskoceni filtrovani
@@ -712,7 +709,7 @@ function declineSingleCase(caseNumberIndex, patternIndex, word) {
 	}
 
 	// vypusteni pomocnych znaku
-	rv = rv.replace(/[\/-]/, "");
+	rv = rv.replace(/[\/\-]/, "");
 	rv = Xdetene(rv);
 
 	return rv;
@@ -741,27 +738,25 @@ function rightStr(n, text) {
  */
 function declineByPattern(word, patternIndex) {
 	if (patternIndex < 0 || patternIndex > pattern.length) {
-		declinationResults[0] = "!!!???";
+		return null;
 	}
-	
-	var declinationResults = [ "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ];
 
 	// - seznam nedoresenych slov
 	for ( var i = 0; i < v0.length; i++) {
 		if (isPattern(v0[i], word) >= 0) {
-			str = "Seznam výjimek [" + i + "]. "
-
-			showMessage(str + "Lituji, toto slovo zatím neumím správně vyskloňovat.");
+			showMessage("Toto slovo zatím neumíme správně vyskloňovat.");
 			return null;
 		}
 	}
 
+	var declinationResults = [];
+
 	// nastaveni rodu
-	declinationResults[0] = pattern[patternIndex][0];
+	declinationResults.push(pattern[patternIndex][0]);
 
 	// vlastni sklonovani
 	for ( var i = 1; i < 15; i++) {
-		declinationResults[i] = declineSingleCase(i, patternIndex, word);
+		declinationResults.push(declineSingleCase(i, patternIndex, word));
 	}
 
 	// - seznam nepresneho sklonovani
@@ -771,7 +766,7 @@ function declineByPattern(word, patternIndex) {
 			return null;
 		}
 	}
-	
+
 	return declinationResults;
 }
 
@@ -795,20 +790,15 @@ function findInV1(word) {
 /**
  * Finds the first matching standard declination pattern.
  * 
- * In case the preferred gender is set (preferredGender), only patterns of that gender
- * are considered.
+ * In case the preferred gender is set (preferredGender), only patterns of that
+ * gender are considered.
  * 
  * @param word
  * @returns {Number} index of the first matching pattern
  */
 function findStandardPattern(word) {
 	for ( var i = 0; i < pattern.length; i++) {
-		// filtrace rodu
-		if (preferredGender.charAt(0) != "0" && preferredGender.charAt(0) != pattern[i][0].charAt(0)) {
-			continue;
-		}
-
-		if (isPattern(pattern[i][1], word) >= 0) {
+		if ((preferredGender == "0" || preferredGender == pattern[i][0]) && isPattern(pattern[i][1], word) >= 0) {
 			break;
 		}
 	}
@@ -876,25 +866,25 @@ function onDecline() {
 	var inputWords = document.ui.inputText.value.trim().replace(/\s+/, " ").split(" ");
 
 	preferredGender = "0";
-	
+
 	var totalResults = {
-		gender: [],
-		plural: [],
-		singular: []
+		gender : [],
+		plural : [],
+		singular : []
 	};
-	for (var i = 1; i <= 7; i++) {
+	for ( var i = 1; i <= 7; i++) {
 		totalResults.singular.push([]);
 		totalResults.plural.push([]);
 	}
-	
+
 	for ( var i = inputWords.length - 1; i >= 0; i--) {
 		var inputWord = inputWords[i];
-		
+
 		// vysklonovani
 		var declinationResults = declineWord(inputWord);
 
 		var gender = declinationResults[0];
-		
+
 		// vynuceni rodu podle posledniho slova
 		var isLastWord = i == inputWords.length - 1;
 		if (isLastWord) {
@@ -909,18 +899,17 @@ function onDecline() {
 		if (gender) {
 			gender.replace(/\?+/, "?");
 		}
-		
+
 		totalResults.gender.push(gender);
-		for (var caseIndex = 1; caseIndex <= 7; caseIndex++) {
+		for ( var caseIndex = 1; caseIndex <= 7; caseIndex++) {
 			totalResults.singular[caseIndex - 1].push(declinationResults[caseIndex]);
 			totalResults.plural[caseIndex - 1].push(declinationResults[caseIndex + 7]);
 		}
 	}
-	
 
-		document.ui.gender.value = totalResults.gender.join(' ');
-	for (var i = 1; i <= 7; i++) {
-	 	document.ui["p" + i + "j"].value = totalResults.singular[i - 1].join(' ');
-	 	document.ui["p" + i + "m"].value = totalResults.plural[i - 1].join(' ');
+	document.ui.gender.value = totalResults.gender.join(' ');
+	for ( var i = 1; i <= 7; i++) {
+		document.ui["p" + i + "j"].value = totalResults.singular[i - 1].join(' ');
+		document.ui["p" + i + "m"].value = totalResults.plural[i - 1].join(' ');
 	}
 }
