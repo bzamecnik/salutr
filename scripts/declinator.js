@@ -549,7 +549,7 @@ v3.push("Zoe")
 v3.push("zoe")
 
 function showMessage(text) {
-	document.getElementById("message").innerHTML = text;
+	document.getElementById("message").innerHTML += text + "<br>\n";
 }
 
 //
@@ -852,6 +852,8 @@ function declineWord(word) {
 function onDecline() {
 	var inputWords = document.ui.inputText.value.trim().replace(/\s+/, " ").split(" ");
 
+	document.getElementById("message").innerHTML = "";
+	
 	preferredGender = "0";
 
 	var totalResults = {
@@ -887,7 +889,7 @@ function onDecline() {
 			gender.replace(/\?+/, "?");
 		}
 
-		totalResults.gender.push(gender);
+		totalResults.gender.unshift(gender);
 		for ( var caseIndex = 1; caseIndex <= 7; caseIndex++) {
 			totalResults.singular[caseIndex - 1].unshift(declinationResults[caseIndex]);
 			totalResults.plural[caseIndex - 1].unshift(declinationResults[caseIndex + 7]);

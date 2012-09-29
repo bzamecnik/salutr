@@ -467,7 +467,7 @@ v3.push("Zoe")
 v3.push("zoe")
 
 function showMessage(text) {
-	document.getElementById("message").innerHTML = text;
+	document.getElementById("message").innerHTML += text + "<br>\n";
 }
 
 // TODO: use regular expressions
@@ -789,8 +789,8 @@ function declineMultipleWords(inputWords, preferredGender) {
 			gender.replace(/\?+/, "?");
 		}
 
-		result.wordsGender.push(gender);
-		result.wordsVocative.push(declinationResults.vocative);
+		result.wordsGender.unshift(gender);
+		result.wordsVocative.unshift(declinationResults.vocative);
 	}
 	return result;
 }
@@ -805,7 +805,8 @@ function getPreferredGender() {
 //
 function onDecline() {
 	var inputWords = document.ui.inputText.value.trim().replace(/\s+/, " ").split(" ");
-	showMessage("");
+	
+	document.getElementById("message").innerHTML = "";
 
 	var result = declineMultipleWords(inputWords, getPreferredGender());
 
