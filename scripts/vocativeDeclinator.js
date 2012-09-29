@@ -1,3 +1,4 @@
+
 function isDebugModeEnabled() {
 	return false;
 }
@@ -14,6 +15,7 @@ patterns.push([ "m", "-ý", "ý"])
 patterns.push([ "m", "-[aeěií]cí", "0cí"])
 patterns.push([ "ž", "-[aeěií]cí", "0cí"])
 patterns.push([ "s", "-[aeěií]cí", "0cí"])
+patterns.push([ "m", "-žel", "želi"])
 patterns.push([ "m", "-[bcčdhklmnprsštvzž]ní", "0ní"])
 patterns.push([ "ž", "-[bcčdhklmnprsštvzž]ní", "0ní"])
 patterns.push([ "s", "-[bcčdhklmnprsštvzž]ní", "0ní"])
@@ -41,7 +43,7 @@ patterns.push([ "m", "-[i]sta", "0sto"])
 patterns.push([ "m", "-[o]sta", "0sto"])
 patterns.push([ "m", "-předseda", "předsedo"])
 patterns.push([ "m", "-srdce", "srdce"])
-patterns.push([ "m", "-[db]ce", "0če"])
+patterns.push([ "m", "-[dbvr]ce", "0če"])
 patterns.push([ "m", "-[jň]ev", "0eve"])
 patterns.push([ "m", "-[lř]ev", "0eve/0ve"])
 
@@ -108,22 +110,20 @@ patterns.push([ "ž", "-toř", "toři"])
 // vzor kost
 //
 patterns.push([ "ž", "-st", "sti"])
-patterns.push([ "ž", "ves", "vsi"])
+patterns.push([ "ž", "-ves", "vsi"])
+patterns.push([ "ž", "-p", "pi"])
 
 //
 //
 // vzor Amadeus, Celsius, Kumulus, rektikulum, praktikum
 //
-patterns.push([ "m", "-[e]us", "0e"])
-patterns.push([ "m", "-[i]us", "0e"])
+patterns.push([ "m", "Zeus", "Die"])
+patterns.push([ "m", "-[ei]us", "0e"])
 patterns.push([ "m", "-[i]s", "0se/0si"])
 patterns.push([ "m", "výtrus", "výtruse"])
 patterns.push([ "m", "trus", "truse"])
 patterns.push([ "m", "-[aeioumpts][lnmrktp]us", "10e"])
-patterns.push([ "s", "-[l]um", "0um"])
-patterns.push([ "s", "-[k]um", "0um"])
-patterns.push([ "s", "-[i]um", "0um"])
-patterns.push([ "s", "-[i]um", "0um"])
+patterns.push([ "s", "-[ikl]um", "0um"])
 patterns.push([ "s", "-io", "0"])
 
 //
@@ -133,16 +133,21 @@ patterns.push([ "s", "-io", "0"])
 patterns.push([ "m", "-[aeiouyáéíóúý]r", "0re"])
 patterns.push([ "m", "-r", "ře"])
 patterns.push([ "m", "-[bcčdnmprstvz]en", "0ne"])
+patterns.push([ "m", "-pes", "pse"])
+patterns.push([ "m", "-[ďťň]ez", "0ezi"])
 patterns.push([ "m", "-[dglmnpbtvzs]", "0e"])
+patterns.push([ "m", "-sex", "sexe"])
 patterns.push([ "m", "-[x]", "0i"])
 patterns.push([ "m", "sek", "seku"])
 patterns.push([ "m", "výsek", "výseku"])
 patterns.push([ "m", "zásek", "záseku"])
 patterns.push([ "m", "průsek", "průseku"])
+patterns.push([ "m", "úsek", "úseku"])
+patterns.push([ "m", "česnek", "česneku"])
+patterns.push([ "m", "fulnek", "fulneku"])
 patterns.push([ "m", "-[cčšždnňmpbrstvz]ek", "0ku"])
-patterns.push([ "m", "-[k]", "0u"])
-patterns.push([ "m", "-ch", "chu/cha"])
-patterns.push([ "m", "-[h]", "0u/0a"])
+patterns.push([ "m", "-ch", "chu"])
+patterns.push([ "m", "-[hk]", "0u"])
 patterns.push([ "m", "-e[mnz]", "0e"])
 
 //
@@ -150,6 +155,7 @@ patterns.push([ "m", "-e[mnz]", "0e"])
 // vzor muž
 //
 patterns.push([ "m", "-ec", "če"])
+patterns.push([ "m", "-kůň", "koni"])
 patterns.push([ "m", "-[cčďšňřťž]", "0i"])
 patterns.push([ "m", "-oj", "oji"])
 
@@ -160,9 +166,8 @@ patterns.push([ "m", "-a", "o"])
 
 patterns.push([ "ž", "-l", "li"])
 patterns.push([ "ž", "-í", "í"])
-patterns.push([ "ž", "-[jř]", "0i"])
-patterns.push([ "ž", "-[č]", "0i"])
-patterns.push([ "ž", "-[š]", "0i"])
+patterns.push([ "ž", "-ů[jř]", "o0i"])
+patterns.push([ "ž", "-[čšjř]", "0i"])
 
 patterns.push([ "s", "-[sljřň]e", "0e"])
 // patterns.push([ "ž","-cí", "cí"])
@@ -173,10 +178,10 @@ patterns.push([ "m", "-f", "fe"])
 // zbroj, výzbroj, výstroj, trofej, neteř
 // jiří, podkoní, ... ?
 patterns.push([ "m", "-í", "í"])
-// Hugo
-patterns.push([ "m", "-go", "ga"])
-// Kvido
-patterns.push([ "m", "-o", "a"])
+// Hugo, Kvido
+patterns.push([ "m", "-o", "o"])
+// Noe
+patterns.push([ "m", "-oe", "oe"])
 
 // doplňky
 // některá pomnožná jména
@@ -196,6 +201,7 @@ patterns.push([ "?", "-[k]y", "?"])
 // }
 var umlautExceptions = {
 	"osel": { prefix: "osl", case4: "osla" },
+	"čolek": { prefix: "čolk", case4: "čolka" },
 	"karel": { prefix: "karl", case4: "karla" },
 	"Karel": { prefix: "Karl", case4: "Karla" },
 	"pavel": { prefix: "pavl", case4: "pavla" },
@@ -216,10 +222,11 @@ var umlautExceptions = {
 	"sopel": { prefix: "sopl", case4: "sopel" },
 	"posel": { prefix: "posl", case4: "posla" },
 	"důl": { prefix: "dol", case4: "důl" },
-	"sůl": { prefix: "sole", case4: "sůl" },
+	//"sůl": { prefix: "sole", case4: "sůl" },
 	"vůl": { prefix: "vol", case4: "vola" },
 	"půl": { prefix: "půle", case4: "půli" },
 	"hůl": { prefix: "hole", case4: "hůl" },
+	"sůl": { prefix: "soli", case4: "sůl" },
 	"stůl": { prefix: "stol", case4: "stůl" },
 	"líh": { prefix: "lih", case4: "líh" },
 	"sníh": { prefix: "sněh", case4: "sníh" },
@@ -228,7 +235,9 @@ var umlautExceptions = {
 	"kůň": { prefix: "koň", case4: "koně" },
 	"tůň": { prefix: "tůňe", case4: "tůň" },
 // --- !
-	"prsten": { prefix: "prstýnek", case4: "prstýnku" },
+	"prsten": { prefix: "prsten", case4: "prsten" },
+	"říjen": { prefix: "říjn", case4: "říjen" },
+	"len": { prefix: "ln", case4: "len" },
 	"smrt": { prefix: "smrť", case4: "smrt" },
 	"vítr": { prefix: "větr", case4: "vítr" },
 	"stupeň": { prefix: "stupň", case4: "stupeň" },
@@ -239,11 +248,13 @@ var umlautExceptions = {
 	"účet": { prefix: "účt", case4: "účet" },
 	"mráz": { prefix: "mraz", case4: "mráz" },
 	"hnůj": { prefix: "hnoj", case4: "hnůj" },
+	"lůj": { prefix: "loj", case4: "lůj" },
 	"skrýš": { prefix: "skrýše", case4: "skrýš" },
 	"nehet": { prefix: "neht", case4: "nehet" },
 	"veš": { prefix: "vš", case4: "veš" },
 	"déšť": { prefix: "dešť", case4: "déšť" },
-	"myš": { prefix: "myše", case4: "myš" }
+	"vězeň": { prefix: "vězň", case4: "vězňe" },
+	"stěžeň": { prefix: "stěžň", case4: "stěžeň" },
  };
 
 // v10 - zmena rodu na muzsky
@@ -325,9 +336,9 @@ v10.push("jirka")
 v10.push("Ilja")
 v10.push("ilja")
 v10.push("Pepa")
+v10.push("Joska")
 v10.push("Ondřej")
 v10.push("Andrej")
-// v10.push("josef")
 v10.push("mikuláš")
 v10.push("Mikuláš")
 v10.push("Mikoláš")
@@ -350,10 +361,14 @@ v10.push("Alois")
 v10.push("alois")
 v10.push("bartoloměj")
 v10.push("Bartoloměj")
+v10.push("správce")
+v10.push("dozorce")
+v10.push("Noe")
+v10.push("mimoň")
+v10.push("pižmoň")
 
 // v11 - zmena rodu na zensky
 var v11 = [];
-v11.push("vš")
 v11.push("dešť")
 v11.push("zteč")
 v11.push("řeč")
@@ -366,7 +381,6 @@ v11.push("závěj")
 v11.push("zvěř")
 v11.push("sbeř")
 v11.push("neteř")
-v11.push("ves")
 v11.push("rozkoš")
 // v11.push("myša")
 v11.push("postel")
@@ -386,6 +400,12 @@ v11.push("Miriam")
 v11.push("miriam")
 v11.push("Ester")
 v11.push("Dagmar")
+v11.push("Elis")
+v11.push("Maruš")
+v11.push("oj")
+v11.push("otep")
+v11.push("step")
+v11.push("sůl")
 
 // v11.push("transmise")
 
@@ -402,31 +422,18 @@ v12.push("tele")
 v12.push("prase")
 v12.push("house")
 v12.push("vejce")
+v12.push("moře")
 
 // v0 - nedořešené výjimky
 var v0 = []
-// v0.push("ondřej")
-// v0.push("josef")
-// v0.push("déšť")
-v0.push("moře")
 v0.push("Ester")
 v0.push("Dagmar")
-// v0.push("vejce")
 v0.push("housle")
 v0.push("šle")
 v0.push("ovoce")
-// v0.push("sleď")
-v0.push("Zeus")
-// v0.push("zbroj")
-// v0.push("výzbroj")
-// v0.push("výstroj")
 // v0.push("obec")
-// v0.push("konzervatoř")
-// v0.push("digestoř")
 v0.push("humus")
 v0.push("muka")
-v0.push("noe")
-v0.push("Noe")
 v0.push("Miriam")
 v0.push("miriam")
 // Je Nikola ženské nebo mužské jméno??? (podobně Sáva)
@@ -434,37 +441,9 @@ v0.push("miriam")
 // v3 - různé odchylky ve skloňování
 // - časem by bylo vhodné opravit
 var v3 = [];
-v3.push("jméno")
-v3.push("myš")
-v3.push("vězeň")
-v3.push("sťežeň")
-v3.push("oko")
-v3.push("sole")
-v3.push("šach")
-v3.push("veš")
-v3.push("myš")
-v3.push("klášter")
-v3.push("kněz")
 v3.push("král")
-v3.push("zď")
-v3.push("sto")
-v3.push("smrt")
-v3.push("leden")
-v3.push("len")
-v3.push("les")
-v3.push("únor")
-v3.push("březen")
-v3.push("duben")
-v3.push("květen")
-v3.push("červen")
-v3.push("srpen")
-v3.push("říjen")
-v3.push("pantofel")
-v3.push("žába")
-v3.push("zoja")
-v3.push("Zoja")
-v3.push("Zoe")
-v3.push("zoe")
+v3.push("prsten")
+v3.push("obec")
 
 function showMessage(text) {
 	document.getElementById("message").innerHTML += text + "<br>\n";

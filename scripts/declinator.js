@@ -222,7 +222,7 @@ pattern.push([ "m", "zásek", "záseku/záseka", "záseku/zásekovi", "zásek/z�
 pattern.push([ "m", "průsek", "průseku/průseka", "průseku/průsekovi", "průsek/průseka", "průseku", "průseku/průsekovi", "průsekem", "průseky/průsekové", "průseků", "výsekům", "průseky", "průseky/průsekové", "průsecích", "průseky" ])
 pattern.push([ "m", "-[cčšždnňmpbrstvz]ek", "0ku/0ka", "0ku/0kovi", "0ek/0ka", "0ku", "0ku/0kovi", "0kem", "-0ky/0kové", "0ků", "0kům", "0ky", "0ky/0kové", "0cích", "0ky" ])
 pattern.push([ "m", "-[k]", "0u/0a", "0u/0ovi", "0/0a", "0u", "0u/0ovi", "0em", "-0y/0ové", "0ů", "0ům", "0y", "0y/0ové", "cích", "0y" ])
-pattern.push([ "m", "-ch", "chu/cha", "chu/chovi", "ch/cha", "chu/cha", "chu/chovi", "chem", "-chy/chové", "chů", "chům", "chy", "chy/chové", "ších", "chy" ])
+pattern.push([ "m", "-ch", "chu/cha", "chu/chovi", "ch/cha", "chu", "chu/chovi", "chem", "-chy/chové", "chů", "chům", "chy", "chy/chové", "ších", "chy" ])
 pattern.push([ "m", "-[h]", "0u/0a", "0u/0ovi", "0/0a", "0u/0a", "0u/0ovi", "0em", "-0y/0ové", "0ů", "0ům", "0y", "0y/0ové", "zích", "0y" ])
 pattern.push([ "m", "-e[mnz]", "0u/0a", "0u/0ovi", "e0/e0a", "0e", "0u/0ovi", "0em", "-0y/0ové", "0ů", "0ům", "0y", "0y/0ové", "0ech", "0y" ])
 
@@ -256,9 +256,9 @@ pattern.push([ "m", "-f", "fa", "fu/fovi", "f/fa", "fe", "fu/fovi", "fem", "fy/f
 // jiří, podkoní, ... ?
 pattern.push([ "m", "-í", "ího", "ímu", "ího", "í", "ímu", "ím", "í", "ích", "ím", "í", "í", "ích", "ími" ])
 // Hugo
-pattern.push([ "m", "-go", "a", "govi", "ga", "ga", "govi", "gem", "gové", "gů", "gům", "gy", "gové", "zích", "gy" ])
+pattern.push([ "m", "-go", "a", "govi", "ga", "go", "govi", "gem", "gové", "gů", "gům", "gy", "gové", "zích", "gy" ])
 // Kvido
-pattern.push([ "m", "-o", "a", "ovi", "a", "a", "ovi", "em", "ové", "ů", "ům", "y", "ové", "ech", "y" ])
+pattern.push([ "m", "-o", "a", "ovi", "a", "o", "ovi", "em", "ové", "ů", "ům", "y", "ové", "ech", "y" ])
 
 // doplňky
 // některá pomnožná jména
