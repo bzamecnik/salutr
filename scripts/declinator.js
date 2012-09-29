@@ -566,54 +566,54 @@ function showMessage(text) {
 function isPattern(pattern, text, placeholders) {
 	text = text.toLowerCase()
 	pattern = pattern.toLowerCase()
-	var i = pattern.length
-	var j = text.length
+	var patternIndex = pattern.length
+	var wordIndex = text.length
 
-	if (i == 0 || j == 0) {
+	if (patternIndex == 0 || wordIndex == 0) {
 		return -1;
 	}
-	i--;
-	j--;
+	patternIndex--;
+	wordIndex--;
 
-	while (i >= 0 && j >= 0) {
-		if (pattern.charAt(i) == "]") {
-			i--;
+	while (patternIndex >= 0 && wordIndex >= 0) {
+		if (pattern.charAt(patternIndex) == "]") {
+			patternIndex--;
 			quit = 1;
-			while (i >= 0 && pattern.charAt(i) != "[") {
-				if (pattern.charAt(i) == text.charAt(j)) {
+			while (patternIndex >= 0 && pattern.charAt(patternIndex) != "[") {
+				if (pattern.charAt(patternIndex) == text.charAt(wordIndex)) {
 					quit = 0;
 					if (placeholders) {
-						placeholders.push(pattern.charAt(i));
+						placeholders.push(pattern.charAt(patternIndex));
 					}
 				}
-				i--;
+				patternIndex--;
 			}
 
 			if (quit == 1) {
 				return -1;
 			}
 		} else {
-			if (pattern.charAt(i) == '-') {
-				return j + 1;
+			if (pattern.charAt(patternIndex) == '-') {
+				return wordIndex + 1;
 			}
-			if (pattern.charAt(i) != text.charAt(j)) {
+			if (pattern.charAt(patternIndex) != text.charAt(wordIndex)) {
 				return -1;
 			}
 		}
-		i--;
-		j--;
+		patternIndex--;
+		wordIndex--;
 	}
-	if (i < 0 && j < 0) {
+	if (patternIndex < 0 && wordIndex < 0) {
 		return 0;
 	}
-	if (pattern.charAt(i) == '-') {
+	if (pattern.charAt(patternIndex) == '-') {
 		return 0;
 	}
 
 	return -1
 }
 
-function Xdetene(text) {
+function unpalatalize(text) {
 	text = text.replace(/ďi/g, "di");
 	text = text.replace(/ťi/g, "ti");
 	text = text.replace(/ňi/g, "ni");
@@ -623,7 +623,7 @@ function Xdetene(text) {
 	return text;
 }
 
-function Xedeten(text) {
+function palatalize(text) {
 	text = text.replace(/di/g, "ďi");
 	text = text.replace(/ti/g, "ťi");
 	text = text.replace(/ni/g, "ňi");
@@ -675,7 +675,7 @@ function declineSingleCase(caseNumberIndex, patternIndex, word) {
 		return "???";
 	}
 
-	var word3 = Xedeten(word);
+	var word3 = palatalize(word);
 	var placeholders = [];
 	var suffixIndex = isPattern(pattern[patternIndex][1], word3, placeholders)
 	if (suffixIndex < 0) {
@@ -688,7 +688,7 @@ function declineSingleCase(caseNumberIndex, patternIndex, word) {
 	}
 
 	var rv = (!debugModeEnabled && caseNumberIndex == 1) ? /* 1. pad nemenime */
-	Xdetene(word3) : leftStr(suffixIndex, word3) + '-' + replacePlaceholders(patternForCase, placeholders);
+	unpalatalize(word3) : leftStr(suffixIndex, word3) + '-' + replacePlaceholders(patternForCase, placeholders);
 
 	if (debugModeEnabled) {
 		// preskoceni filtrovani
@@ -712,7 +712,7 @@ function declineSingleCase(caseNumberIndex, patternIndex, word) {
 
 	// vypusteni pomocnych znaku
 	rv = rv.replace(/[\/\-]/, "");
-	rv = Xdetene(rv);
+	rv = unpalatalize(rv);
 
 	return rv;
 }
@@ -815,7 +815,7 @@ function declineWord(word) {
 		wordForDeclining = umlautException.prefix;
 	}
 
-	wordForDeclining = Xedeten(wordForDeclining);
+	wordForDeclining = palatalize(wordForDeclining);
 
 	// Pretypovani rodu?
 	if (v10.indexOf(wordForDeclining) >= 0) {
@@ -889,8 +889,8 @@ function onDecline() {
 
 		totalResults.gender.push(gender);
 		for ( var caseIndex = 1; caseIndex <= 7; caseIndex++) {
-			totalResults.singular[caseIndex - 1].push(declinationResults[caseIndex]);
-			totalResults.plural[caseIndex - 1].push(declinationResults[caseIndex + 7]);
+			totalResults.singular[caseIndex - 1].unshift(declinationResults[caseIndex]);
+			totalResults.plural[caseIndex - 1].unshift(declinationResults[caseIndex + 7]);
 		}
 	}
 

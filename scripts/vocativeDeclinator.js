@@ -484,56 +484,56 @@ function showMessage(text) {
 // "t"
 // Expected input value is an empty array.
 function isPattern(pattern, text, placeholders) {
-	text = text.toLowerCase()
-	pattern = pattern.toLowerCase()
-	var i = pattern.length
-	var j = text.length
+	text = text.toLowerCase();
+	pattern = pattern.toLowerCase();
+	var patternIndex = pattern.length;
+	var wordIndex = text.length;
 
-	if (i == 0 || j == 0) {
+	if (patternIndex == 0 || wordIndex == 0) {
 		return -1;
 	}
-	i--;
-	j--;
+	patternIndex--;
+	wordIndex--;
 
-	while (i >= 0 && j >= 0) {
-		if (pattern.charAt(i) == "]") {
-			i--;
+	while (patternIndex >= 0 && wordIndex >= 0) {
+		if (pattern.charAt(patternIndex) == "]") {
+			patternIndex--;
 			quit = 1;
-			while (i >= 0 && pattern.charAt(i) != "[") {
-				if (pattern.charAt(i) == text.charAt(j)) {
+			while (patternIndex >= 0 && pattern.charAt(patternIndex) != "[") {
+				if (pattern.charAt(patternIndex) == text.charAt(wordIndex)) {
 					quit = 0;
 					if (placeholders) {
-						placeholders.push(pattern.charAt(i));
+						placeholders.push(pattern.charAt(patternIndex));
 					}
 				}
-				i--;
+				patternIndex--;
 			}
 
 			if (quit == 1) {
 				return -1;
 			}
 		} else {
-			if (pattern.charAt(i) == '-') {
-				return j + 1;
+			if (pattern.charAt(patternIndex) == '-') {
+				return wordIndex + 1;
 			}
-			if (pattern.charAt(i) != text.charAt(j)) {
+			if (pattern.charAt(patternIndex) != text.charAt(wordIndex)) {
 				return -1;
 			}
 		}
-		i--;
-		j--;
+		patternIndex--;
+		wordIndex--;
 	}
-	if (i < 0 && j < 0) {
+	if (patternIndex < 0 && wordIndex < 0) {
 		return 0;
 	}
-	if (pattern.charAt(i) == '-') {
+	if (pattern.charAt(patternIndex) == '-') {
 		return 0;
 	}
 
-	return -1
+	return -1;
 }
 
-function Xdetene(text) {
+function unpalatalize(text) {
 	text = text.replace(/ďi/g, "di");
 	text = text.replace(/ťi/g, "ti");
 	text = text.replace(/ňi/g, "ni");
@@ -543,7 +543,7 @@ function Xdetene(text) {
 	return text;
 }
 
-function Xedeten(text) {
+function palatalize(text) {
 	text = text.replace(/di/g, "ďi");
 	text = text.replace(/ti/g, "ťi");
 	text = text.replace(/ni/g, "ňi");
@@ -593,7 +593,7 @@ function declineToVocative(patternIndex, word) {
 		return "???";
 	}
 
-	var word3 = Xedeten(word);
+	var word3 = palatalize(word);
 	var placeholders = [];
 	var suffixIndex = isPattern(patterns[patternIndex][1], word3, placeholders)
 	if (suffixIndex < 0) {
@@ -605,33 +605,33 @@ function declineToVocative(patternIndex, word) {
 		return "?";
 	}
 
-	var rv = leftStr(suffixIndex, word3) + '-' + replacePlaceholders(patternForCase, placeholders);
+	var result = leftStr(suffixIndex, word3) + '-' + replacePlaceholders(patternForCase, placeholders);
 
 	if (isDebugModeEnabled()) {
 		// preskoceni filtrovani
-		return rv;
+		return result;
 	}
 
 	// Formatovani zivotneho sklonovani
 
-	var hyphenIndex = rv.indexOf("-");
-	var slashIndex = rv.indexOf("/");
+	var hyphenIndex = result.indexOf("-");
+	var slashIndex = result.indexOf("/");
 
 	if (hyphenIndex != -1 && slashIndex != -1) {
 		if (isMasculineGenderAnimate()) {
 			// "text-xxx/yyy" -> "textyyy"
-			rv = leftStr(hyphenIndex, rv) + rightStr(slashIndex + 1, rv);
+			result = leftStr(hyphenIndex, result) + rightStr(slashIndex + 1, result);
 		} else {
 			// "text-xxx/yyy" -> "text-xxx"
-			rv = leftStr(slashIndex, rv);
+			result = leftStr(slashIndex, result);
 		}
 	}
 
 	// vypusteni pomocnych znaku
-	rv = rv.replace(/[\/\-]/, "");
-	rv = Xdetene(rv);
+	result = result.replace(/[\/\-]/, "");
+	result = unpalatalize(result);
 
-	return rv;
+	return result;
 }
 
 //
@@ -729,7 +729,7 @@ function declineWord(word, preferredGender) {
 		wordForDeclining = umlautException.prefix;
 	}
 
-	wordForDeclining = Xedeten(wordForDeclining);
+	wordForDeclining = palatalize(wordForDeclining);
 
 	var gender = preferredGender;
 	
