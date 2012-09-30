@@ -557,9 +557,9 @@ function declineToVocative(patternIndex, word) {
 		return "???";
 	}
 
-	var word3 = palatalize(word);
+	var palatalizedWord = palatalize(word);
 	var placeholders = [];
-	var suffixIndex = isPattern(patterns[patternIndex][1], word3, placeholders)
+	var suffixIndex = isPattern(patterns[patternIndex][1], palatalizedWord, placeholders)
 	if (suffixIndex < 0) {
 		return "???";
 	}
@@ -569,7 +569,7 @@ function declineToVocative(patternIndex, word) {
 		return "?";
 	}
 
-	var result = leftStr(suffixIndex, word3) + '-' + replacePlaceholders(patternForCase, placeholders);
+	var result = leftStr(suffixIndex, palatalizedWord) + '-' + replacePlaceholders(patternForCase, placeholders);
 
 	if (isDebugModeEnabled()) {
 		// preskoceni filtrovani
@@ -732,7 +732,7 @@ function declineMultipleWords(inputWords, preferredGender) {
 		wordsVocative: []
 	};
 
-	for ( var i = inputWords.length - 1; i >= 0; i--) {
+	for ( var i in inputWords) {
 		var inputWord = inputWords[i];
 
 		preferredGender = "0";
@@ -742,11 +742,7 @@ function declineMultipleWords(inputWords, preferredGender) {
 
 		var gender = declinationResults.gender;
 
-		// vynuceni rodu podle posledniho slova
-		var isLastWord = i == inputWords.length - 1;
-		if (isLastWord) {
-			preferredGender = gender;
-		} else if (gender.match(/^\?/) && gender.match(/^[^?]/)) {
+		if (gender.match(/^\?/) && preferredGender.match(/^[^?]/)) {
 			// pokud nenajdeme pattern tak nesklonujeme
 			declinationResults.vocative = inputWord;
 		}
@@ -755,8 +751,8 @@ function declineMultipleWords(inputWords, preferredGender) {
 			gender.replace(/\?+/, "?");
 		}
 
-		result.wordsGender.unshift(gender);
-		result.wordsVocative.unshift(declinationResults.vocative);
+		result.wordsGender.push(gender);
+		result.wordsVocative.push(declinationResults.vocative);
 	}
 	return result;
 }

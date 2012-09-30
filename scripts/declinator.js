@@ -878,7 +878,7 @@ function onDecline() {
 		var isLastWord = i == inputWords.length - 1;
 		if (isLastWord) {
 			preferredGender = gender;
-		} else if (gender.match(/^\?/) && gender.match(/^[^?]/)) {
+		} else if (gender.match(/^\?/) && preferredGender.match(/^[^?]/)) {
 			// pokud nenajdeme pattern tak nesklonujeme
 			for ( var j = 1; j < 15; j++) {
 				declinationResults[j] = inputWord;
