@@ -16,12 +16,12 @@ patterns.push([ "m", "-[aeěií]cí", "0cí"])
 patterns.push([ "ž", "-[aeěií]cí", "0cí"])
 patterns.push([ "s", "-[aeěií]cí", "0cí"])
 patterns.push([ "m", "-žel", "želi"])
+patterns.push([ "m", "-král", "králi"])
 patterns.push([ "m", "-[bcčdhklmnprsštvzž]ní", "0ní"])
 patterns.push([ "ž", "-[bcčdhklmnprsštvzž]ní", "0ní"])
 patterns.push([ "s", "-[bcčdhklmnprsštvzž]ní", "0ní"])
 
-patterns.push([ "m", "-[i]tel", "0tel"])
-patterns.push([ "m", "-[í]tel", "0tel"])
+patterns.push([ "m", "-[ií]tel", "0tel"])
 
 patterns.push([ "s", "-é", "é"])
 patterns.push([ "ž", "-á", "á"])
@@ -109,8 +109,11 @@ patterns.push([ "ž", "-toř", "toři"])
 //
 // vzor kost
 //
-patterns.push([ "ž", "-st", "sti"])
+// most names ending at -st are masculine
+//patterns.push([ "ž", "-st", "sti"])
 patterns.push([ "ž", "-ves", "vsi"])
+patterns.push([ "m", "-p", "pe"])
+// TODO: how to choose gender for words like /p$/
 patterns.push([ "ž", "-p", "pi"])
 
 //
@@ -119,10 +122,22 @@ patterns.push([ "ž", "-p", "pi"])
 //
 patterns.push([ "m", "Zeus", "Die"])
 patterns.push([ "m", "-[ei]us", "0e"])
-patterns.push([ "m", "-[i]s", "0se/0si"])
+//patterns.push([ "0", "-oi[sx]", "oi0"]) // delacroix
+// Adams, Hans, Heinz
+patterns.push([ "m", "-[fmn][sz]", "10i"])
+// TODO: find out for which names use this greek declension
+// Archimedes -> Archimede (yes)
+// Nikolas -> Nikolasi (no)
+//patterns.push([ "m", "-[aeo]s", "e"])
+// Nicolas, Alois, Alojz, Azíz, Fikejz, Fikejs, Charles
+patterns.push([ "m", "-[aeiíjy][sz]", "10i"])
+// Tomasz
+patterns.push([ "m", "-sz", "szi"])
 patterns.push([ "m", "výtrus", "výtruse"])
 patterns.push([ "m", "trus", "truse"])
-patterns.push([ "m", "-[aeioumpts][lnmrktp]us", "10e"])
+patterns.push([ "m", "-[aeioumpst][lnmrktp]us", "10e"])
+patterns.push([ "m", "-[acghk][ou]s", "10si"])
+
 patterns.push([ "s", "-[ikl]um", "0um"])
 patterns.push([ "s", "-io", "0"])
 
@@ -132,13 +147,18 @@ patterns.push([ "s", "-io", "0"])
 
 patterns.push([ "m", "-[aeiouyáéíóúý]r", "0re"])
 patterns.push([ "m", "-r", "ře"])
-patterns.push([ "m", "-[bcčdnmprstvz]en", "0ne"])
+//patterns.push([ "m", "-sven", "svene"])
+//patterns.push([ "m", "-ben", "bene"])
+//patterns.push([ "m", "-jelen", "jelene"])
+//patterns.push([ "m", "-prsten", "prstene"])
+//patterns.push([ "m", "-semen", "semene"])
+//patterns.push([ "m", "-[cčdnmprstvz]en", "0ne"])
 patterns.push([ "m", "-pes", "pse"])
 patterns.push([ "m", "-[ďťň]ez", "0ezi"])
 patterns.push([ "m", "-g", "gu"])
-patterns.push([ "m", "-[dlmnpbtvzs]", "0e"])
+patterns.push([ "m", "-[dlłmnpbtvwzs]", "0e"])
 patterns.push([ "m", "-sex", "sexe"])
-patterns.push([ "m", "-[x]", "0i"])
+patterns.push([ "m", "-x", "xi"])
 patterns.push([ "m", "sek", "seku"])
 patterns.push([ "m", "výsek", "výseku"])
 patterns.push([ "m", "zásek", "záseku"])
@@ -148,8 +168,12 @@ patterns.push([ "m", "česnek", "česneku"])
 patterns.push([ "m", "fulnek", "fulneku"])
 patterns.push([ "m", "-[cčšždnňmpbrstvz]ek", "0ku"])
 patterns.push([ "m", "-ch", "chu"])
-patterns.push([ "m", "-[hk]", "0u"])
+patterns.push([ "m", "-ph", "phe"])
+patterns.push([ "m", "-th", "the"])
+patterns.push([ "m", "-[hkq]", "0u"])
 patterns.push([ "m", "-e[mnz]", "0e"])
+// Mathieu
+patterns.push([ "m", "-eu", "eu"])
 
 //
 //
@@ -184,28 +208,38 @@ patterns.push([ "m", "-o", "o"])
 // Noe
 patterns.push([ "m", "-oe", "oe"])
 
-// doplňky
-// některá pomnožná jména
-patterns.push([ "?", "-[tp]y", "?"])
-patterns.push([ "?", "-[k]y", "?"])
+// Barklay, Vasiliy, Osprey, Leroy
+patterns.push([ "m", "-[aeiou]y", "0yi"])
+// pomnožná jména, Indy, Marty
+patterns.push([ "?", "-y", "y"])
+patterns.push([ "?", "-i", "i"])
+patterns.push([ "?", "-ú", "ú"])
+
+// Thu -> Thuu
+patterns.push([ "m", "-u", "uu"])
+
+// George
+patterns.push([ "m", "-ge", "gi"])
+// Mike
+patterns.push([ "m", "-ke", "ku"])
+
+//patterns.push([ "ž", "-d", "do"])
+//patterns.push([ "ž", "-dt", "dto"])
+//patterns.push([ "ž", "-th", "tho"])
 
 // Výjimky:
 // v1 - přehlásky
 // : důl ... dol, stůl ... stol, nůž ... nož, hůl ... hole, půl ... půle
-
 // 1.p náhrada 4.p.
-
-// TODO: use a hashmap instead:
-// var umlautExceptions = {
-// "osel": {prefix: "osl", declined: "osla"},
-// // ...
-// }
 var umlautExceptions = {
 	"osel": { prefix: "osl", case4: "osla" },
 	"čolek": { prefix: "čolk", case4: "čolka" },
 	"karel": { prefix: "karl", case4: "karla" },
 	"Karel": { prefix: "Karl", case4: "Karla" },
 	"pavel": { prefix: "pavl", case4: "pavla" },
+	"pawel": { prefix: "pawl", case4: "pawla" },
+	"paweł": { prefix: "pawł", case4: "pawła" },
+	"šavel": { prefix: "šavl", case4: "šavla" },
 	"Pavel": { prefix: "Pavl", case4: "Pavla" },
 	"Havel": { prefix: "Havl", case4: "Havla" },
 	"havel": { prefix: "havl", case4: "havla" },
@@ -236,8 +270,8 @@ var umlautExceptions = {
 	"kůň": { prefix: "koň", case4: "koně" },
 	"tůň": { prefix: "tůňe", case4: "tůň" },
 // --- !
-	"prsten": { prefix: "prsten", case4: "prsten" },
 	"říjen": { prefix: "říjn", case4: "říjen" },
+	"duben": { prefix: "dubn", case4: "duben" },
 	"len": { prefix: "ln", case4: "len" },
 	"smrt": { prefix: "smrť", case4: "smrt" },
 	"vítr": { prefix: "větr", case4: "vítr" },
@@ -257,17 +291,28 @@ var umlautExceptions = {
 	"vězeň": { prefix: "vězň", case4: "vězňe" },
 	"stěžeň": { prefix: "stěžň", case4: "stěžeň" },
 	"pán": { prefix: "pan", case4: "pána" },
+	"nero": { prefix: "neron", case4: "nerona" },
+	"cicero": { prefix: "ciceron", case4: "cicerona" },
+	"artemis": { prefix: "artemida", case4: "artemidu" },
+	"pallas": { prefix: "pallada", case4: "pallado" },
+	"paris": { prefix: "parid", case4: "parida" },
+	"eric": { prefix: "erik", case4: "erika" },
+	"marc": { prefix: "mark", case4: "marka" },
+	"dominic": { prefix: "dominik", case4: "dominika" },
+	"luc": { prefix: "luk", case4: "luca" },
  };
 
-// masculineWords - zmena rodu na muzsky
+// TODO: use hash sets
+
+// overriding gender to masculine
 var masculineWords = [];
 masculineWords.push("sleď")
 masculineWords.push("saša")
 masculineWords.push("dešť")
 masculineWords.push("koň")
-masculineWords.push("chlast")
-masculineWords.push("plast")
-masculineWords.push("termoplast")
+//masculineWords.push("chlast")
+//masculineWords.push("plast")
+//masculineWords.push("termoplast")
 masculineWords.push("vězeň")
 masculineWords.push("sťežeň")
 masculineWords.push("papež")
@@ -289,18 +334,18 @@ masculineWords.push("moula")
 masculineWords.push("šmoula")
 masculineWords.push("slouha")
 masculineWords.push("drákula")
-masculineWords.push("test")
-masculineWords.push("rest")
-masculineWords.push("trest")
-masculineWords.push("arest")
-masculineWords.push("azbest")
-masculineWords.push("ametyst")
-masculineWords.push("chřest")
-masculineWords.push("protest")
-masculineWords.push("kontest")
-masculineWords.push("motorest")
-masculineWords.push("most")
-masculineWords.push("host")
+//masculineWords.push("test")
+//masculineWords.push("rest")
+//masculineWords.push("trest")
+//masculineWords.push("arest")
+//masculineWords.push("azbest")
+//masculineWords.push("ametyst")
+//masculineWords.push("chřest")
+//masculineWords.push("protest")
+//masculineWords.push("kontest")
+//masculineWords.push("motorest")
+//masculineWords.push("most")
+//masculineWords.push("host")
 masculineWords.push("kříž")
 masculineWords.push("stupeň")
 masculineWords.push("peň")
@@ -352,9 +397,107 @@ masculineWords.push("mimoň")
 masculineWords.push("pižmoň")
 masculineWords.push("brachyblast")
 masculineWords.push("hlemýžď")
+masculineWords.push("ezop")
+masculineWords.push("ernest");
+masculineWords.push("ernst");
+masculineWords.push("horst");
+masculineWords.push("george");
+masculineWords.push("serge");
+masculineWords.push("mike");
+masculineWords.push("luke");
 
-// feminineWords - zmena rodu na zensky
+// overriding gender to feminine
 var feminineWords = [];
+feminineWords.push("maruš")
+feminineWords.push("miriam")
+feminineWords.push("ester")
+feminineWords.push("dagmar")
+feminineWords.push("karin")
+feminineWords.push("karen")
+feminineWords.push("keren")
+feminineWords.push("carin")
+feminineWords.push("caren")
+feminineWords.push("ceren")
+feminineWords.push("ingrid")
+feminineWords.push("sarah")
+feminineWords.push("hannah")
+feminineWords.push("elis")
+feminineWords.push("elisabeth")
+feminineWords.push("ellen")
+feminineWords.push("elen")
+feminineWords.push("hellen")
+feminineWords.push("helen")
+feminineWords.push("jenifer")
+feminineWords.push("jennifer")
+feminineWords.push("margit")
+feminineWords.push("margot")
+feminineWords.push("artemis")
+feminineWords.push("pallas")
+feminineWords.push("ruth")
+feminineWords.push("rút")
+feminineWords.push("ann")
+feminineWords.push("ráchel")
+feminineWords.push("rachel")
+feminineWords.push("vivian")
+feminineWords.push("carmen")
+feminineWords.push("edith")
+feminineWords.push("judith")
+feminineWords.push("brigid")
+feminineWords.push("adeltraud")
+feminineWords.push("edeltraud")
+feminineWords.push("edeltraudt")
+feminineWords.push("ehrentraud")
+feminineWords.push("gertraud")
+feminineWords.push("helmtraud")
+feminineWords.push("hermanntraud")
+feminineWords.push("hildtraud")
+feminineWords.push("hiltraud")
+feminineWords.push("ingetraud")
+feminineWords.push("inntraud")
+feminineWords.push("irmtraud")
+feminineWords.push("rohtraud")
+feminineWords.push("rotraud")
+feminineWords.push("rottraud")
+feminineWords.push("valtraud")
+feminineWords.push("waldtraud")
+feminineWords.push("waltraud")
+feminineWords.push("wiltraud")
+feminineWords.push("edelgard")
+feminineWords.push("edgard")
+feminineWords.push("ehrengard")
+feminineWords.push("elfgard")
+feminineWords.push("ellengard")
+feminineWords.push("elngard")
+feminineWords.push("ermgard")
+feminineWords.push("gard")
+feminineWords.push("heidegard")
+feminineWords.push("helgard")
+feminineWords.push("hildegard")
+feminineWords.push("imgard")
+feminineWords.push("irmengard")
+feminineWords.push("irmgard")
+feminineWords.push("irmingard")
+feminineWords.push("leodegard")
+feminineWords.push("luitgard")
+feminineWords.push("lutgard")
+feminineWords.push("raingard")
+feminineWords.push("reingard")
+feminineWords.push("sonngard")
+feminineWords.push("vegard")
+feminineWords.push("abigail")
+feminineWords.push("lynn")
+feminineWords.push("lauren")
+feminineWords.push("laureen")
+feminineWords.push("mercedes")
+// TODO: the following names can be both male nad female
+feminineWords.push("nikol")
+// the following names are male, but declined as female
+feminineWords.push("manuel")
+feminineWords.push("emanuel")
+feminineWords.push("emannuel")
+feminineWords.push("imanuel")
+feminineWords.push("imannuel")
+
 feminineWords.push("dešť")
 feminineWords.push("zteč")
 feminineWords.push("řeč")
@@ -382,17 +525,10 @@ feminineWords.push("výzbroj")
 feminineWords.push("výstroj")
 feminineWords.push("trofej")
 feminineWords.push("obec")
-feminineWords.push("miriam")
-feminineWords.push("miriam")
-feminineWords.push("ester")
-feminineWords.push("dagmar")
-feminineWords.push("elis")
-feminineWords.push("maruš")
 feminineWords.push("oj")
 feminineWords.push("otep")
 feminineWords.push("step")
 feminineWords.push("sůl")
-
 // feminineWords.push("transmise")
 
 // overriding gender to neutral
@@ -426,8 +562,6 @@ moreExceptions.push("miriam")
 // deviations - různé odchylky ve skloňování
 // - časem by bylo vhodné opravit
 var deviations = [];
-deviations.push("král")
-deviations.push("prsten")
 deviations.push("obec")
 
 function addMessage(text) {
