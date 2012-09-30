@@ -395,7 +395,7 @@ feminineWords.push("sůl")
 
 // feminineWords.push("transmise")
 
-// neutralWords - zmena rodu na stredni
+// overriding gender to neutral
 var neutralWords = []
 neutralWords.push("nemluvně")
 neutralWords.push("slůně")
@@ -430,8 +430,12 @@ deviations.push("král")
 deviations.push("prsten")
 deviations.push("obec")
 
-function showMessage(text) {
+function addMessage(text) {
 	document.getElementById("message").innerHTML += text + "<br>\n";
+}
+
+function showMessage(text) {
+	document.getElementById("message").innerHTML = text;
 }
 
 // TODO: use regular expressions
@@ -474,14 +478,14 @@ function isPattern(pattern, text, placeholders) {
 			}
 
 			if (quit == 1) {
-				return -1;
+				return -2;
 			}
 		} else {
 			if (pattern.charAt(patternIndex) == '-') {
 				return wordIndex + 1;
 			}
 			if (pattern.charAt(patternIndex) != text.charAt(wordIndex)) {
-				return -1;
+				return -3;
 			}
 		}
 		patternIndex--;
@@ -494,7 +498,7 @@ function isPattern(pattern, text, placeholders) {
 		return 0;
 	}
 
-	return -1;
+	return -4;
 }
 
 function unpalatalize(text) {
@@ -572,11 +576,11 @@ function declineToVocative(patternIndex, word) {
 	var result = leftStr(suffixIndex, palatalizedWord) + '-' + replacePlaceholders(patternForCase, placeholders);
 
 	if (isDebugModeEnabled()) {
-		// preskoceni filtrovani
+		// no animate declension
 		return result;
 	}
 
-	// Formatovani zivotneho sklonovani
+	// animate declension
 
 	var hyphenIndex = result.indexOf("-");
 	var slashIndex = result.indexOf("/");
@@ -591,7 +595,6 @@ function declineToVocative(patternIndex, word) {
 		}
 	}
 
-	// vypusteni pomocnych znaku
 	result = result.replace(/[\/\-]/, "");
 	result = unpalatalize(result);
 
@@ -624,33 +627,29 @@ function declineByPattern(word, patternIndex) {
 		return null;
 	}
 
-	var declinationResults = {};
+	var result = {};
 	
-	// - seznam nedoresenych slov
 	var lowerCaseWord = word.toLowerCase();
 	for ( var i = 0; i < moreExceptions.length; i++) {
 		if (isPattern(moreExceptions[i], lowerCaseWord) >= 0) {
-			showMessage("Toto slovo zatím neumíme správně vyskloňovat.");
-			declinationResults.vocative = word;
-			return declinationResults;
+			result.message = "Toto slovo zatím neumíme správně vyskloňovat.";
+			result.vocative = word;
+			return result;
 		}
 	}
 
-	// nastaveni rodu
-	declinationResults.gender = patterns[patternIndex][0];
+	result.gender = patterns[patternIndex][0];
 
-	// vlastni sklonovani
-	declinationResults.vocative = declineToVocative(patternIndex, word);
+	result.vocative = declineToVocative(patternIndex, word);
 
-	// - seznam nepresneho sklonovani
 	for ( var i = 0; i < deviations.length; i++) {
 		if (isPattern(deviations[i], lowerCaseWord) >= 0) {
-			showMessage("Pozor, v některých pádech nemusí být skloňování tohoto slova přesné.");
+			result.message = "Pozor, v některých pádech nemusí být skloňování tohoto slova přesné.";
 			break;
 		}
 	}
 
-	return declinationResults;
+	return result;
 }
 
 /**
@@ -687,7 +686,7 @@ function findStandardPattern(word, preferredGender) {
 function declineWord(word, preferredGender) {
 	var wordForDeclining = word;
 	
-	// if the word is in v1 exceptions get its prefix
+	// if the word is in umlaut exceptions get its prefix
 	// (exceptions for the forth case)
 	var umlautException = umlautExceptions[word];
 	if (umlautException) {
@@ -697,9 +696,12 @@ function declineWord(word, preferredGender) {
 	wordForDeclining = palatalize(wordForDeclining);
 	var lowerCaseWord = word.toLowerCase();
 
+	if (!preferredGender) {
+		preferredGender = "0";
+	}
 	var gender = preferredGender;
 	
-	// Pretypovani rodu?
+	// gender overriding
 	if (masculineWords.indexOf(lowerCaseWord) >= 0) {
 		gender = "m";
 	} else if (feminineWords.indexOf(lowerCaseWord) >= 0) {
@@ -708,20 +710,27 @@ function declineWord(word, preferredGender) {
 		gender = "s";
 	}
 
-	// Nalezeni patternu
-	var patternIndex = findStandardPattern(wordForDeclining, gender);
+	var patternIndex = -1;
+	// too short words are not declined
+	if (word.length > 2) {
+		patternIndex = findStandardPattern(wordForDeclining, gender);
+	}
 
-	showMessage(patternIndex >= 0 ? patterns[patternIndex] : "Nemáme skloňovací vzor pro toto slovo.");
-	
-	// Vlastni sklonovani
-	var result;
+	var result = {};
+
+	// declension itself
 	if (patternIndex >= 0) {
 		result = declineByPattern(wordForDeclining, patternIndex); 
 	} else {
 		result = {
-			vocative: wordForDeclining,
+			vocative: word,
 			gender: gender,
 		}
+	}
+	if (patternIndex >= 0) {
+		result.pattern = patterns[patternIndex];
+	} else {
+		result.message = "Nemáme skloňovací vzor pro toto slovo."; 
 	}
 	return result;
 }
@@ -729,7 +738,9 @@ function declineWord(word, preferredGender) {
 function declineMultipleWords(inputWords, preferredGender) {
 	var result = {
 		wordsGender: [],
-		wordsVocative: []
+		wordsVocative: [],
+		patterns: [],
+		messages: []
 	};
 
 	for ( var i in inputWords) {
@@ -737,13 +748,12 @@ function declineMultipleWords(inputWords, preferredGender) {
 
 		preferredGender = "0";
 		
-		// vysklonovani
 		var declinationResults = declineWord(inputWord, preferredGender);
 
 		var gender = declinationResults.gender;
 
 		if (gender.match(/^\?/) && preferredGender.match(/^[^?]/)) {
-			// pokud nenajdeme pattern tak nesklonujeme
+			// no declension is done when no pattern has been found
 			declinationResults.vocative = inputWord;
 		}
 
@@ -753,8 +763,26 @@ function declineMultipleWords(inputWords, preferredGender) {
 
 		result.wordsGender.push(gender);
 		result.wordsVocative.push(declinationResults.vocative);
+		if (declinationResults.pattern) {
+			result.patterns.push(declinationResults.pattern);
+		}
+		if (declinationResults.message) {
+			result.messages.push(declinationResults.message);
+		}
 	}
 	return result;
+}
+
+function declinePhrase(wordsText) {
+	var words = wordsText.trim().replace(/\s+/, " ").split(" ");
+	var result = declineMultipleWords(words, getPreferredGender());
+
+	return {
+		gender: result.wordsGender.join(' '),
+		vocative: result.wordsVocative.join(' '),
+		patterns: result.patterns,
+		messages: result.messages
+	};
 }
 
 // Je mozne "pretypovat" rod jmena, hodnota smi byt "0", "m", "ž", "s".
@@ -766,12 +794,22 @@ function getPreferredGender() {
 // Funkce uzivatelskeho rozhrani
 //
 function onDecline() {
-	var inputWords = document.ui.inputText.value.trim().replace(/\s+/, " ").split(" ");
+	var inputText = document.ui.inputText.value;
 	
-	document.getElementById("message").innerHTML = "";
-
-	var result = declineMultipleWords(inputWords, getPreferredGender());
-
-	document.ui.gender.value = result.wordsGender.join(' ');
-	document.ui.vocative.value = result.wordsVocative.join(' ');
+	var result = declinePhrase(inputText);
+	
+	document.ui.gender.value = result.gender;
+	document.ui.vocative.value = result.vocative;
+	
+	showMessage("");
+	if (result.patterns && result.patterns.length > 0) {
+		for (var i in result.patterns) {
+			addMessage("pattern[" + i + "]: " + result.patterns[i]);
+		}
+	}
+	if (result.messages) {
+		for (var i in result.messages) {
+			addMessage("messages[" + i + "]: " + result.messages[i]);
+		}
+	}
 }
