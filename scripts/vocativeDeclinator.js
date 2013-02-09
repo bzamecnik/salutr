@@ -655,13 +655,13 @@ function palatalize(text) {
 	return text;
 }
 
-/**
- * Replace numeric placeholders with their values from a register.
- * 
- * @param text
- * @param placeholders
- * @returns {String}
- */
+// 
+// Replace numeric placeholders with their values from a register.
+// 
+// @param text
+// @param placeholders
+// @returns {String}
+// 
 function replacePlaceholders(text, placeholders) {
 	var result = "";
 	for ( var i = 0; i < text.length; i++) {
@@ -684,12 +684,12 @@ function isMasculineGenderAnimate() {
 	return true;
 }
 
-/**
- * Declines a word using a declination pattern into specified case and number.
- * 
- * Global variables: patterns
- * 
- */
+// 
+// Declines a word using a declination pattern into specified case and number.
+// 
+// Global variables: patterns
+// 
+// 
 function declineToVocative(patternIndex, word) {
 	if (patternIndex < 0 || patternIndex >= patterns.length) {
 		return "???";
@@ -749,13 +749,13 @@ function rightStr(n, text) {
 	return text.substr(n);
 }
 
-/**
- * Declines the word using a standard suffix patern.
- * 
- * @param word
- * @param patternIndex
- *            index of a declination pattern in the 'patterns' array
- */
+// 
+// Declines the word using a standard suffix patern.
+// 
+// @param word
+// @param patternIndex
+//            index of a declination pattern in the 'patterns' array
+// 
 function declineByPattern(word, patternIndex) {
 	if (patternIndex < 0 || patternIndex > patterns.length) {
 		return null;
@@ -786,15 +786,15 @@ function declineByPattern(word, patternIndex) {
 	return result;
 }
 
-/**
- * Finds the first matching standard declination pattern.
- * 
- * In case the preferred gender is set (preferredGender), only patterns of that
- * gender are considered.
- * 
- * @param word
- * @returns {Number} index of the first matching pattern
- */
+//
+// Finds the first matching standard declination pattern.
+// 
+// In case the preferred gender is set (preferredGender), only patterns of that
+// gender are considered.
+// 
+// @param word
+// @returns {Number} index of the first matching pattern
+// 
 function findStandardPattern(word, preferredGender) {
 	for ( var i = 0; i < patterns.length; i++) {
 		if ((preferredGender == "0" || preferredGender == patterns[i][0]) && isPattern(patterns[i][1], word) >= 0) {
@@ -809,14 +809,14 @@ function findStandardPattern(word, preferredGender) {
 	return i;
 }
 
-/**
- * Declines a single word and returns the results.
- * 
- * This is the main declination API function.
- * 
- * @param word
- * @returns declination results {gender: "", vocative: ""}
- */
+// 
+// Declines a single word and returns the results.
+// 
+// This is the main declination API function.
+// 
+// @param word
+// @returns declination results {gender: "", vocative: ""}
+// 
 function declineWord(word, preferredGender) {
 	var wordForDeclining = word;
 	
