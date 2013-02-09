@@ -136,7 +136,7 @@ patterns.push([ "m", "-sz", "szi"])
 patterns.push([ "m", "výtrus", "výtruse"])
 patterns.push([ "m", "trus", "truse"])
 patterns.push([ "m", "-[aeioumpst][lnmrktp]us", "10e"])
-patterns.push([ "m", "-[acghk][ou]s", "10si"])
+patterns.push([ "m", "-[acghkr][ou]s", "10si"])
 
 patterns.push([ "s", "-[ikl]um", "0um"])
 patterns.push([ "s", "-io", "0"])
