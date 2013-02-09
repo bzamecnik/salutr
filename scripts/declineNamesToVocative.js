@@ -3,12 +3,8 @@ db.single_names.find().limit(10).forEach(function(doc) {
 	print(name + " -> " + declineWord(name).vocative);
 });
 
-benchmark(function(collection) {
-	db.single_surnames.find({
-		'value' : {
-			'$gt' : 100
-		}
-	}).forEach(function(doc) {
+//benchmark(function(collection) {
+	db.single_surnames.find({}).forEach(function(doc) {
 		var name = doc._id.toLowerCase();
 		var result = declineWord(name);
 		var vocative = result.vocative;
@@ -30,7 +26,7 @@ benchmark(function(collection) {
 			$set : attrsToSet
 		});
 	});
-});
+//});
 
 function toTitleCase(str) {
 	return str.replace(/\w\S*/g, function(txt) {
