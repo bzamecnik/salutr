@@ -1,0 +1,14 @@
+Zdroje dat
+
+Statistika křestních jmen podle roků narození a lokalit (kraje, okresy, pověřené obce)
+
+http://www.mvcr.cz/clanek/cetnost-jmen-a-prijmeni-722752.aspx
+
+Četnost jmen občanů v krajích (+ celkově v ČR)
+http://www.mvcr.cz/soubor/2013-komplet-zjkr-win-csv.aspx
+zjkr_win.csv
+
+Četnost příjmení občanů v krajích (+ celkově v ČR)
+http://www.mvcr.cz/soubor/2013-komplet-zpkr-win-zip.aspx
+zpkr_win.zip
+
