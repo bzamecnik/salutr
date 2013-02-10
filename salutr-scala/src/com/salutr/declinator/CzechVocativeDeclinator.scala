@@ -14,12 +14,12 @@ class CzechVocativeDeclinator {
 
   class DeclinationException extends Exception
 
-  val isMasculineGenderAnimate = true
+  private val isMasculineGenderAnimate = true
 
   //
   // Přídavná jména a zájmena
   //
-  val patterns = List(
+  private val patterns = List(
 
     ("m", "-ký", "ký"),
     ("m", "-rý", "rý"),
@@ -247,7 +247,7 @@ class CzechVocativeDeclinator {
   // v1 - přehlásky
   // : důl ... dol, stůl ... stol, nůž ... nož, hůl ... hole, půl ... půle
   // 1.p náhrada 4.p.
-  val umlautExceptions = HashMap(
+  private val umlautExceptions = HashMap(
     "osel" -> HashMap("prefix" -> "osl", "case4" -> "osla"),
     "čolek" -> HashMap("prefix" -> "čolk", "case4" -> "čolka"),
     "karel" -> HashMap("prefix" -> "karl", "case4" -> "karla"),
@@ -321,7 +321,7 @@ class CzechVocativeDeclinator {
   // TODO: use hash sets
 
   // overriding gender to masculine
-  var masculineWords = List(
+  private var masculineWords = List(
     "sleď",
     "saša",
     "dešť",
@@ -424,7 +424,7 @@ class CzechVocativeDeclinator {
   )
 
   // overriding gender to feminine
-  var feminineWords = List(
+  private var feminineWords = List(
     "maruš",
     "miriam",
     "ester",
@@ -550,7 +550,7 @@ class CzechVocativeDeclinator {
   )
 
   // overriding gender to neutral
-  var neutralWords = List(
+  private var neutralWords = List(
     "nemluvně",
     "slůně",
     "kůzle",
@@ -566,7 +566,7 @@ class CzechVocativeDeclinator {
   )
 
   // moreExceptions - nedořešené výjimky
-  var moreExceptions = List(
+  private var moreExceptions = List(
     "ester",
     "dagmar",
     "housle",
@@ -581,7 +581,7 @@ class CzechVocativeDeclinator {
 
   // deviations - různé odchylky ve skloňování
   // - časem by bylo vhodné opravit
-  var deviations = List("obec")
+  private var deviations = List("obec")
 
   // TODO: use regular expressions
 
