@@ -4,20 +4,28 @@ import scala.Array.canBuildFrom
 import scala.collection.TraversableOnce.flattenTraversableOnce
 
 class SingleWordNameExtractor {
+  /**
+   * Extract single-word names from multi-word ones
+   * and computes total counts of each single-word name.
+   * 
+   * @names sequence of (name, count)
+   * @return sequence of (name, count)
+   */
   def extract(names: Iterator[(String, String)]) = {
 
     def splitCompoundName(name: String) = {
       name.replaceAll("[, /()-]+", " ").replaceAll("\\.", ". ").split(" ");
     }
 
-    val singleNameCounts = names.map({ pair =>
-      val compoundName = pair._1
-      val count = pair._2.toInt
-      splitCompoundName(compoundName).map((_, count))
-    }).flatten.toList
+    val singleNameCounts = for {
+      (compoundName, count) <- names
+      simpleName <- splitCompoundName(compoundName)
+      if simpleName.length > 1
+    } yield (simpleName, count.toInt)
 
-    singleNameCounts.groupBy(_._1).mapValues({ pairs =>
-      pairs.map(_._2).foldLeft(0)(_ + _)
-    }).iterator
+    (for {
+      (name, items) <- singleNameCounts.toList.groupBy(_._1)
+      totalCount = items.map(_._2).sum
+    } yield (name, totalCount)).iterator
   }
 }
