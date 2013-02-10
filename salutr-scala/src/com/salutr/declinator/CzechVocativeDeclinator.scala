@@ -17,118 +17,118 @@ class CzechVocativeDeclinator {
   val isMasculineGenderAnimate = true
 
   //
-  // Pﬁídavná jména a zájmena
+  // P≈ô√≠davn√° jm√©na a z√°jmena
   //
   val patterns = List(
 
-    ("m", "-k˘", "k˘"),
-    ("m", "-r˘", "r˘"),
-    ("m", "-ch˘", "ch˘"),
-    ("m", "-h˘", "h˘"),
-    ("m", "-˘", "˘"),
-    ("m", "-[aeûií]cí", "0cí"),
-    ("Ï", "-[aeûií]cí", "0cí"),
-    ("s", "-[aeûií]cí", "0cí"),
-    ("m", "-Ïel", "Ïeli"),
-    ("m", "-král", "králi"),
-    ("m", "-[bcãdhklmnprs‰tvzÏ]ní", "0ní"),
-    ("Ï", "-[bcãdhklmnprs‰tvzÏ]ní", "0ní"),
-    ("s", "-[bcãdhklmnprs‰tvzÏ]ní", "0ní"),
+    ("m", "-k√Ω", "k√Ω"),
+    ("m", "-r√Ω", "r√Ω"),
+    ("m", "-ch√Ω", "ch√Ω"),
+    ("m", "-h√Ω", "h√Ω"),
+    ("m", "-√Ω", "√Ω"),
+    ("m", "-[aeƒõi√≠]c√≠", "0c√≠"),
+    ("≈æ", "-[aeƒõi√≠]c√≠", "0c√≠"),
+    ("s", "-[aeƒõi√≠]c√≠", "0c√≠"),
+    ("m", "-≈æel", "≈æeli"),
+    ("m", "-kr√°l", "kr√°li"),
+    ("m", "-[bcƒçdhklmnprs≈°tvz≈æ]n√≠", "0n√≠"),
+    ("≈æ", "-[bcƒçdhklmnprs≈°tvz≈æ]n√≠", "0n√≠"),
+    ("s", "-[bcƒçdhklmnprs≈°tvz≈æ]n√≠", "0n√≠"),
 
-    ("m", "-[ií]tel", "0tel"),
+    ("m", "-[i√≠]tel", "0tel"),
 
-    ("s", "-é", "é"),
-    ("Ï", "-á", "á"),
+    ("s", "-√©", "√©"),
+    ("≈æ", "-√°", "√°"),
 
-    ("m", "-Û", "Û"),
-    ("Ï", "-Û", "Û"),
+    ("m", "-≈Ø", "≈Ø"),
+    ("≈æ", "-≈Ø", "≈Ø"),
 
-    // v˘jimky (zvl. bûÏná slova),
-    ("m", "-bÛh", "boÏe"),
+    // v√Ωjimky (zvl. bƒõ≈æn√° slova),
+    ("m", "-b≈Øh", "bo≈æe"),
     ("m", "-pan", "pane"),
     ("m", "-vztek", "vzteku"),
     ("m", "-dotek", "doteku"),
-    ("Ï", "-hra", "hro"),
+    ("≈æ", "-hra", "hro"),
 
     //
-    // Spec. pﬁídady skloÀování(+pﬁedseda, srdce jako úplná v˘jimka)
+    // Spec. p≈ô√≠dady sklo≈àov√°n√≠(+p≈ôedseda, srdce jako √∫pln√° v√Ωjimka)
     //
     ("m", "-[i]sta", "0sto"),
     ("m", "-[o]sta", "0sto"),
-    ("m", "-pﬁedseda", "pﬁedsedo"),
+    ("m", "-p≈ôedseda", "p≈ôedsedo"),
     ("m", "-srdce", "srdce"),
-    ("m", "-[dbvr]ce", "0ãe"),
-    ("m", "-[jÀ]ev", "0eve"),
-    ("m", "-[lﬁ]ev", "0eve/0ve"),
+    ("m", "-[dbvr]ce", "0ƒçe"),
+    ("m", "-[j≈à]ev", "0eve"),
+    ("m", "-[l≈ô]ev", "0eve/0ve"),
 
-    ("m", "-Û[lz]", "o0e"),
+    ("m", "-≈Ø[lz]", "o0e"),
 
-    // v˘j. nÛÏ (vzor muÏ)
-    ("m", "nÛÏ", "noÏi"),
+    // v√Ωj. n≈Ø≈æ (vzor mu≈æ)
+    ("m", "n≈Ø≈æ", "no≈æi"),
 
     //
     // vzor kolo
     //
-    ("s", "-[bcãdghks‰tvzÏ]lo", "0lo"),
-    ("s", "-[bcãdns‰tvzÏ]ko", "0ko"),
-    ("s", "-[bcãdks‰tvzÏ]no", "0no"),
+    ("s", "-[bcƒçdghks≈°tvz≈æ]lo", "0lo"),
+    ("s", "-[bcƒçdns≈°tvz≈æ]ko", "0ko"),
+    ("s", "-[bcƒçdks≈°tvz≈æ]no", "0no"),
     ("s", "-o", "o"),
 
     //
-    // vzor stavení
+    // vzor staven√≠
     //
-    ("s", "-í", "í"),
+    ("s", "-√≠", "√≠"),
     //
-    // vzor dûvãe (ãe,dû,tû,nû,pû) v˘j.-také sele
+    // vzor dƒõvƒçe (ƒçe,dƒõ,tƒõ,nƒõ,pƒõ) v√Ωj.-tak√© sele
     //
-    ("s", "-[ãìÈ][e]", "10"),
-    ("s", "-[pb][û]", "10"),
+    ("s", "-[ƒçƒè≈•][e]", "10"),
+    ("s", "-[pb][ƒõ]", "10"),
 
     //
-    // vzor Ïena
+    // vzor ≈æena
     //
-    ("Ï", "-[aeiouyáéíóú˘]ka", "0ko"),
-    ("Ï", "-ka", "ko"),
-    ("Ï", "-[bdghkmnptvz]ra", "0ro"),
-    ("Ï", "-ra", "ro"),
-    ("Ï", "-[tdbnvmp]a", "0o"),
-    ("Ï", "-cha", "cho"),
-    ("Ï", "-[gh]a", "0o"),
-    ("Ï", "-Àa", "Ào"),
-    ("Ï", "-[‰ã]a", "0o"),
-    ("Ï", "-a", "o"),
+    ("≈æ", "-[aeiouy√°√©√≠√≥√∫√Ω]ka", "0ko"),
+    ("≈æ", "-ka", "ko"),
+    ("≈æ", "-[bdghkmnptvz]ra", "0ro"),
+    ("≈æ", "-ra", "ro"),
+    ("≈æ", "-[tdbnvmp]a", "0o"),
+    ("≈æ", "-cha", "cho"),
+    ("≈æ", "-[gh]a", "0o"),
+    ("≈æ", "-≈àa", "≈ào"),
+    ("≈æ", "-[≈°ƒç]a", "0o"),
+    ("≈æ", "-a", "o"),
 
-    // vz. píseÀ
-    ("Ï", "-eÀ", "ni"),
-    ("Ï", "-oÀ", "oni"),
-    ("Ï", "-[û]j", "0ji"),
-
-    //
-    // vzor rÛÏe
-    //
-    ("Ï", "-ev", "vi"),
-    ("Ï", "-ice", "ice"),
-    ("Ï", "-e", "e"),
+    // vz. p√≠se≈à
+    ("≈æ", "-e≈à", "ni"),
+    ("≈æ", "-o≈à", "oni"),
+    ("≈æ", "-[ƒõ]j", "0ji"),
 
     //
-    // vzor píseÀ
+    // vzor r≈Ø≈æe
     //
-    ("Ï", "-[eaá][jÏÀ]", "10i"),
-    ("Ï", "-[eayo][‰]", "10i"),
-    ("Ï", "-[íy]À", "0ni"),
-    ("Ï", "-[íy˘]Àe", "0ni"),
-    ("Ï", "-[ÈìÏ]", "0i"),
-    ("Ï", "-toﬁ", "toﬁi"),
+    ("≈æ", "-ev", "vi"),
+    ("≈æ", "-ice", "ice"),
+    ("≈æ", "-e", "e"),
+
+    //
+    // vzor p√≠se≈à
+    //
+    ("≈æ", "-[ea√°][j≈æ≈à]", "10i"),
+    ("≈æ", "-[eayo][≈°]", "10i"),
+    ("≈æ", "-[√≠y]≈à", "0ni"),
+    ("≈æ", "-[√≠y√Ω]≈àe", "0ni"),
+    ("≈æ", "-[≈•ƒè≈æ]", "0i"),
+    ("≈æ", "-to≈ô", "to≈ôi"),
 
     //
     // vzor kost
     //
     // most names ending at -st are masculine
-    //( "Ï", "-st", "sti"),
-    ("Ï", "-ves", "vsi"),
+    //( "≈æ", "-st", "sti"),
+    ("≈æ", "-ves", "vsi"),
     ("m", "-p", "pe"),
     // TODO: how to choose gender for words like /p$/
-    ("Ï", "-p", "pi"),
+    ("≈æ", "-p", "pi"),
 
     //
     //
@@ -143,11 +143,11 @@ class CzechVocativeDeclinator {
     // Archimedes -> Archimede (yes)
     // Nikolas -> Nikolasi (no)
     //( "m", "-[aeo]s", "e"),
-    // Nicolas, Alois, Alojz, Azíz, Fikejz, Fikejs, Charles
-    ("m", "-[aeiíjy][sz]", "10i"),
+    // Nicolas, Alois, Alojz, Az√≠z, Fikejz, Fikejs, Charles
+    ("m", "-[aei√≠jy][sz]", "10i"),
     // Tomasz
     ("m", "-sz", "szi"),
-    ("m", "v˘trus", "v˘truse"),
+    ("m", "v√Ωtrus", "v√Ωtruse"),
     ("m", "trus", "truse"),
     ("m", "-[aeioumpst][lnmrktp]us", "10e"),
     ("m", "-[acghkr][ou]s", "10si"),
@@ -156,31 +156,31 @@ class CzechVocativeDeclinator {
     ("s", "-io", "0"),
 
     //
-    // vzor sedlák
+    // vzor sedl√°k
     //
 
-    ("m", "-[aeiouyáéíóú˘]r", "0re"),
-    ("m", "-r", "ﬁe"),
+    ("m", "-[aeiouy√°√©√≠√≥√∫√Ω]r", "0re"),
+    ("m", "-r", "≈ôe"),
     //( "m", "-sven", "svene"),
     //( "m", "-ben", "bene"),
     //( "m", "-jelen", "jelene"),
     //( "m", "-prsten", "prstene"),
     //( "m", "-semen", "semene"),
-    //( "m", "-[cãdnmprstvz]en", "0ne"),
+    //( "m", "-[cƒçdnmprstvz]en", "0ne"),
     ("m", "-pes", "pse"),
-    ("m", "-[ìÈÀ]ez", "0ezi"),
+    ("m", "-[ƒè≈•≈à]ez", "0ezi"),
     ("m", "-g", "gu"),
-    ("m", "-[dl∏mnpbtvwzs]", "0e"),
+    ("m", "-[dl≈Çmnpbtvwzs]", "0e"),
     ("m", "-sex", "sexe"),
     ("m", "-x", "xi"),
     ("m", "sek", "seku"),
-    ("m", "v˘sek", "v˘seku"),
-    ("m", "zásek", "záseku"),
-    ("m", "prÛsek", "prÛseku"),
-    ("m", "úsek", "úseku"),
-    ("m", "ãesnek", "ãesneku"),
+    ("m", "v√Ωsek", "v√Ωseku"),
+    ("m", "z√°sek", "z√°seku"),
+    ("m", "pr≈Øsek", "pr≈Øseku"),
+    ("m", "√∫sek", "√∫seku"),
+    ("m", "ƒçesnek", "ƒçesneku"),
     ("m", "fulnek", "fulneku"),
-    ("m", "-[cã‰ÏdnÀmpbrstvz]ek", "0ku"),
+    ("m", "-[cƒç≈°≈ædn≈àmpbrstvz]ek", "0ku"),
     ("m", "-ch", "chu"),
     ("m", "-ph", "phe"),
     ("m", "-th", "the"),
@@ -191,32 +191,32 @@ class CzechVocativeDeclinator {
 
     //
     //
-    // vzor muÏ
+    // vzor mu≈æ
     //
-    ("m", "-ec", "ãe"),
-    ("m", "-kÛÀ", "koni"),
-    ("m", "-[cãì‰ÀﬁÈÏ]", "0i"),
+    ("m", "-ec", "ƒçe"),
+    ("m", "-k≈Ø≈à", "koni"),
+    ("m", "-[cƒçƒè≈°≈à≈ô≈•≈æ]", "0i"),
     ("m", "-oj", "oji"),
 
-    // patterny pro pﬁetypování rodu
+    // patterny pro p≈ôetypov√°n√≠ rodu
     ("m", "-[gh]a", "0o"),
     ("m", "-[k]a", "0o"),
     ("m", "-a", "o"),
 
-    ("Ï", "-l", "li"),
-    ("Ï", "-í", "í"),
-    ("Ï", "-Û[jﬁ]", "o0i"),
-    ("Ï", "-[ã‰jﬁ]", "0i"),
+    ("≈æ", "-l", "li"),
+    ("≈æ", "-√≠", "√≠"),
+    ("≈æ", "-≈Ø[j≈ô]", "o0i"),
+    ("≈æ", "-[ƒç≈°j≈ô]", "0i"),
 
-    ("s", "-[sljﬁÀ]e", "0e"),
-    // ( "Ï","-cí", "cí"),
-    // ãaj, prodej, Ondﬁej, Ïokej
+    ("s", "-[slj≈ô≈à]e", "0e"),
+    // ( "≈æ","-c√≠", "c√≠"),
+    // ƒçaj, prodej, Ond≈ôej, ≈æokej
     ("m", "-j", "ji"),
     // Josef, Detlef, ... ?
     ("m", "-f", "fe"),
-    // zbroj, v˘zbroj, v˘stroj, trofej, neteﬁ
-    // jiﬁí, podkoní, ... ?
-    ("m", "-í", "í"),
+    // zbroj, v√Ωzbroj, v√Ωstroj, trofej, nete≈ô
+    // ji≈ô√≠, podkon√≠, ... ?
+    ("m", "-√≠", "√≠"),
     // Hugo, Kvido
     ("m", "-o", "o"),
     // Noe
@@ -224,10 +224,10 @@ class CzechVocativeDeclinator {
 
     // Barklay, Vasiliy, Osprey, Leroy
     ("m", "-[aeiou]y", "0yi"),
-    // pomnoÏná jména, Indy, Marty
+    // pomno≈æn√° jm√©na, Indy, Marty
     ("?", "-y", "y"),
     ("?", "-i", "i"),
-    ("?", "-ú", "ú"),
+    ("?", "-√∫", "√∫"),
 
     // Thu -> Thuu
     ("m", "-u", "uu"),
@@ -237,76 +237,76 @@ class CzechVocativeDeclinator {
     // Mike
     ("m", "-ke", "ku")
 
-  //( "Ï", "-d", "do"),
-  //( "Ï", "-dt", "dto"),
-  //( "Ï", "-th", "tho")
+  //( "≈æ", "-d", "do"),
+  //( "≈æ", "-dt", "dto"),
+  //( "≈æ", "-th", "tho")
 
   )
 
-  // V˘jimky:
-  // v1 - pﬁehlásky
-  // : dÛl ... dol, stÛl ... stol, nÛÏ ... noÏ, hÛl ... hole, pÛl ... pÛle
-  // 1.p náhrada 4.p.
+  // V√Ωjimky:
+  // v1 - p≈ôehl√°sky
+  // : d≈Øl ... dol, st≈Øl ... stol, n≈Ø≈æ ... no≈æ, h≈Øl ... hole, p≈Øl ... p≈Øle
+  // 1.p n√°hrada 4.p.
   val umlautExceptions = HashMap(
     "osel" -> HashMap("prefix" -> "osl", "case4" -> "osla"),
-    "ãolek" -> HashMap("prefix" -> "ãolk", "case4" -> "ãolka"),
+    "ƒçolek" -> HashMap("prefix" -> "ƒçolk", "case4" -> "ƒçolka"),
     "karel" -> HashMap("prefix" -> "karl", "case4" -> "karla"),
     "Karel" -> HashMap("prefix" -> "Karl", "case4" -> "Karla"),
     "pavel" -> HashMap("prefix" -> "pavl", "case4" -> "pavla"),
     "pawel" -> HashMap("prefix" -> "pawl", "case4" -> "pawla"),
-    "pawe∏" -> HashMap("prefix" -> "paw∏", "case4" -> "paw∏a"),
-    "‰avel" -> HashMap("prefix" -> "‰avl", "case4" -> "‰avla"),
+    "pawe≈Ç" -> HashMap("prefix" -> "paw≈Ç", "case4" -> "paw≈Ça"),
+    "≈°avel" -> HashMap("prefix" -> "≈°avl", "case4" -> "≈°avla"),
     "Pavel" -> HashMap("prefix" -> "Pavl", "case4" -> "Pavla"),
     "Havel" -> HashMap("prefix" -> "Havl", "case4" -> "Havla"),
     "havel" -> HashMap("prefix" -> "havl", "case4" -> "havla"),
-    "Boﬁek" -> HashMap("prefix" -> "Boﬁk", "case4" -> "Boﬁka"),
-    "boﬁek" -> HashMap("prefix" -> "boﬁk", "case4" -> "boﬁka"),
-    "Ludûk" -> HashMap("prefix" -> "Luìk", "case4" -> "Luìka"),
-    "ludûk" -> HashMap("prefix" -> "luìk", "case4" -> "luìka"),
+    "Bo≈ôek" -> HashMap("prefix" -> "Bo≈ôk", "case4" -> "Bo≈ôka"),
+    "bo≈ôek" -> HashMap("prefix" -> "bo≈ôk", "case4" -> "bo≈ôka"),
+    "Ludƒõk" -> HashMap("prefix" -> "Luƒèk", "case4" -> "Luƒèka"),
+    "ludƒõk" -> HashMap("prefix" -> "luƒèk", "case4" -> "luƒèka"),
     "pes" -> HashMap("prefix" -> "ps", "case4" -> "psa"),
     "pytel" -> HashMap("prefix" -> "pytl", "case4" -> "pytel"),
     "ocet" -> HashMap("prefix" -> "oct", "case4" -> "octa"),
-    "chléb" -> HashMap("prefix" -> "chleb", "case4" -> "chleba"),
+    "chl√©b" -> HashMap("prefix" -> "chleb", "case4" -> "chleba"),
     "chleba" -> HashMap("prefix" -> "chleb", "case4" -> "chleba"),
     "pavel" -> HashMap("prefix" -> "pavl", "case4" -> "pavla"),
     "kel" -> HashMap("prefix" -> "kl", "case4" -> "kel"),
     "sopel" -> HashMap("prefix" -> "sopl", "case4" -> "sopel"),
     "posel" -> HashMap("prefix" -> "posl", "case4" -> "posla"),
-    "dÛl" -> HashMap("prefix" -> "dol", "case4" -> "dÛl"),
-    //"sÛl" -> HashMap( "prefix" -> "sole", "case4" -> "sÛl" ),
-    "vÛl" -> HashMap("prefix" -> "vol", "case4" -> "vola"),
-    "pÛl" -> HashMap("prefix" -> "pÛle", "case4" -> "pÛli"),
-    "hÛl" -> HashMap("prefix" -> "hole", "case4" -> "hÛl"),
-    "sÛl" -> HashMap("prefix" -> "soli", "case4" -> "sÛl"),
-    "stÛl" -> HashMap("prefix" -> "stol", "case4" -> "stÛl"),
-    "líh" -> HashMap("prefix" -> "lih", "case4" -> "líh"),
-    "sníh" -> HashMap("prefix" -> "snûh", "case4" -> "sníh"),
-    "záﬁ" -> HashMap("prefix" -> "záﬁe", "case4" -> "záﬁ"),
-    "svatozáﬁ" -> HashMap("prefix" -> "svatozáﬁe", "case4" -> "svatozáﬁ"),
-    "kÛÀ" -> HashMap("prefix" -> "koÀ", "case4" -> "konû"),
-    "tÛÀ" -> HashMap("prefix" -> "tÛÀe", "case4" -> "tÛÀ"),
+    "d≈Øl" -> HashMap("prefix" -> "dol", "case4" -> "d≈Øl"),
+    //"s≈Øl" -> HashMap( "prefix" -> "sole", "case4" -> "s≈Øl" ),
+    "v≈Øl" -> HashMap("prefix" -> "vol", "case4" -> "vola"),
+    "p≈Øl" -> HashMap("prefix" -> "p≈Øle", "case4" -> "p≈Øli"),
+    "h≈Øl" -> HashMap("prefix" -> "hole", "case4" -> "h≈Øl"),
+    "s≈Øl" -> HashMap("prefix" -> "soli", "case4" -> "s≈Øl"),
+    "st≈Øl" -> HashMap("prefix" -> "stol", "case4" -> "st≈Øl"),
+    "l√≠h" -> HashMap("prefix" -> "lih", "case4" -> "l√≠h"),
+    "sn√≠h" -> HashMap("prefix" -> "snƒõh", "case4" -> "sn√≠h"),
+    "z√°≈ô" -> HashMap("prefix" -> "z√°≈ôe", "case4" -> "z√°≈ô"),
+    "svatoz√°≈ô" -> HashMap("prefix" -> "svatoz√°≈ôe", "case4" -> "svatoz√°≈ô"),
+    "k≈Ø≈à" -> HashMap("prefix" -> "ko≈à", "case4" -> "konƒõ"),
+    "t≈Ø≈à" -> HashMap("prefix" -> "t≈Ø≈àe", "case4" -> "t≈Ø≈à"),
     // --- !
-    "ﬁíjen" -> HashMap("prefix" -> "ﬁíjn", "case4" -> "ﬁíjen"),
+    "≈ô√≠jen" -> HashMap("prefix" -> "≈ô√≠jn", "case4" -> "≈ô√≠jen"),
     "duben" -> HashMap("prefix" -> "dubn", "case4" -> "duben"),
     "len" -> HashMap("prefix" -> "ln", "case4" -> "len"),
-    "smrt" -> HashMap("prefix" -> "smrÈ", "case4" -> "smrt"),
-    "vítr" -> HashMap("prefix" -> "vûtr", "case4" -> "vítr"),
-    "stupeÀ" -> HashMap("prefix" -> "stupÀ", "case4" -> "stupeÀ"),
-    "peÀ" -> HashMap("prefix" -> "pÀ", "case4" -> "peÀ"),
+    "smrt" -> HashMap("prefix" -> "smr≈•", "case4" -> "smrt"),
+    "v√≠tr" -> HashMap("prefix" -> "vƒõtr", "case4" -> "v√≠tr"),
+    "stupe≈à" -> HashMap("prefix" -> "stup≈à", "case4" -> "stupe≈à"),
+    "pe≈à" -> HashMap("prefix" -> "p≈à", "case4" -> "pe≈à"),
     "cyklus" -> HashMap("prefix" -> "cykl", "case4" -> "cyklus"),
-    "dvÛr" -> HashMap("prefix" -> "dvor", "case4" -> "dvÛr"),
-    "zeì" -> HashMap("prefix" -> "zì", "case4" -> "zeì"),
-    "úãet" -> HashMap("prefix" -> "úãt", "case4" -> "úãet"),
-    "mráz" -> HashMap("prefix" -> "mraz", "case4" -> "mráz"),
-    "hnÛj" -> HashMap("prefix" -> "hnoj", "case4" -> "hnÛj"),
-    "lÛj" -> HashMap("prefix" -> "loj", "case4" -> "lÛj"),
-    "skr˘‰" -> HashMap("prefix" -> "skr˘‰e", "case4" -> "skr˘‰"),
+    "dv≈Ør" -> HashMap("prefix" -> "dvor", "case4" -> "dv≈Ør"),
+    "zeƒè" -> HashMap("prefix" -> "zƒè", "case4" -> "zeƒè"),
+    "√∫ƒçet" -> HashMap("prefix" -> "√∫ƒçt", "case4" -> "√∫ƒçet"),
+    "mr√°z" -> HashMap("prefix" -> "mraz", "case4" -> "mr√°z"),
+    "hn≈Øj" -> HashMap("prefix" -> "hnoj", "case4" -> "hn≈Øj"),
+    "l≈Øj" -> HashMap("prefix" -> "loj", "case4" -> "l≈Øj"),
+    "skr√Ω≈°" -> HashMap("prefix" -> "skr√Ω≈°e", "case4" -> "skr√Ω≈°"),
     "nehet" -> HashMap("prefix" -> "neht", "case4" -> "nehet"),
-    "ve‰" -> HashMap("prefix" -> "v‰", "case4" -> "ve‰"),
-    "dé‰È" -> HashMap("prefix" -> "de‰È", "case4" -> "dé‰È"),
-    "vûzeÀ" -> HashMap("prefix" -> "vûzÀ", "case4" -> "vûzÀe"),
-    "stûÏeÀ" -> HashMap("prefix" -> "stûÏÀ", "case4" -> "stûÏeÀ"),
-    "pán" -> HashMap("prefix" -> "pan", "case4" -> "pána"),
+    "ve≈°" -> HashMap("prefix" -> "v≈°", "case4" -> "ve≈°"),
+    "d√©≈°≈•" -> HashMap("prefix" -> "de≈°≈•", "case4" -> "d√©≈°≈•"),
+    "vƒõze≈à" -> HashMap("prefix" -> "vƒõz≈à", "case4" -> "vƒõz≈àe"),
+    "stƒõ≈æe≈à" -> HashMap("prefix" -> "stƒõ≈æ≈à", "case4" -> "stƒõ≈æe≈à"),
+    "p√°n" -> HashMap("prefix" -> "pan", "case4" -> "p√°na"),
     "nero" -> HashMap("prefix" -> "neron", "case4" -> "nerona"),
     "cicero" -> HashMap("prefix" -> "ciceron", "case4" -> "cicerona"),
     "artemis" -> HashMap("prefix" -> "artemida", "case4" -> "artemidu"),
@@ -322,81 +322,81 @@ class CzechVocativeDeclinator {
 
   // overriding gender to masculine
   var masculineWords = List(
-    "sleì",
-    "sa‰a",
-    "de‰È",
-    "koÀ",
+    "sleƒè",
+    "sa≈°a",
+    "de≈°≈•",
+    "ko≈à",
     //"chlast",
     //"plast",
     //"termoplast",
-    "vûzeÀ",
-    "sÈeÏeÀ",
-    "papeÏ",
-    "ìeda",
-    "zeÈ",
-    "háj",
-    "lan˘Ï",
+    "vƒõze≈à",
+    "s≈•e≈æe≈à",
+    "pape≈æ",
+    "ƒèeda",
+    "ze≈•",
+    "h√°j",
+    "lan√Ω≈æ",
     "sluha",
-    "muÏ",
-    "velmoÏ",
-    "maÈej",
-    "maÈej",
-    "táta",
+    "mu≈æ",
+    "velmo≈æ",
+    "ma≈•ej",
+    "ma≈•ej",
+    "t√°ta",
     "kolega",
     "mluvka",
     "strejda",
     "polda",
     "moula",
-    "‰moula",
+    "≈°moula",
     "slouha",
-    "drákula",
+    "dr√°kula",
     //"test",
     //"rest",
     //"trest",
     //"arest",
     //"azbest",
     //"ametyst",
-    //"chﬁest",
+    //"ch≈ôest",
     //"protest",
     //"kontest",
     //"motorest",
     //"most",
     //"host",
-    "kﬁíÏ",
-    "stupeÀ",
-    "peÀ",
-    "ãaj",
+    "k≈ô√≠≈æ",
+    "stupe≈à",
+    "pe≈à",
+    "ƒçaj",
     "prodej",
-    "v˘dej",
-    "v˘prodej",
-    "ìej",
-    "zloìej",
-    "Ïokej",
+    "v√Ωdej",
+    "v√Ωprodej",
+    "ƒèej",
+    "zloƒèej",
+    "≈æokej",
     "hranostaj",
-    "dobroìej",
-    "darmoìej",
-    "ãaroìej",
-    "koloìej",
+    "dobroƒèej",
+    "darmoƒèej",
+    "ƒçaroƒèej",
+    "koloƒèej",
     "sprej",
     "displej",
-    "ale‰",
-    "ambroÏ",
-    "mroÏ",
-    "tomá‰",
-    "luká‰",
-    "tobiá‰",
-    "jiﬁí",
-    "podkoní",
-    "komoﬁí",
+    "ale≈°",
+    "ambro≈æ",
+    "mro≈æ",
+    "tom√°≈°",
+    "luk√°≈°",
+    "tobi√°≈°",
+    "ji≈ô√≠",
+    "podkon√≠",
+    "komo≈ô√≠",
     "jirka",
     "ilja",
     "pepa",
     "joska",
-    "ondﬁej",
+    "ond≈ôej",
     "andrej",
-    "metodûj",
-    "mikulá‰",
-    "mikolá‰",
+    "metodƒõj",
+    "mikul√°≈°",
+    "mikol√°≈°",
     "kvido",
     "hugo",
     "oto",
@@ -405,14 +405,14 @@ class CzechVocativeDeclinator {
     "ivo",
     "bruno",
     "alois",
-    "bartolomûj",
-    "správce",
+    "bartolomƒõj",
+    "spr√°vce",
     "dozorce",
     "noe",
-    "mimoÀ",
-    "piÏmoÀ",
+    "mimo≈à",
+    "pi≈æmo≈à",
     "brachyblast",
-    "hlem˘Ïì",
+    "hlem√Ω≈æƒè",
     "ezop",
     "ernest",
     "ernst",
@@ -425,7 +425,7 @@ class CzechVocativeDeclinator {
 
   // overriding gender to feminine
   var feminineWords = List(
-    "maru‰",
+    "maru≈°",
     "miriam",
     "ester",
     "dagmar",
@@ -451,9 +451,9 @@ class CzechVocativeDeclinator {
     "artemis",
     "pallas",
     "ruth",
-    "rút",
+    "r√∫t",
     "ann",
-    "ráchel",
+    "r√°chel",
     "rachel",
     "vivian",
     "carmen",
@@ -515,72 +515,72 @@ class CzechVocativeDeclinator {
     "imanuel",
     "imannuel",
 
-    "de‰È",
-    "zteã",
-    "ﬁeã",
-    "kﬁeã",
-    "kleã",
-    "ma‰tal",
-    "v‰",
-    "kanceláﬁ",
-    "závûj",
-    "zvûﬁ",
-    "sbeﬁ",
-    "neteﬁ",
-    "rozko‰",
-    // "my‰a",
+    "de≈°≈•",
+    "zteƒç",
+    "≈ôeƒç",
+    "k≈ôeƒç",
+    "kleƒç",
+    "ma≈°tal",
+    "v≈°",
+    "kancel√°≈ô",
+    "z√°vƒõj",
+    "zvƒõ≈ô",
+    "sbe≈ô",
+    "nete≈ô",
+    "rozko≈°",
+    // "my≈°a",
     "postel",
     "prdel",
     "koudel",
     "koupel",
     "ocel",
-    "digestoﬁ",
-    "konzervatoﬁ",
-    "oratoﬁ",
+    "digesto≈ô",
+    "konzervato≈ô",
+    "orato≈ô",
     "zbroj",
-    "v˘zbroj",
-    "v˘stroj",
+    "v√Ωzbroj",
+    "v√Ωstroj",
     "trofej",
     "obec",
     "oj",
     "otep",
     "step",
-    "sÛl"
+    "s≈Øl"
   // "transmise",
   )
 
   // overriding gender to neutral
   var neutralWords = List(
-    "nemluvnû",
-    "slÛnû",
-    "kÛzle",
+    "nemluvnƒõ",
+    "sl≈Ønƒõ",
+    "k≈Øzle",
     "sele",
     "osle",
-    "zvíﬁe",
-    "kuﬁe",
+    "zv√≠≈ôe",
+    "ku≈ôe",
     "tele",
     "prase",
     "house",
     "vejce",
-    "moﬁe"
+    "mo≈ôe"
   )
 
-  // moreExceptions - nedoﬁe‰ené v˘jimky
+  // moreExceptions - nedo≈ôe≈°en√© v√Ωjimky
   var moreExceptions = List(
     "ester",
     "dagmar",
     "housle",
-    "‰le",
+    "≈°le",
     "ovoce",
     // "obec",
     "humus",
     "muka",
     "miriam"
-  // Je Nikola Ïenské nebo muÏské jméno??? (podobnû Sáva, Sláva, Sa‰a),
+  // Je Nikola ≈æensk√© nebo mu≈æsk√© jm√©no??? (podobnƒõ S√°va, Sl√°va, Sa≈°a),
   )
 
-  // deviations - rÛzné odchylky ve skloÀování
-  // - ãasem by bylo vhodné opravit
+  // deviations - r≈Øzn√© odchylky ve sklo≈àov√°n√≠
+  // - ƒçasem by bylo vhodn√© opravit
   var deviations = List("obec")
 
   // TODO: use regular expressions
@@ -647,21 +647,21 @@ class CzechVocativeDeclinator {
   }
 
   private def unpalatalize(text: String) = {
-    text.replaceAll("ìi", "di")
-      .replaceAll("Èi", "ti")
-      .replaceAll("Ài", "ni")
-      .replaceAll("ìe", "dû")
-      .replaceAll("Èe", "tû")
-      .replaceAll("Àe", "nû")
+    text.replaceAll("ƒèi", "di")
+      .replaceAll("≈•i", "ti")
+      .replaceAll("≈ài", "ni")
+      .replaceAll("ƒèe", "dƒõ")
+      .replaceAll("≈•e", "tƒõ")
+      .replaceAll("≈àe", "nƒõ")
   }
 
   private def palatalize(text: String) = {
-    text.replaceAll("di", "ìi")
-      .replaceAll("ti", "Èi")
-      .replaceAll("ni", "Ài")
-      .replaceAll("dû", "ìe")
-      .replaceAll("tû", "Èe")
-      .replaceAll("nû", "Àe")
+    text.replaceAll("di", "ƒèi")
+      .replaceAll("ti", "≈•i")
+      .replaceAll("ni", "≈ài")
+      .replaceAll("dƒõ", "ƒèe")
+      .replaceAll("tƒõ", "≈•e")
+      .replaceAll("nƒõ", "≈àe")
   }
 
   // 
@@ -752,7 +752,7 @@ class CzechVocativeDeclinator {
 
     if (moreExceptions.find(indexOfSuffixByPattern(_, lowerCaseWord)._1 >= 0).isDefined) {
       return HashMap(
-        "message" -> "Toto slovo zatím neumíme správnû vyskloÀovat.",
+        "message" -> "Toto slovo zat√≠m neum√≠me spr√°vnƒõ vysklo≈àovat.",
         "vocative" -> word
       )
     }
@@ -762,7 +762,7 @@ class CzechVocativeDeclinator {
     var vocative = declineToVocative(patternIndex, word)
 
     if (deviations.find(indexOfSuffixByPattern(_, lowerCaseWord)._1 >= 0).isDefined) {
-      message = "Pozor, v nûkter˘ch pádech nemusí b˘t skloÀování tohoto slova pﬁesné."
+      message = "Pozor, v nƒõkter√Ωch p√°dech nemus√≠ b√Ωt sklo≈àov√°n√≠ tohoto slova p≈ôesn√©."
     }
 
     HashMap(
@@ -819,7 +819,7 @@ class CzechVocativeDeclinator {
     if (masculineWords.indexOf(lowerCaseWord) >= 0) {
       gender = "m"
     } else if (feminineWords.indexOf(lowerCaseWord) >= 0) {
-      gender = "Ï"
+      gender = "≈æ"
     } else if (neutralWords.indexOf(lowerCaseWord) >= 0) {
       gender = "s"
     }
@@ -844,7 +844,7 @@ class CzechVocativeDeclinator {
     if (patternIndex >= 0) {
       result += ("pattern" -> patterns(patternIndex).toString)
     } else {
-      result += ("message" -> "Nemáme skloÀovací vzor pro toto slovo.")
+      result += ("message" -> "Nem√°me sklo≈àovac√≠ vzor pro toto slovo.")
     }
     return result
   }

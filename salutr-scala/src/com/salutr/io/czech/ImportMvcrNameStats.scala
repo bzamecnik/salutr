@@ -11,7 +11,7 @@ class ImportMvcrNameStats {
     for {
       line <- inputLines
         .takeWhile(!_.startsWith("-"))
-        .filterNot(_.matches(".*[?ÿ].*"))
+        .filterNot(_.matches(".*[?Ë‡].*"))
       val columns = line.split(";")
       val name = fixEncoding(columns(0).trim)
       if !name.isEmpty()

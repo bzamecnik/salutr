@@ -1,6 +1,9 @@
 package com.salutr.declinator
 import org.junit.Test
 import org.junit.Assert._
+import java.nio.charset.Charset
+import java.io.InputStream
+import java.io.InputStreamReader
 
 class CzechVocativeDeclinatorTest {
 
@@ -8,6 +11,8 @@ class CzechVocativeDeclinatorTest {
 
   @Test
   def testDeclineSingleWord {
-    println(declinator.declineWord("Bohumír", null))
+    val nominative = "Bohum√≠r"
+    println(nominative)
+    println(declinator.declineWord(nominative, null))
   }
 }
