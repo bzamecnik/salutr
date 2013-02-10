@@ -13,7 +13,7 @@ class ImportMvcrNameStats() {
         .takeWhile(!_.startsWith("-"))
         .filterNot(_.matches(".*[?ÿ].*"))
       val columns = line.split(";")
-      val name = sanitize(columns(0))
+      val name = fixEncoding(columns(0).trim)
       if !name.isEmpty()
     } yield {
       val count = columns(columns.length - 1)
@@ -21,12 +21,11 @@ class ImportMvcrNameStats() {
     }
   }
 
-  private def sanitize(name: String) = {
+  private def fixEncoding(name: String) = {
     name
-      .trim
-      .replace('\uc2ac', '\uc5bd') // NOT SIGN -> LATIN CAPITAL LETTER Z WITH CARON
-      .replace('\uc484', '\uc4bd') // LATIN CAPITAL LETTER A WITH OGONEK -> LATIN CAPITAL LETTER L WITH CARON 
-      .replace('\uc485', '\uc4be') // LATIN SMALL LETTER A WITH OGONEK -> LATIN SMALL LETTER L WITH CARON
+      .replace('\u00ac', '\u017d') // NOT SIGN -> LATIN CAPITAL LETTER Z WITH CARON
+      .replace('\u0104', '\u013d') // LATIN CAPITAL LETTER A WITH OGONEK -> LATIN CAPITAL LETTER L WITH CARON 
+      .replace('\u0105', '\u013e') // LATIN SMALL LETTER A WITH OGONEK -> LATIN SMALL LETTER L WITH CARON
   }
 
   def printCsv(lines: Iterator[(String, Any)], writer: PrintWriter) = {

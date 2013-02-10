@@ -3,6 +3,7 @@ import java.io.PrintWriter
 
 import scala.io.Source
 
+import org.junit.Ignore
 import org.junit.Test
 
 /**
@@ -24,7 +25,6 @@ BÿCZKOVç;0;0;0;0;0;1;;1
 †LKEM;0;0;0;0;0;0;0;0;0;0;0;0;1;;1
  ? ;0;0;0;0;0;0;0;0;0;0;0;0;1;;1
 Â„ˆ;0;0;0;0;0;0;0;0;0;0;0;0;1;;1
-FOO		BAR    BAZ;0;0;0;0;0;0;0;0;0;0;0;0;1;;1
 ---
 SUMA;628578;1160861;292263;545102;430954;1229542;636042;508060;553772;1247384;817353;506106;587105;1113429;;10256551
 """
@@ -32,5 +32,11 @@ SUMA;628578;1160861;292263;545102;430954;1229542;636042;508060;553772;1247384;81
     val importer = new ImportMvcrNameStats()
     val convertedLines = importer.importCsv(input)
     importer.printCsv(convertedLines, new PrintWriter(System.out))
+  }
+
+  @Test
+  @Ignore
+  def printUtf8Literal {
+    for (char <- "Âë„»ˆ¼") printf("%c \\u%04x\n", char, char.toInt)
   }
 }
