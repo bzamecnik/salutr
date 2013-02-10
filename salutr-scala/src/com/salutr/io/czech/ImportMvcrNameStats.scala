@@ -16,7 +16,7 @@ class ImportMvcrNameStats() {
       val name = fixEncoding(columns(0).trim)
       if !name.isEmpty()
     } yield {
-      val count = columns(columns.length - 1)
+      val count = columns(columns.length - 1).toInt
       (name, count)
     }
   }

@@ -11,7 +11,7 @@ class SingleWordNameExtractor {
    * @names sequence of (name, count)
    * @return sequence of (name, count)
    */
-  def extract(names: Iterator[(String, String)]) = {
+  def extract(names: Iterator[(String, Int)]) = {
 
     def splitCompoundName(name: String) = {
       name.replaceAll("[, /()-]+", " ").replaceAll("\\.", ". ").split(" ");
@@ -21,7 +21,7 @@ class SingleWordNameExtractor {
       (compoundName, count) <- names
       simpleName <- splitCompoundName(compoundName)
       if simpleName.length > 1
-    } yield (simpleName, count.toInt)
+    } yield (simpleName, count)
 
     (for {
       (name, items) <- singleNameCounts.toList.groupBy(_._1)
