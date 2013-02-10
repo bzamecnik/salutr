@@ -4,7 +4,7 @@ import java.io.PrintWriter
 
 import scala.io.Source
 
-class ImportMvcrNameStats() {
+class ImportMvcrNameStats {
   def importCsv(input: Source) = {
     val inputLines = input.getLines()
     val firstLine = inputLines.next()

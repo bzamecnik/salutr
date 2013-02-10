@@ -596,7 +596,7 @@ class CzechVocativeDeclinator {
   // eg. "-[tp]y" -> "-0y" for matched character 't' results in placeholders[0] ==
   // "t"
   // Expected input value is an empty array.
-  def indexOfSuffixByPattern(origPattern: String, origText: String): (Int, String) = {
+  private def indexOfSuffixByPattern(origPattern: String, origText: String): (Int, String) = {
     val text = origText.toLowerCase()
     val pattern = origPattern.toLowerCase()
     var patternIndex = pattern.length
@@ -646,7 +646,7 @@ class CzechVocativeDeclinator {
     return (-4, placeholders)
   }
 
-  def unpalatalize(text: String) = {
+  private def unpalatalize(text: String) = {
     text.replaceAll("“i", "di")
       .replaceAll("éi", "ti")
       .replaceAll("Ëi", "ni")
@@ -655,7 +655,7 @@ class CzechVocativeDeclinator {
       .replaceAll("Ëe", "nž")
   }
 
-  def palatalize(text: String) = {
+  private def palatalize(text: String) = {
     text.replaceAll("di", "“i")
       .replaceAll("ti", "éi")
       .replaceAll("ni", "Ëi")
@@ -671,7 +671,7 @@ class CzechVocativeDeclinator {
   // @param placeholders
   // @returns {String}
   // 
-  def replacePlaceholders(text: String, placeholders: String) = {
+  private def replacePlaceholders(text: String, placeholders: String) = {
     var replacedText = text
     // TODO
     if (placeholders.length > 0)
@@ -689,7 +689,7 @@ class CzechVocativeDeclinator {
   // Global variables: patterns
   // 
   // 
-  def declineToVocative(patternIndex: Int, word: String) = {
+  private def declineToVocative(patternIndex: Int, word: String) = {
     if (patternIndex < 0 || patternIndex >= patterns.length) {
       throw new IllegalArgumentException("patternIndex")
     }
@@ -731,10 +731,10 @@ class CzechVocativeDeclinator {
   //
 
   // - levy retezec do indexu n (bez tohoto indexu)
-  def leftStr(n: Int, text: String) = text.take(n)
+  private def leftStr(n: Int, text: String) = text.take(n)
 
   // - pravy retezec od indexu n (vcetne)
-  def rightStr(n: Int, text: String) = text.drop(n)
+  private def rightStr(n: Int, text: String) = text.drop(n)
 
   // 
   // Declines the word using a standard suffix patern.
@@ -743,7 +743,7 @@ class CzechVocativeDeclinator {
   // @param patternIndex
   //            index of a declination pattern in the 'patterns' array
   // 
-  def declineByPattern(word: String, patternIndex: Int): HashMap[String, String] = {
+  private def declineByPattern(word: String, patternIndex: Int): HashMap[String, String] = {
     if (patternIndex < 0 || patternIndex > patterns.length) {
       throw new IllegalArgumentException("patternIndex")
     }
@@ -781,7 +781,7 @@ class CzechVocativeDeclinator {
   // @param word
   // @returns {Number} index of the first matching pattern
   // 
-  def findStandardPattern(word: String, preferredGender: String): Int = {
+  private def findStandardPattern(word: String, preferredGender: String): Int = {
     for (i <- 0 until patterns.length) {
       if (((preferredGender == "0") ||
         (preferredGender == patterns(i)._1)) &&
