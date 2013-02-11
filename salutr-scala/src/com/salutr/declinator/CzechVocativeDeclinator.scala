@@ -16,11 +16,9 @@ class CzechVocativeDeclinator {
 
   private val isMasculineGenderAnimate = true
 
-  //
-  // Přídavná jména a zájmena
-  //
   private val patterns = Vector(
 
+    // Přídavná jména a zájmena
     ("m", "-ký", "ký"),
     ("m", "-rý", "rý"),
     ("m", "-chý", "chý"),
@@ -35,7 +33,9 @@ class CzechVocativeDeclinator {
     ("ž", "-[bcčdhklmnprsštvzž]ní", "0ní"),
     ("s", "-[bcčdhklmnprsštvzž]ní", "0ní"),
 
-    ("m", "-[ií]tel", "0tel"),
+    ("m", "-[řšjíáyuoiea]te[ľĺl]", "1te0i"),
+    ("m", "ortel", "orteli"),
+    ("m", "-krtel", "krteli"),
 
     ("s", "-é", "é"),
     ("ž", "-á", "á"),
@@ -53,15 +53,15 @@ class CzechVocativeDeclinator {
     //
     // Spec. přídady skloňování(+předseda, srdce jako úplná výjimka)
     //
-    ("m", "-[i]sta", "0sto"),
-    ("m", "-[o]sta", "0sto"),
+    ("m", "-[io]sta", "0sto"),
     ("m", "-předseda", "předsedo"),
     ("m", "-srdce", "srdce"),
     ("m", "-[dbvr]ce", "0če"),
-    ("m", "-[jň]ev", "0eve"),
-    ("m", "-[lř]ev", "0eve/0ve"),
+    ("m", "-[lřjňi]ev", "0eve"),
 
-    ("m", "-ů[lz]", "o0e"),
+    ("m", "-ůz", "ůzi"),
+    ("m", "-vůl", "vole"),
+    ("m", "-ůl", "ůle"),
 
     // výj. nůž (vzor muž)
     ("m", "nůž", "noži"),
@@ -134,6 +134,7 @@ class CzechVocativeDeclinator {
     //
     // vzor Amadeus, Celsius, Kumulus, rektikulum, praktikum
     //
+    ("m", "-[ir]zeus", "0zee"),
     ("m", "Zeus", "Die"),
     ("m", "-[ei]us", "0e"),
     //( "0", "-oi[sx]", "oi0"]) // delacroix
@@ -147,8 +148,9 @@ class CzechVocativeDeclinator {
     ("m", "-[aeiíjy][sz]", "10i"),
     // Tomasz
     ("m", "-sz", "szi"),
-    ("m", "výtrus", "výtruse"),
-    ("m", "trus", "truse"),
+    ("m", "-výtrus", "výtruse"),
+    ("m", "-petrus", "petre"),
+    ("m", "-trus", "truse"),
     ("m", "-[aeioumpst][lnmrktp]us", "10e"),
     ("m", "-[acghkr][ou]s", "10si"),
 
@@ -170,20 +172,27 @@ class CzechVocativeDeclinator {
     ("m", "-pes", "pse"),
     ("m", "-[ďťň]ez", "0ezi"),
     ("m", "-g", "gu"),
+    //("m", "-os", "osi"),
     ("m", "-[dlłmnpbtvwzs]", "0e"),
     ("m", "-sex", "sexe"),
     ("m", "-x", "xi"),
+    ("m", "-sek", "sku"),
     ("m", "sek", "seku"),
-    ("m", "výsek", "výseku"),
-    ("m", "zásek", "záseku"),
-    ("m", "průsek", "průseku"),
-    ("m", "úsek", "úseku"),
-    ("m", "česnek", "česneku"),
-    ("m", "fulnek", "fulneku"),
+    ("m", "-výsek", "výseku"),
+    ("m", "-zásek", "záseku"),
+    ("m", "-průsek", "průseku"),
+    ("m", "-úsek", "úseku"),
+    ("m", "-česnek", "česneku"),
+    ("m", "-fulnek", "fulneku"),
     ("m", "-[cčšždnňmpbrstvz]ek", "0ku"),
     ("m", "-ch", "chu"),
     ("m", "-ph", "phe"),
     ("m", "-th", "the"),
+    // Hájek, ale ne Wanjek
+    ("m", "-[aeiouyěá]je[hkq]", "1j0u"),
+    ("m", "ale[hkq]", "ale0u"),
+    // Bílek, ale ne Flek, Vývlek
+    ("m", "-[jüúůýíěaeiouyá]le[hkq]", "1l0u"),
     ("m", "-[hkq]", "0u"),
     ("m", "-e[mnz]", "0e"),
     // Mathieu
@@ -193,6 +202,21 @@ class CzechVocativeDeclinator {
     //
     // vzor muž
     //
+    // Kadlec
+    ("m", "-dlec", "dleci"),
+    ("m", "-švec", "ševče"),
+    // Žrec
+    ("m", "-[žgt]rec", "0reci"),
+    // Blyznec
+    ("m", "-znec", "zneci"),
+    // Gondec
+    ("m", "-ndec", "ndeci"),
+    // Havlicec ~ Havlíček, Vincec ~ Vincek
+    ("m", "-[ie]cec", "0cku"),
+    // Zieleniec -> Zielenče, ne Zieleňče
+    ("m", "-niec", "nče"),
+    // Jedlowiec, 
+    ("m", "-iec", "če"),
     ("m", "-ec", "če"),
     ("m", "-kůň", "koni"),
     ("m", "-[cčďšňřťž]", "0i"),
@@ -222,8 +246,8 @@ class CzechVocativeDeclinator {
     // Noe
     ("m", "-oe", "oe"),
 
-    // Barklay, Vasiliy, Osprey, Leroy
-    ("m", "-[aeiou]y", "0yi"),
+    // Barklay, Vasiliy, Osprey, Leroy, Nagy
+    ("m", "-[aeioug]y", "0yi"),
     // pomnožná jména, Indy, Marty
     ("?", "-y", "y"),
     ("?", "-i", "i"),
@@ -313,6 +337,7 @@ class CzechVocativeDeclinator {
     "pallas" -> "pallada",
     "paris" -> "parid",
     "eric" -> "erik",
+    "alec" -> "alek",
     "marc" -> "mark",
     "dominic" -> "dominik",
     "luc" -> "luk"
