@@ -321,7 +321,7 @@ class CzechVocativeDeclinator {
   // TODO: use hash sets
 
   // overriding gender to masculine
-  private var masculineWords = List(
+  private var masculineWords = Set(
     "sleď",
     "saša",
     "dešť",
@@ -424,7 +424,7 @@ class CzechVocativeDeclinator {
   )
 
   // overriding gender to feminine
-  private var feminineWords = List(
+  private var feminineWords = Set(
     "maruš",
     "miriam",
     "ester",
@@ -550,7 +550,7 @@ class CzechVocativeDeclinator {
   )
 
   // overriding gender to neutral
-  private var neutralWords = List(
+  private var neutralWords = Set(
     "nemluvně",
     "slůně",
     "kůzle",
@@ -778,11 +778,11 @@ class CzechVocativeDeclinator {
     var gender = if (preferredGender != null) preferredGender else "0"
 
     // gender overriding
-    if (masculineWords.indexOf(lowerCaseWord) >= 0) {
+    if (masculineWords.contains(lowerCaseWord)) {
       gender = "m"
-    } else if (feminineWords.indexOf(lowerCaseWord) >= 0) {
+    } else if (feminineWords.contains(lowerCaseWord)) {
       gender = "ž"
-    } else if (neutralWords.indexOf(lowerCaseWord) >= 0) {
+    } else if (neutralWords.contains(lowerCaseWord)) {
       gender = "s"
     }
 
