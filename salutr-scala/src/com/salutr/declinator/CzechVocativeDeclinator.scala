@@ -19,7 +19,7 @@ class CzechVocativeDeclinator {
   //
   // Přídavná jména a zájmena
   //
-  private val patterns = List(
+  private val patterns = Vector(
 
     ("m", "-ký", "ký"),
     ("m", "-rý", "rý"),
