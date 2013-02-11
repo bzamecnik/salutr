@@ -247,75 +247,75 @@ class CzechVocativeDeclinator {
   // v1 - přehlásky
   // : důl ... dol, stůl ... stol, nůž ... nož, hůl ... hole, půl ... půle
   // 1.p náhrada 4.p.
-  private val umlautExceptions = HashMap(
-    "osel" -> HashMap("prefix" -> "osl"),
-    "čolek" -> HashMap("prefix" -> "čolk"),
-    "karel" -> HashMap("prefix" -> "karl"),
-    "Karel" -> HashMap("prefix" -> "Karl"),
-    "pavel" -> HashMap("prefix" -> "pavl"),
-    "pawel" -> HashMap("prefix" -> "pawl"),
-    "paweł" -> HashMap("prefix" -> "pawł"),
-    "šavel" -> HashMap("prefix" -> "šavl"),
-    "Pavel" -> HashMap("prefix" -> "Pavl"),
-    "Havel" -> HashMap("prefix" -> "Havl"),
-    "havel" -> HashMap("prefix" -> "havl"),
-    "Bořek" -> HashMap("prefix" -> "Bořk"),
-    "bořek" -> HashMap("prefix" -> "bořk"),
-    "Luděk" -> HashMap("prefix" -> "Luďk"),
-    "luděk" -> HashMap("prefix" -> "luďk"),
-    "pes" -> HashMap("prefix" -> "ps"),
-    "pytel" -> HashMap("prefix" -> "pytl"),
-    "ocet" -> HashMap("prefix" -> "oct"),
-    "chléb" -> HashMap("prefix" -> "chleb"),
-    "chleba" -> HashMap("prefix" -> "chleb"),
-    "pavel" -> HashMap("prefix" -> "pavl"),
-    "kel" -> HashMap("prefix" -> "kl"),
-    "sopel" -> HashMap("prefix" -> "sopl"),
-    "posel" -> HashMap("prefix" -> "posl"),
-    "důl" -> HashMap("prefix" -> "dol"),
-    //"sůl" -> HashMap( "prefix" -> "sole" ),
-    "vůl" -> HashMap("prefix" -> "vol"),
-    "půl" -> HashMap("prefix" -> "půle"),
-    "hůl" -> HashMap("prefix" -> "hole"),
-    "sůl" -> HashMap("prefix" -> "soli"),
-    "stůl" -> HashMap("prefix" -> "stol"),
-    "líh" -> HashMap("prefix" -> "lih"),
-    "sníh" -> HashMap("prefix" -> "sněh"),
-    "zář" -> HashMap("prefix" -> "záře"),
-    "svatozář" -> HashMap("prefix" -> "svatozáře"),
-    "kůň" -> HashMap("prefix" -> "koň"),
-    "tůň" -> HashMap("prefix" -> "tůňe"),
+  private val umlautExceptionPrefixes = HashMap(
+    "osel" -> "osl",
+    "čolek" -> "čolk",
+    "karel" -> "karl",
+    "Karel" -> "Karl",
+    "pavel" -> "pavl",
+    "pawel" -> "pawl",
+    "paweł" -> "pawł",
+    "šavel" -> "šavl",
+    "Pavel" -> "Pavl",
+    "Havel" -> "Havl",
+    "havel" -> "havl",
+    "Bořek" -> "Bořk",
+    "bořek" -> "bořk",
+    "Luděk" -> "Luďk",
+    "luděk" -> "luďk",
+    "pes" -> "ps",
+    "pytel" -> "pytl",
+    "ocet" -> "oct",
+    "chléb" -> "chleb",
+    "chleba" -> "chleb",
+    "pavel" -> "pavl",
+    "kel" -> "kl",
+    "sopel" -> "sopl",
+    "posel" -> "posl",
+    "důl" -> "dol",
+    //"sůl" -> HashMap( "prefix" -> "sole" ,
+    "vůl" -> "vol",
+    "půl" -> "půle",
+    "hůl" -> "hole",
+    "sůl" -> "soli",
+    "stůl" -> "stol",
+    "líh" -> "lih",
+    "sníh" -> "sněh",
+    "zář" -> "záře",
+    "svatozář" -> "svatozáře",
+    "kůň" -> "koň",
+    "tůň" -> "tůňe",
     // --- !
-    "říjen" -> HashMap("prefix" -> "říjn"),
-    "duben" -> HashMap("prefix" -> "dubn"),
-    "len" -> HashMap("prefix" -> "ln"),
-    "smrt" -> HashMap("prefix" -> "smrť"),
-    "vítr" -> HashMap("prefix" -> "větr"),
-    "stupeň" -> HashMap("prefix" -> "stupň"),
-    "peň" -> HashMap("prefix" -> "pň"),
-    "cyklus" -> HashMap("prefix" -> "cykl"),
-    "dvůr" -> HashMap("prefix" -> "dvor"),
-    "zeď" -> HashMap("prefix" -> "zď"),
-    "účet" -> HashMap("prefix" -> "účt"),
-    "mráz" -> HashMap("prefix" -> "mraz"),
-    "hnůj" -> HashMap("prefix" -> "hnoj"),
-    "lůj" -> HashMap("prefix" -> "loj"),
-    "skrýš" -> HashMap("prefix" -> "skrýše"),
-    "nehet" -> HashMap("prefix" -> "neht"),
-    "veš" -> HashMap("prefix" -> "vš"),
-    "déšť" -> HashMap("prefix" -> "dešť"),
-    "vězeň" -> HashMap("prefix" -> "vězň"),
-    "stěžeň" -> HashMap("prefix" -> "stěžň"),
-    "pán" -> HashMap("prefix" -> "pan"),
-    "nero" -> HashMap("prefix" -> "neron"),
-    "cicero" -> HashMap("prefix" -> "ciceron"),
-    "artemis" -> HashMap("prefix" -> "artemida"),
-    "pallas" -> HashMap("prefix" -> "pallada"),
-    "paris" -> HashMap("prefix" -> "parid"),
-    "eric" -> HashMap("prefix" -> "erik"),
-    "marc" -> HashMap("prefix" -> "mark"),
-    "dominic" -> HashMap("prefix" -> "dominik"),
-    "luc" -> HashMap("prefix" -> "luk")
+    "říjen" -> "říjn",
+    "duben" -> "dubn",
+    "len" -> "ln",
+    "smrt" -> "smrť",
+    "vítr" -> "větr",
+    "stupeň" -> "stupň",
+    "peň" -> "pň",
+    "cyklus" -> "cykl",
+    "dvůr" -> "dvor",
+    "zeď" -> "zď",
+    "účet" -> "účt",
+    "mráz" -> "mraz",
+    "hnůj" -> "hnoj",
+    "lůj" -> "loj",
+    "skrýš" -> "skrýše",
+    "nehet" -> "neht",
+    "veš" -> "vš",
+    "déšť" -> "dešť",
+    "vězeň" -> "vězň",
+    "stěžeň" -> "stěžň",
+    "pán" -> "pan",
+    "nero" -> "neron",
+    "cicero" -> "ciceron",
+    "artemis" -> "artemida",
+    "pallas" -> "pallada",
+    "paris" -> "parid",
+    "eric" -> "erik",
+    "marc" -> "mark",
+    "dominic" -> "dominik",
+    "luc" -> "luk"
   )
 
   // TODO: use hash sets
@@ -565,24 +565,6 @@ class CzechVocativeDeclinator {
     "moře"
   )
 
-  // moreExceptions - nedořešené výjimky
-  private var moreExceptions = List(
-    "ester",
-    "dagmar",
-    "housle",
-    "šle",
-    "ovoce",
-    // "obec",
-    "humus",
-    "muka",
-    "miriam"
-  // Je Nikola ženské nebo mužské jméno??? (podobně Sáva, Sláva, Saša),
-  )
-
-  // deviations - různé odchylky ve skloňování
-  // - časem by bylo vhodné opravit
-  private var deviations = List("obec")
-
   // TODO: use regular expressions
 
   //
@@ -748,27 +730,12 @@ class CzechVocativeDeclinator {
       throw new IllegalArgumentException("patternIndex")
     }
 
-    var lowerCaseWord = word.toLowerCase()
-
-    if (moreExceptions.find(indexOfSuffixByPattern(_, lowerCaseWord)._1 >= 0).isDefined) {
-      return HashMap(
-        "message" -> "Toto slovo zatím neumíme správně vyskloňovat.",
-        "vocative" -> word
-      )
-    }
-
-    var message = ""
     var gender = patterns(patternIndex)._1
     var vocative = declineToVocative(patternIndex, word)
 
-    if (deviations.find(indexOfSuffixByPattern(_, lowerCaseWord)._1 >= 0).isDefined) {
-      message = "Pozor, v některých pádech nemusí být skloňování tohoto slova přesné."
-    }
-
     HashMap(
       "vocative" -> vocative,
-      "gender" -> gender,
-      "message" -> message
+      "gender" -> gender
     )
   }
 
@@ -801,14 +768,9 @@ class CzechVocativeDeclinator {
   // @returns declination results {gender: "", vocative: ""}
   // 
   def declineWord(word: String, preferredGender: String): HashMap[String, String] = {
-    var wordForDeclining = word
-
     // if the word is in umlaut exceptions get its prefix
     // (exceptions for the forth case)
-    val umlautException = umlautExceptions.get(word)
-    if (umlautException.isDefined) {
-      wordForDeclining = umlautException.get("prefix")
-    }
+    var wordForDeclining = umlautExceptionPrefixes.getOrElse(word, word)
 
     wordForDeclining = palatalize(wordForDeclining)
     var lowerCaseWord = word.toLowerCase()
