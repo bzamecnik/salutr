@@ -621,7 +621,7 @@ class CzechVocativeDeclinator {
     if (patternIndex < 0 && wordIndex < 0) {
       return (0, placeholders)
     }
-    if (pattern.charAt(patternIndex) == '-') {
+    if (patternIndex > 0 && pattern.charAt(patternIndex) == '-') {
       return (0, placeholders)
     }
 
@@ -770,7 +770,7 @@ class CzechVocativeDeclinator {
   def declineWord(word: String, preferredGender: String): HashMap[String, String] = {
     // if the word is in umlaut exceptions get its prefix
     // (exceptions for the forth case)
-    var wordForDeclining = umlautExceptionPrefixes.getOrElse(word, word)
+    var wordForDeclining = umlautExceptionPrefixes.getOrElse(word.toLowerCase, word)
 
     wordForDeclining = palatalize(wordForDeclining)
     var lowerCaseWord = word.toLowerCase()
