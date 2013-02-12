@@ -15,6 +15,8 @@ object VocativeDeclinatorApp {
     val outputFileName = args(1)
     val writer = new PrintWriter(new File(outputFileName), "UTF-8")
 
+    val startTime = System.nanoTime()
+    
     val declinator = new CzechVocativeDeclinator()
     for {
       line <- input.getLines()
@@ -35,6 +37,10 @@ object VocativeDeclinatorApp {
       }
     }
     writer.flush
+    
+    val endTime = System.nanoTime()
+    
+    printf("Total time: %d ms\n", (endTime - startTime) / 1000000)
   }
 
   def toTitleCase(text: String) = {
