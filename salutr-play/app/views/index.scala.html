@@ -1,25 +1,42 @@
 @(declineForm: Form[(String)], name: String, vocative: String)
 
 @import helper._
+@import helper.twitterBootstrap._
 
-@main(title = "Salutr - say Hello to the World!") {
+@main(title = "Salutr - automatické skloňování jména a příjmení!") {
 
-    @form(action = routes.Application.declineToVocative, args = 'id -> "declineForm") {
+	<div class="hero-unit">
 
+	<p>
+	Pomocí Salutru můžete automaticky skloňovat jména a příjmení do 5. pádu.
+	</p>
+
+    @form(action = routes.Application.declineToVocative, args = 'id -> "declineForm", 'class -> "text-center") {
         @inputText(
             field = declineForm("name"),
-            args = '_label -> "What's your name?", 'placeholder -> "John Doe"
+            args = '_label -> "",
+            	'placeholder -> "Jméno Příjmení",
+            	'class -> "input-xlarge",
+            	'_showConstraints -> false
         )
 
-
-        <p class="buttons">
-            <input type="submit" id="submit" value="Salut!">
-        <p>
-
-		<dl>
-			<dh>Nominative</dh><dd>@name</dd>
-			<dh>Vocative</dh><dd>@vocative</dd>
-		</dl>
+        <button type="submit" id="submit" class="btn btn-success btn-large">
+	        <i class="icon-user icon-white"></i>&nbsp;Vyskloňuj!
+        </button>
     }
+    
+    @if(name) {
+    	<p class="text-center well">
+    	<strong>@vocative</strong>
+    	</p>
+    	
+    	@*
+		<dl class="dl-horizontal">
+			<dt>Nominativ</dt><dd>@name</dd>
+			<dt>Vokativ</dt><dd>@vocative</dd>
+		</dl>
+		*@
+	}
 
+	</div>
 }

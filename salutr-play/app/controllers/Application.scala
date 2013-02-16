@@ -10,7 +10,7 @@ import com.salutr.declinator.DeclinationService
 object Application extends Controller {
 
   val declineForm = Form(
-    "name" -> nonEmptyText
+    "name" -> text
   )
 
   // -- Actions
@@ -25,7 +25,7 @@ object Application extends Controller {
       {
         case (name) => {
           val vocative = new DeclinationService().declineToVocative(name)
-          Ok(html.index(declineForm, name, vocative))
+          Ok(html.index(declineForm.fill(name), name, vocative))
         }
       }
     )

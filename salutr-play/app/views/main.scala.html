@@ -1,19 +1,16 @@
 @(title: String)(content: Html)
 
 <!DOCTYPE html>
-<html>
+<html lang="cs_CZ">
 	<head>
 		<meta charset="utf-8">
         <title>@title</title>
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="@routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet" type="text/css">
+		<link href="@routes.Assets.at("stylesheets/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css">
 		<link href='http://fonts.googleapis.com/css?family=Niconne|Open+Sans+Condensed:300,300italic&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        @*
-        <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
-		<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
-		*@
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">		
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
 
@@ -22,21 +19,28 @@
 	<![endif]-->
     </head>
     <body>
-		<div class="container">
-			<div style="text-align: center" class="caption">
+		<div class="container-narrow">
+			<div class="page-header">
 				<h1>
-					<a href="/">Salutr</a>
+				<span class="salutr-logo"><a href="/">Salutr</a></span>
+				<small>
+					&raquo;&nbsp;saluter&nbsp;&laquo; &ndash; člověk, který někoho zdraví
+				</small>
 				</h1>
-				<p>
-					<em>&raquo;&nbsp;saluter&nbsp;&laquo; &ndash; a person who greets</em>
-				</p>
-				@content
-				<div class="bottomLine">
-					<a href="http://www.scala-lang.org/" title="Scala - scalable language"><img src="@routes.Assets.at("images/logo/scala.png")" class="logo" alt="Scala logo"></a>
-					<a href="http://www.etnetera.cz/" title="With love, &amp; Etnetera"><img src="@routes.Assets.at("images/logo/etnetera.png")" class="logo" style="height:3em; position:relative; top:0.75em" alt="Etnetera logo"></a>
-					<a href="http://www.playframework.com/" title="Play! framework"><img src="@routes.Assets.at("images/logo/play.png")" class="logo" alt="Play! logo"></a>
-				</div>
 			</div>
+
+			@content
+
+			<footer>
+				<div class="text-center">
+					<a href="http://www.scala-lang.org/" title="Scala - scalable language"><img src="@routes.Assets.at("images/logo/scala.png")" class="logo" alt="Scala logo"></a>
+					<a href="http://www.etnetera.cz/" title="&amp; Etnetera"><img src="@routes.Assets.at("images/logo/etnetera.png")" class="logo" style="height:3em; padding-top:0.5em" alt="Etnetera logo"></a>
+					<a href="http://www.playframework.com/" title="Play! framework"><img src="@routes.Assets.at("images/logo/play.png")" class="logo" style="padding-top:0.25em" alt="Play! logo"></a>
+				</div>
+			</footer>
 		</div>
+        <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+        @*<script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>*@
+        <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>
     </body>
 </html>
