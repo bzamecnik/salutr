@@ -1,0 +1,43 @@
+body {
+	padding-top: 1em;
+	padding-bottom: 1em;
+	font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.caption h1 {
+	font-family: 'Niconne', sans-serif;
+	font-size: 5em;
+	margin-bottom: 0;
+	color: #333333;
+}
+
+.caption h1 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.caption h1 a:hover {
+	color: #ed4b22;
+}
+
+.caption p {
+	font-size: 1em;
+	color: #666666;
+}
+
+.logo {
+	height: 2em;
+	margin: 1em;
+	opacity: 0.25;
+}
+
+.logo:hover {
+	opacity: 1;
+}
+
+.bottomLine {
+	position: fixed;
+	bottom: 1em;
+	margin: 0 auto;
+	width: 100%;
+}
