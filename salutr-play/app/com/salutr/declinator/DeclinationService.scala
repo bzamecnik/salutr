@@ -31,7 +31,7 @@ class DeclinationService {
 					namePart = part.substring(0, part.length() - 1)
 					suffix = ","
 				}
-				var vocative: String  = declineSingleWordName(part)
+				var vocative: String  = declineSingleWordName(namePart)
 				if (suffix != null) {
 					vocative += suffix
 				}
