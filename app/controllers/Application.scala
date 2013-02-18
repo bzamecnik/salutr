@@ -6,6 +6,8 @@ import play.api.mvc._
 import play.api._
 import views._
 import com.salutr.declinator.DeclinationService
+import play.api.libs.iteratee.Enumerator
+import play.api.libs.json.Json.toJson
 
 object Application extends Controller {
 
@@ -31,4 +33,8 @@ object Application extends Controller {
     )
   }
 
+  def declineToVocativeJson(name: String) = Action { request =>
+      val vocative = new DeclinationService().declineToVocative(name)
+      Ok(toJson(Map("vocative" -> vocative)))
+  }
 }
